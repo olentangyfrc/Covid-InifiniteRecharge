@@ -168,8 +168,21 @@ public class SubsystemFactory {
 
         logger.info("initializing");
         
+        HashMap<String, String> canAssignments = new HashMap<String, String>();
+        canAssignments.put("FL.Swerve.angle", PortMan.can_09_label);
+        canAssignments.put("FL.Swerve.drive", PortMan.can_07_label);
+
+        canAssignments.put("FR.Swerve.angle", PortMan.can_03_label);
+        canAssignments.put("FR.Swerve.drive", PortMan.can_62_label);
+
+        canAssignments.put("BL.Swerve.angle", PortMan.can_61_label);
+        canAssignments.put("BL.Swerve.drive", PortMan.can_11_label);
+
+        canAssignments.put("BR.Swerve.angle", PortMan.can_58_label);
+        canAssignments.put("BR.Swerve.drive", PortMan.can_06_label);
+
         driveTrain  = DrivetrainSubsystem2910.getInstance();
-        //driveTrain.init(portMan);
+        driveTrain.init(portMan, canAssignments);
 
         /**
          * All of the Telemery Stuff goes here
