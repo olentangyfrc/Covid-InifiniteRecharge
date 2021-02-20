@@ -39,6 +39,12 @@ public class TelemetrySBTab implements SBInterface {
     public NetworkTableEntry rotationalSpeed;
     public NetworkTableEntry translationalSpeed;
     public NetworkTableEntry lidarDifference;
+
+    //vision stuff
+    public NetworkTableEntry ballDirectionEntry;
+    public NetworkTableEntry ballDistanceEntry;
+    public NetworkTableEntry seeBallEntry;
+
     public double lidarTolerance = 2.34;
     public String ballDirection = "direction";
     public double ballDistance;
@@ -48,10 +54,6 @@ public class TelemetrySBTab implements SBInterface {
         telemetry = te;
         
         tab = Shuffleboard.getTab("Telemetry");
-        
-        //ballDirection = NetworkTables.getTab("Vision").getEntry("BallDirection");
-        ballDistance = NetworkTableInstance.getDefault().getTable("Vision").getEntry("BallDistance").getDouble(0.0);
-        seeBall = NetworkTableInstance.getDefault().getTable("Vision").getEntry("SeeBall").getBoolean(false);
 
         frontDistance = tab.add("Front Lidar Distance", 0).getEntry();
         rearDistance = tab.add("Rear Lidar Distance", 0).getEntry();
@@ -66,6 +68,15 @@ public class TelemetrySBTab implements SBInterface {
         rotationalSpeed = tab.add("Rotational Speed", 0.0).getEntry();
         translationalSpeed = tab.add("Translational Speed", 0.0).getEntry();
         lidarDifference = tab.add("Lidar Difference", 0.0).getEntry();
+
+         //network tables vision
+         NetworkTableInstance inst = NetworkTableInstance.getDefault();
+         NetworkTable table = inst.getTable("Vision");
+ 
+         ballDirectionEntry = table.getEntry("BallDirection");
+         ballDistanceEntry = table.getEntry("BallDistance");
+         seeBallEntry = table.getEntry("SeeBall");
+         
 
     }
     public void update(){
@@ -82,12 +93,12 @@ public class TelemetrySBTab implements SBInterface {
         telemetry.setVerticalTargetDistance(verticalTargetDistance.getDouble(10.0));
         telemetry.setRotationalSpeed(rotationalSpeed.getDouble(0.1));
         telemetry.setTranslationalSpeed(translationalSpeed.getDouble(0.1));
-       
-        telemetry.setBallDirection(ballDirection);
+        
+        ballDirection = ballDirectionEntry.getString("direction");
         logger.info("Ball Direction: " + ballDirection);
-        telemetry.setBallDistance(ballDistance);
+        ballDistance = ballDistanceEntry.getDouble(0.0);
         logger.info("Ball Distance: " + ballDistance);
-        telemetry.setSeeBall(seeBall);
+        seeBall = seeBallEntry.getBoolean(false);
         logger.info("See Ball: " + seeBall);
         
     }
