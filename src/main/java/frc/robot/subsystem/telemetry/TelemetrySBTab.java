@@ -103,6 +103,6 @@ public class TelemetrySBTab implements SBInterface {
        
         telemetry.setBallDirection(ballDirection);
         /*logger.info("Ball Direction: " + ballDirection); 
-        telemetry.setBallDistance(ballDistance);  
+        telemetry.setBallDistance(ballDistance);  */
     }
 }

@@ -131,9 +131,6 @@ public class SubsystemFactory {
         pdp = new PowerDistributionPanel(1);
         //botName = "RIO3";
 
-        pigeon = driveTrain.getGyroscope();
-        pigeon.calibrate();
-        pigeon.setInverted(true);
 
         try {
 
@@ -162,7 +159,9 @@ public class SubsystemFactory {
      */
 
     private void initCommon(PortMan portMan) {
-
+        pigeon = driveTrain.getGyroscope();
+        pigeon.calibrate();
+        pigeon.setInverted(true);
     }
 
     private void initRIO3(PortMan portMan ) throws Exception {
