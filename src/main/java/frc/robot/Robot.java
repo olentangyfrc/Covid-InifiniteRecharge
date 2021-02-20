@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystem.DisplayManager;
 import frc.robot.subsystem.PortMan;
 import frc.robot.subsystem.SubsystemFactory;
@@ -27,12 +28,10 @@ import frc.robot.subsystem.controlpanel.ControlPanel;
 import frc.robot.util.OzoneLogger;
 
 //2910 auton stuff
-//import frc.common.auton.AutonomousSelector;
-//import frc.common.auton.AutonomousTrajectories;
-//import frc.common.commands.FollowTrajectoryCommand;
+import frc.common.auton.AutonomousSelector;
+import frc.common.auton.AutonomousTrajectories;
+import frc.common.commands.FollowTrajectoryCommand;
 import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 
 import frc.robot.subsystem.SBInterface;
@@ -54,14 +53,14 @@ public class Robot extends TimedRobot {
   ControlPanel controlPanel;
   private static SubsystemFactory subsystemFactory;
 
-  private Instant initTime;
-  private Instant currentTime;
+  private static Instant initTime;
+  private static Instant currentTime;
 
   private DisplayManager dManager;
   private ShuffleboardTab tab;
 
-  //private AutonomousTrajectories autonomousTrajectories = new AutonomousTrajectories(DrivetrainSubsystem2910.CONSTRAINTS);
-  //private AutonomousSelector autonomousSelector = new AutonomousSelector(autonomousTrajectories);
+  private AutonomousTrajectories autonomousTrajectories = new AutonomousTrajectories(DrivetrainSubsystem2910.CONSTRAINTS);
+  private AutonomousSelector autonomousSelector = new AutonomousSelector(autonomousTrajectories);
 
   private Command autonomousCommand = null;
 
@@ -71,6 +70,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    resetTime();
     initTime = Instant.now();
 
     subsystemFactory = SubsystemFactory.getInstance();
@@ -105,12 +105,13 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
       CommandScheduler.getInstance().run();
-      CommandScheduler.getInstance().run();
       dManager.update();
       // need to double check if default Drive command is being called too.
       // this looks realy weird.
       currentTime = Instant.now();
-      SubsystemFactory.getInstance().getDriveTrain().updateKinematics(Duration.between(initTime, currentTime).toMillis());
+      double elapsedTime = Duration.between(initTime, currentTime).toMillis();
+      elapsedTime /= 1000;
+      SubsystemFactory.getInstance().getDriveTrain().updateKinematics(elapsedTime);
        
   }
 
@@ -127,12 +128,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    resetTime();
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
 
-    //autonomousCommand = autonomousSelector.getCommand();
-    //autonomousCommand.start();
+    autonomousCommand = autonomousSelector.getCommand();
+    autonomousCommand.schedule();
   }
 
   /**
@@ -141,9 +143,11 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     CommandScheduler.getInstance().run();
-    CommandScheduler.getInstance().run();
-
     //test.execute();
+  }
+  @Override
+  public void teleopInit() {
+    resetTime();
   }
 
   /**
@@ -158,5 +162,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+  }
+  public static void resetTime() {
+    initTime = Instant.now();
+    currentTime = Instant.now();
+
   }
 }
