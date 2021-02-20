@@ -49,6 +49,7 @@ public class TelemetrySBTab implements SBInterface {
     public String ballDirection = "direction";
     public double ballDistance;
     public boolean seeBall;
+    public String coprocessorTime;
 
     public TelemetrySBTab(Telemetry te){
         telemetry = te;
@@ -73,9 +74,11 @@ public class TelemetrySBTab implements SBInterface {
          NetworkTableInstance inst = NetworkTableInstance.getDefault();
          NetworkTable table = inst.getTable("Vision");
  
-         ballDirectionEntry = table.getEntry("BallDirection");
-         ballDistanceEntry = table.getEntry("BallDistance");
-         seeBallEntry = table.getEntry("SeeBall");
+        ballDirectionEntry = table.getEntry("BallDirection");
+        ballDistanceEntry = table.getEntry("BallDistance");
+        seeBallEntry = table.getEntry("SeeBall");
+        //coprocessorTime = table.getEntry("")
+
          
 
     }
@@ -93,6 +96,7 @@ public class TelemetrySBTab implements SBInterface {
         telemetry.setVerticalTargetDistance(verticalTargetDistance.getDouble(10.0));
         telemetry.setRotationalSpeed(rotationalSpeed.getDouble(0.1));
         telemetry.setTranslationalSpeed(translationalSpeed.getDouble(0.1));
+        //telemetry.setBallDirection(ballDirection);
         
         ballDirection = ballDirectionEntry.getString("direction");
         logger.info("Ball Direction: " + ballDirection);
