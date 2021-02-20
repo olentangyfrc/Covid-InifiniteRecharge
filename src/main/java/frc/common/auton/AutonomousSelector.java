@@ -106,31 +106,8 @@ public class AutonomousSelector {
 
     public Command getCommand() {
         
-        Rotation2 startingOrientation = orientationChooser.getSelected();
-        Side startingSide = sideChooser.getSelected();
-        boolean onHab2 = onHab2Entry.getBoolean(false);
-
-        InstantCommand group = new InstantCommand();
-        //group.setRunWhenDisabled(true);
-
-        // Set the gyro angle to the correct starting angle
-        group.andThen(new InstantCommand(() -> {
-            DrivetrainSubsystem2910.getInstance().getGyroscope().setAdjustmentAngle(
-                    DrivetrainSubsystem2910.getInstance().getGyroscope().getUnadjustedAngle().rotateBy(startingOrientation)
-            );
-    }));
-
-        // If we want to manually drive the robot, return now.
-        // Drive to the first target
-        // If we are on hab 2, leave hab 2 in a (semi) repeatable manner
-        if (onHab2) {
-            group.andThen(new FollowTrajectoryCommand(trajectories.getHab2ToCargoSideNearTrajectory(startingSide)));
-        } else {
-            group.andThen(new FollowTrajectoryCommand(trajectories.getHab1ToCargoSideNearTrajectory(startingSide)));
-        }
-        // Enqueue the next trajectories
-        hybridCommandQueue.clear();
-        return group;
+        Command basicLine = new FollowTrajectoryCommand(trajectories.getBasicLineTrajectory());
+        return basicLine;
     }
 
     public Queue<Command> getHybridQueue() {

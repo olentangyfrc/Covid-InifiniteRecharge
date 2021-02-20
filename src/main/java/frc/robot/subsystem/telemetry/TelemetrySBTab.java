@@ -84,11 +84,12 @@ public class TelemetrySBTab implements SBInterface {
         telemetry.setTranslationalSpeed(translationalSpeed.getDouble(0.1));
        
         telemetry.setBallDirection(ballDirection);
-        logger.info("Ball Direction: " + ballDirection);
+        /*logger.info("Ball Direction: " + ballDirection);
         telemetry.setBallDistance(ballDistance);
         logger.info("Ball Distance: " + ballDistance);
         telemetry.setSeeBall(seeBall);
         logger.info("See Ball: " + seeBall);
+        */
         
     }
 }
