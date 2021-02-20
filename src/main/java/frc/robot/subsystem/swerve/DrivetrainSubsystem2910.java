@@ -26,9 +26,13 @@ import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
+
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import frc.robot.OzoneException;
 import frc.robot.subsystem.PortMan;
 
 public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
@@ -103,61 +107,8 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
         double frontRightAngleOffset = FRONT_RIGHT_ANGLE_OFFSET;
         double backLeftAngleOffset = BACK_LEFT_ANGLE_OFFSET;
         double backRightAngleOffset = BACK_RIGHT_ANGLE_OFFSET;
-
-        frontLeftModule = new Mk2SwerveModuleBuilder(
-            new Vector2(TRACKWIDTH / 2.0, WHEELBASE / 2.0))
-            .angleEncoder(new AnalogInput(pm.acquirePort(PortMan.analog0_label, "FL.Swerve.Encoder")), FRONT_LEFT_ANGLE_OFFSET)
-            .angleMotor(new CANSparkMax(pm.acquirePort(PortMan.can_09_label, "FL.Swerve.angle"), CANSparkMaxLowLevel.MotorType.kBrushless),
-                    Mk2SwerveModuleBuilder.MotorType.NEO)
-            .driveMotor(new CANSparkMax(pm.acquirePort(PortMan.can_07_label, "FL.Swerve.drive"), CANSparkMaxLowLevel.MotorType.kBrushless),
-                    Mk2SwerveModuleBuilder.MotorType.NEO)
-            .build();
-
-        frontRightModule = new Mk2SwerveModuleBuilder(
-            new Vector2(TRACKWIDTH / 2.0, -WHEELBASE / 2.0))
-            .angleEncoder(new AnalogInput(pm.acquirePort(PortMan.analog1_label, "FR.Swerve.Encoder")), FRONT_RIGHT_ANGLE_OFFSET)
-            .angleMotor(new CANSparkMax(pm.acquirePort(PortMan.can_03_label, "FR.Swerve.angle"), CANSparkMaxLowLevel.MotorType.kBrushless),
-                    Mk2SwerveModuleBuilder.MotorType.NEO)
-            .driveMotor(new CANSparkMax(pm.acquirePort(PortMan.can_62_label, "FR.Swerve.drive"), CANSparkMaxLowLevel.MotorType.kBrushless),
-                    Mk2SwerveModuleBuilder.MotorType.NEO)
-            .build();
-            
-        backLeftModule = new Mk2SwerveModuleBuilder(
-            new Vector2(-TRACKWIDTH / 2.0, WHEELBASE / 2.0))
-            .angleEncoder(new AnalogInput(pm.acquirePort(PortMan.analog2_label, "BL.Swerve.Encoder")), BACK_LEFT_ANGLE_OFFSET)
-            .angleMotor(new CANSparkMax(pm.acquirePort(PortMan.can_61_label, "BL.Swerve.angle"), CANSparkMaxLowLevel.MotorType.kBrushless),
-                    Mk2SwerveModuleBuilder.MotorType.NEO)
-            .driveMotor(new CANSparkMax(pm.acquirePort(PortMan.can_11_label, "BL.Swerve.drive"), CANSparkMaxLowLevel.MotorType.kBrushless),
-                    Mk2SwerveModuleBuilder.MotorType.NEO)
-            .build();
-
-        backRightModule = new Mk2SwerveModuleBuilder(
-            new Vector2(-TRACKWIDTH / 2.0, -WHEELBASE / 2.0))
-            .angleEncoder(new AnalogInput(pm.acquirePort(PortMan.analog3_label, "BR.Swerve.Encoder")), BACK_RIGHT_ANGLE_OFFSET)
-            .angleMotor(new CANSparkMax(pm.acquirePort(PortMan.can_58_label, "BR.Swerve.angle"), CANSparkMaxLowLevel.MotorType.kBrushless),
-                    Mk2SwerveModuleBuilder.MotorType.NEO)
-            .driveMotor(new CANSparkMax(pm.acquirePort(PortMan.can_06_label, "BR.Swerve.drive"), CANSparkMaxLowLevel.MotorType.kBrushless),
-                    Mk2SwerveModuleBuilder.MotorType.NEO)
-            .build();
-
-        
-
-        frontLeftModule.setName("Front Left");
-        frontRightModule.setName("Front Right");
-        backLeftModule.setName("Back Left");
-        backRightModule.setName("Back Right");
-
-        snapRotationController.setInputRange(0.0, 2.0 * Math.PI);
-        snapRotationController.setContinuous(true);
-        snapRotationController.setOutputRange(-0.5, 0.5);
-
-        swerveModules = new SwerveModule[]{
-                frontLeftModule,
-                frontRightModule,
-                backLeftModule,
-                backRightModule,
-        };
     }
+
     public void setSnapRotation(double snapRotation) {
         synchronized (lock) {
             this.snapRotation = snapRotation;
@@ -259,6 +210,61 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
         for (SwerveModule module : swerveModules) {
             SmartDashboard.putNumber(String.format("%s Module Drive Current Draw", module.getName()), module.getDriveCurrent());
         }
+    }
+
+    public void init(PortMan pm, HashMap<String, String> canAssignments) throws OzoneException {
+
+        frontLeftModule = new Mk2SwerveModuleBuilder(
+            new Vector2(TRACKWIDTH / 2.0, WHEELBASE / 2.0))
+            .angleEncoder(new AnalogInput(pm.acquirePort(PortMan.analog0_label, "FL.Swerve.Encoder")), FRONT_LEFT_ANGLE_OFFSET)
+            .angleMotor(new CANSparkMax(pm.acquirePort(canAssignments.get("FL.Swerve.angle"), "FL.Swerve.angle"), CANSparkMaxLowLevel.MotorType.kBrushless),
+                    Mk2SwerveModuleBuilder.MotorType.NEO)
+            .driveMotor(new CANSparkMax(pm.acquirePort(canAssignments.get("FL.Swerve.drive"), "FL.Swerve.drive"), CANSparkMaxLowLevel.MotorType.kBrushless),
+                    Mk2SwerveModuleBuilder.MotorType.NEO)
+            .build();
+
+        frontRightModule = new Mk2SwerveModuleBuilder(
+            new Vector2(TRACKWIDTH / 2.0, -WHEELBASE / 2.0))
+            .angleEncoder(new AnalogInput(pm.acquirePort(PortMan.analog1_label, "FR.Swerve.Encoder")), FRONT_RIGHT_ANGLE_OFFSET)
+            .angleMotor(new CANSparkMax(pm.acquirePort(canAssignments.get("FR.Swerve.angle"), "FR.Swerve.angle"), CANSparkMaxLowLevel.MotorType.kBrushless),
+                    Mk2SwerveModuleBuilder.MotorType.NEO)
+            .driveMotor(new CANSparkMax(pm.acquirePort(canAssignments.get("FR.Swerve.drive"), "FR.Swerve.drive"), CANSparkMaxLowLevel.MotorType.kBrushless),
+                    Mk2SwerveModuleBuilder.MotorType.NEO)
+            .build();
+            
+        backLeftModule = new Mk2SwerveModuleBuilder(
+            new Vector2(-TRACKWIDTH / 2.0, WHEELBASE / 2.0))
+            .angleEncoder(new AnalogInput(pm.acquirePort(PortMan.analog2_label, "BL.Swerve.Encoder")), BACK_LEFT_ANGLE_OFFSET)
+            .angleMotor(new CANSparkMax(pm.acquirePort(canAssignments.get("BL.Swerve.angle"), "BL.Swerve.angle"), CANSparkMaxLowLevel.MotorType.kBrushless),
+                    Mk2SwerveModuleBuilder.MotorType.NEO)
+            .driveMotor(new CANSparkMax(pm.acquirePort(canAssignments.get("BL.Swerve.drive"), "BL.Swerve.drive"), CANSparkMaxLowLevel.MotorType.kBrushless),
+                    Mk2SwerveModuleBuilder.MotorType.NEO)
+            .build();
+
+        backRightModule = new Mk2SwerveModuleBuilder(
+            new Vector2(-TRACKWIDTH / 2.0, -WHEELBASE / 2.0))
+            .angleEncoder(new AnalogInput(pm.acquirePort(PortMan.analog3_label, "BR.Swerve.Encoder")), BACK_RIGHT_ANGLE_OFFSET)
+            .angleMotor(new CANSparkMax(pm.acquirePort(canAssignments.get("BR.Swerve.angle"), "BR.Swerve.angle"), CANSparkMaxLowLevel.MotorType.kBrushless),
+                    Mk2SwerveModuleBuilder.MotorType.NEO)
+            .driveMotor(new CANSparkMax(pm.acquirePort(canAssignments.get("BR.Swerve.drive"), "BR.Swerve.drive"), CANSparkMaxLowLevel.MotorType.kBrushless),
+                    Mk2SwerveModuleBuilder.MotorType.NEO)
+            .build();
+
+        frontLeftModule.setName("Front Left");
+        frontRightModule.setName("Front Right");
+        backLeftModule.setName("Back Left");
+        backRightModule.setName("Back Right");
+
+        snapRotationController.setInputRange(0.0, 2.0 * Math.PI);
+        snapRotationController.setContinuous(true);
+        snapRotationController.setOutputRange(-0.5, 0.5);
+
+        swerveModules = new SwerveModule[]{
+                frontLeftModule,
+                frontRightModule,
+                backLeftModule,
+                backRightModule,
+        };
     }
 
     public static DrivetrainSubsystem2910 getInstance() {
