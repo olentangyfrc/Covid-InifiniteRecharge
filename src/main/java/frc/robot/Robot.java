@@ -128,6 +128,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    SubsystemFactory.getInstance().getDriveTrain().stopSnap();
     resetTime();
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
@@ -147,9 +148,9 @@ public class Robot extends TimedRobot {
   }
   @Override
   public void teleopInit() {
+    SubsystemFactory.getInstance().getDriveTrain().stopSnap();
     resetTime();
   }
-
   /**
    * This function is called periodically during operator control.
    */
