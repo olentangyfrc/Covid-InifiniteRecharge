@@ -39,7 +39,7 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
 
     static Logger logger = Logger.getLogger(DrivetrainSubsystem2910.class.getName());
 
-    private static final PidConstants SNAP_ROTATION_CONSTANTS = new PidConstants(0.3, 0.01, 0.0);
+    private static final PidConstants SNAP_ROTATION_CONSTANTS = new PidConstants(0.04, 0.0, 0.0);
     private PidController snapRotationController = new PidController(SNAP_ROTATION_CONSTANTS);
     private double snapRotation = Double.NaN;
 
@@ -225,6 +225,7 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
                 snapRotation = Double.NaN;
             }
         }
+        logger.log(Level.INFO, "Rotation point: [" + snapRotationController.getSetpoint() + "]");
         drive(new Translation2d(localSignal.getTranslation().x, localSignal.getTranslation().y), localSignal.getRotation(), localSignal.isFieldOriented());
         outputToSmartDashboard();
     }
@@ -240,7 +241,7 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
             localSegment = segment;
         }
 
-        SmartDashboard.putNumber("Gyro Angle", Math.toDegrees(pigeon.getAxis(Axis.YAW)));
+        SmartDashboard.putNumber("Gyro Angle", pigeon.getAngle().toDegrees());
         SmartDashboard.putNumber("Drivetrain Follower Forwards", localSignal.getTranslation().x);
         SmartDashboard.putNumber("Drivetrain Follower Strafe", localSignal.getTranslation().y);
         SmartDashboard.putNumber("Drivetrain Follower Rotation", localSignal.getRotation());

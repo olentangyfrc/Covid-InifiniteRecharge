@@ -72,6 +72,12 @@ public class AutonomousTrajectories {
                         new Vector2(0,10.0)
                 )
         );
+        basicLinePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(10.0,0.0),
+                        new Vector2(0,0.0)
+                )
+        );
         basicLinePath.subdivide(SUBDIVIDE_ITERATIONS);
         basicLineTrajectory = new Trajectory(basicLinePath, constraints);
         Path habToCargoSideNearPathLeft = new Path(CARGO_SHIP_SIDE_HATCH_ROTATION);

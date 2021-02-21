@@ -59,6 +59,7 @@ public class FollowTrajectoryCommand extends CommandBase {
         if (interupted) {
             DrivetrainSubsystem2910.getInstance().getFollower().cancel();
         }
+        logger.log(Level.INFO, "End Rotation:[" + trajectory.calculateSegment(trajectory.getDuration()).rotation.toDegrees() + "]");
         DrivetrainSubsystem2910.getInstance().setSnapRotation(trajectory.calculateSegment(trajectory.getDuration()).rotation.toRadians());
     }
 
