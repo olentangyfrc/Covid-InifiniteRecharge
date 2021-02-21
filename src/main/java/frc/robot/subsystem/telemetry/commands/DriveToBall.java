@@ -9,11 +9,11 @@ import frc.robot.subsystem.SubsystemFactory;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 
 public class DriveToBall extends CommandBase {
-    private Telemetry telemetry;
-    private boolean stop;
-    private static Logger logger = Logger.getLogger(SquareSelf.class.getName());
+  private Telemetry telemetry;
+  private boolean stop;
+  private static Logger logger = Logger.getLogger(SquareSelf.class.getName());
 
-  private int direction = 0;
+  //private int direction = 0;
 
   public DriveToBall(Telemetry sqs) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -34,7 +34,7 @@ public class DriveToBall extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SubsystemFactory.getInstance().getDriveTrain().drive(new Translation2d(telemetry.getTranslationalSpeed(), 0), 0, true);
+    SubsystemFactory.getInstance().getDriveTrain().drive(new Translation2d(telemetry.getTranslationalSpeed(), 0), 0, true); 
     logger.info("going");
     if(telemetry.getBallDistance() <= 2)
       stop = true;
