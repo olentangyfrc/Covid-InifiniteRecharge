@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 public class DriveToBall extends CommandBase {
   private Telemetry telemetry;
   private boolean stop;
-  private static Logger logger = Logger.getLogger(SquareSelf.class.getName());
+  private static Logger logger = Logger.getLogger(DriveToBall.class.getName());
 
   //private int direction = 0;
 
@@ -36,7 +36,7 @@ public class DriveToBall extends CommandBase {
   public void execute() {
     SubsystemFactory.getInstance().getDriveTrain().drive(new Translation2d(telemetry.getTranslationalSpeed(), 0), 0, true); 
     logger.info("going");
-    if(telemetry.getBallDistance() <= 2)
+    if(telemetry.getBallDistance() <= 5)
       stop = true;
       logger.info("checking if at ball");
   }

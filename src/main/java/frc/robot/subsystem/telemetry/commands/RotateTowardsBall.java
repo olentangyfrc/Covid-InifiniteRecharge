@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 public class RotateTowardsBall extends CommandBase {
     private Telemetry telemetry;
     private boolean stop;
-    private static Logger logger = Logger.getLogger(SquareSelf.class.getName());
+    private static Logger logger = Logger.getLogger(RotateTowardsBall.class.getName());
 
     private int direction = 0;
 
