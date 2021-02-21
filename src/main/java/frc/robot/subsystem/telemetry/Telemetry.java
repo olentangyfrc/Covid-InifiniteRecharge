@@ -261,8 +261,8 @@ public class Telemetry extends SubsystemBase{
         return ballDistance;
     }
 
-    public void setSeeBall(boolean sb)
+    /*public void setSeeBall(boolean sb)
     {
         seeBall = sb;
-    }
+    }*/
 }
