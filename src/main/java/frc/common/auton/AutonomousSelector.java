@@ -107,7 +107,7 @@ public class AutonomousSelector {
     public Command getCommand() {
         SequentialCommandGroup group = new SequentialCommandGroup();
         
-        group.andThen(new FollowTrajectoryCommand(
+        group.addCommands(new FollowTrajectoryCommand(
             trajectories.getBasicLineTrajectory()
         ));
         return group;
