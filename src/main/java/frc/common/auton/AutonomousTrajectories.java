@@ -62,26 +62,19 @@ public class AutonomousTrajectories {
     private final Trajectory rocketCargoToCargoSideNearTrajectoryRight;
 
     private final Trajectory basicLineTrajectory;
-
+/*
+        y+: Left
+        y-: Right
+        x+: Forwards
+        x-: Backwards
+*/
     public AutonomousTrajectories(ITrajectoryConstraint... constraints) {
         // <editor-fold desc="Hab to Cargo Ship Side Near">
         Path basicLinePath = new Path(Rotation2.fromDegrees(0));
         basicLinePath.addSegment(
                 new PathLineSegment(
-                        new Vector2(0,0),
-                        new Vector2(50,0)
-                )
-        );
-        basicLinePath.addSegment(
-                new PathLineSegment(
-                        new Vector2(50,0),
-                        new Vector2(50,-50)
-                )
-        );
-        basicLinePath.addSegment(
-                new PathLineSegment(
-                        new Vector2(50, -50),
-                        new Vector2(100,-50)
+                        new Vector2(0, 0),
+                        new Vector2(-10, 0)
                 )
         );
         /*
