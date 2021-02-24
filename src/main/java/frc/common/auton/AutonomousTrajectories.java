@@ -62,22 +62,84 @@ public class AutonomousTrajectories {
     private final Trajectory rocketCargoToCargoSideNearTrajectoryRight;
 
     private final Trajectory basicLineTrajectory;
-
+/*
+        y+: Left
+        y-: Right
+        x+: Forwards
+        x-: Backwards
+*/
     public AutonomousTrajectories(ITrajectoryConstraint... constraints) {
         // <editor-fold desc="Hab to Cargo Ship Side Near">
         Path basicLinePath = new Path(Rotation2.fromDegrees(0));
         basicLinePath.addSegment(
                 new PathLineSegment(
-                        new Vector2(0.0,0.0),
-                        new Vector2(0,10.0)
+                        new Vector2(0, 0),
+                        new Vector2(-10, 0)
+                )
+        );
+        /*
+        basicLinePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(7.5,-7.5),
+                        new Vector2(24,-7.5)
                 )
         );
         basicLinePath.addSegment(
                 new PathLineSegment(
-                        new Vector2(10.0,0.0),
-                        new Vector2(0,0.0)
+                        new Vector2(24,-7.5),
+                        new Vector2(24,-21)
                 )
         );
+        basicLinePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(24,-21),
+                        new Vector2(69,-21)
+                )
+        );
+        basicLinePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(69,-21),
+                        new Vector2(69,-9)
+                )
+        );
+        basicLinePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(69,-9),
+                        new Vector2(78,-9)
+                )
+        );
+        basicLinePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(78,-9),
+                        new Vector2(78,-21)
+                )
+        );
+        basicLinePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(78,-21),
+                        new Vector2(69,-21)
+                )
+        );
+        basicLinePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(69,-21),
+                        new Vector2(69,-9)
+                )
+        );
+        basicLinePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(69,-9),
+                        new Vector2(24,-9)
+                )
+        );
+        basicLinePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(69,0),
+                        new Vector2(69,13.5)
+                )
+        );
+        */
+        
         basicLinePath.subdivide(SUBDIVIDE_ITERATIONS);
         basicLineTrajectory = new Trajectory(basicLinePath, constraints);
         Path habToCargoSideNearPathLeft = new Path(CARGO_SHIP_SIDE_HATCH_ROTATION);
