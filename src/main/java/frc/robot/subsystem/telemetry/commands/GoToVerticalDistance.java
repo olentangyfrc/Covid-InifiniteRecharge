@@ -17,7 +17,7 @@ public class GoToVerticalDistance extends CommandBase {
   private Telemetry telemetry;
   private boolean stop;
   private double lidarTolerance;
-  private static Logger logger = Logger.getLogger(GoToHorizontalDistance.class.getName());
+  private static Logger logger = Logger.getLogger(GoToVerticalDistance.class.getName());
 
   private int directionGoToVerticalDistance = 0;
 

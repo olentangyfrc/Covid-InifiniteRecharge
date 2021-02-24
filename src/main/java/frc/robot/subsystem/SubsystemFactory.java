@@ -27,6 +27,10 @@ import frc.robot.subsystem.intake.commands.IntakeStop;
 import frc.robot.subsystem.intake.commands.IntakeUp;
 import frc.robot.subsystem.telemetry.Pigeon;
 import frc.robot.subsystem.telemetry.Telemetry;
+import frc.robot.subsystem.telemetry.commands.DriveToBall;
+import frc.robot.subsystem.telemetry.commands.GoToHorizontalDistance;
+import frc.robot.subsystem.telemetry.commands.GoToVerticalDistance;
+import frc.robot.subsystem.telemetry.commands.RotateTowardsBall;
 import frc.robot.subsystem.telemetry.commands.SquareSelf;
 import frc.robot.subsystem.onewheelshooter.OneWheelShooter;
 import frc.robot.subsystem.winch.Winch;
@@ -215,9 +219,21 @@ public class SubsystemFactory {
         telemetry = new Telemetry();
         telemetry.init(portMan);
         displayManager.addTelemetry(telemetry);
-        pigeon = new Pigeon(21);
-        pigeon.calibrate();
-        pigeon.setInverted(true);
+
+        SquareSelf ccc = new SquareSelf(telemetry, 2.34);
+        OI.getInstance().bind(ccc, OI.LeftJoyButton6, OI.WhenPressed);
+
+        GoToHorizontalDistance ccd= new GoToHorizontalDistance(telemetry, 2.34);
+        OI.getInstance().bind(ccd, OI.LeftJoyButton7, OI.WhenPressed);
+
+        GoToVerticalDistance cce = new GoToVerticalDistance(telemetry, 2.34);
+        OI.getInstance().bind(cce, OI.LeftJoyButton10, OI.WhenPressed);
+
+        DriveToBall ccf = new DriveToBall(telemetry);
+        OI.getInstance().bind(ccf, OI.RightJoyButton11, OI.WhenPressed);
+
+        RotateTowardsBall ccg = new RotateTowardsBall(telemetry);
+        OI.getInstance().bind(ccg, OI.LeftJoyButton11, OI.WhileHeld);
     }
     /**
      * 

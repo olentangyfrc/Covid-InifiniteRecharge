@@ -56,7 +56,7 @@ public class Telemetry extends SubsystemBase{
     private String ballLocation; //left right or center
     private int ballDirection; //1 -1 or 0
     private double ballDistance;
-    private boolean seeBall;
+    //private boolean seeBall; don't need this
 
     public Telemetry() {
     }
@@ -261,8 +261,8 @@ public class Telemetry extends SubsystemBase{
         return ballDistance;
     }
 
-    public void setSeeBall(boolean sb)
+    /*public void setSeeBall(boolean sb)
     {
         seeBall = sb;
-    }
+    }*/
 }
