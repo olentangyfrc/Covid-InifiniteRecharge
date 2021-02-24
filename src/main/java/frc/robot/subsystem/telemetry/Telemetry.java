@@ -56,6 +56,7 @@ public class Telemetry extends SubsystemBase{
     private String ballLocation; //left right or center
     private int ballDirection; //1 -1 or 0
     private double ballDistance;
+    private double targetBallDistance;
     //private boolean seeBall; don't need this
 
     public Telemetry() {
@@ -187,9 +188,9 @@ public class Telemetry extends SubsystemBase{
 
     public int getBallDirection(){
         if(ballLocation.equals("left"))
-            ballDirection = 1;
-        else if(ballLocation.equals("right"))
             ballDirection = -1;
+        else if(ballLocation.equals("right"))
+            ballDirection = 1;
         else if(ballLocation.equals("center"))
             ballDirection = 0;
 
@@ -234,16 +235,20 @@ public class Telemetry extends SubsystemBase{
 
     public double getRotationalSpeed()
     {
+        if(ballDirection == 0)
+            rotationalSpeed = 0;
         return rotationalSpeed;
     }
 
     public void setTranslationalSpeed(double speed)
     {
-        translationalSpeed = speed;
+        translationalSpeed = - speed;
     }
 
     public double getTranslationalSpeed()
     {
+        if(ballDistance <= targetBallDistance)
+            translationalSpeed = 0;
         return translationalSpeed;
     }
 
@@ -265,4 +270,12 @@ public class Telemetry extends SubsystemBase{
     {
         seeBall = sb;
     }*/
+
+    public void setTargetBallDistance(double distance) {
+        targetBallDistance = distance;
+    }
+
+    public double getTargetBallDistance() {
+        return targetBallDistance;
+    }
 }
