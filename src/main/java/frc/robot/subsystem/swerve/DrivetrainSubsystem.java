@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 
 import frc.robot.subsystem.PortMan;
+import frc.robot.subsystem.SubsystemFactory;
 import frc.robot.subsystem.swerve.commands.DriveCommand;
 import frc.robot.subsystem.telemetry.Pigeon;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -20,6 +21,7 @@ import frc.common.drivers.SwerveModule;
 import frc.common.math.Vector2;
 import frc.common.drivers.Mk2SwerveModuleBuilder;
 import frc.robot.util.OzoneLogger;
+import frc.common.drivers.Gyroscope;
 
 import java.util.logging.Logger;
 import java.util.logging.Level;
@@ -55,7 +57,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     );
 
     //private final Gyroscope gyroscope = new NavX(SPI.Port.kMXP);
-    private Pigeon pigeon;
+    private Gyroscope gyro;
 
     public DrivetrainSubsystem() {
     }
@@ -63,10 +65,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public void init(PortMan portMan) throws Exception {
 
         //private final Gyroscope gyroscope = new NavX(SPI.Port.kMXP);
-        pigeon = Pigeon.getInstance();
-
-        pigeon.calibrate();
-        pigeon.setInverted(true); // You might not need to invert the gyro
+        gyro = SubsystemFactory.getInstance().getGyro();
 
         frontLeftModule = new Mk2SwerveModuleBuilder(
             new Vector2(TRACKWIDTH / 2.0, WHEELBASE / 2.0))
@@ -126,7 +125,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Front Right Module Angle", Math.toDegrees(frontRightModule.getCurrentAngle()));
         SmartDashboard.putNumber("Back Left Module Angle", Math.toDegrees(backLeftModule.getCurrentAngle()));
         SmartDashboard.putNumber("Back Right Module Angle", Math.toDegrees(backRightModule.getCurrentAngle()));
-        SmartDashboard.putNumber("Gyroscope Angle", pigeon.getAngle().toDegrees());
+        SmartDashboard.putNumber("Gyroscope Angle", gyro.getAngle().toDegrees());
 
         frontLeftModule.updateState(TimedRobot.kDefaultPeriod);
         frontRightModule.updateState(TimedRobot.kDefaultPeriod);
@@ -139,7 +138,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         ChassisSpeeds speeds;
         if (fieldOriented) {
             speeds = ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), rotation,
-                    Rotation2d.fromDegrees(pigeon.getAngle().toDegrees()));
+                    Rotation2d.fromDegrees(gyro.getAngle().toDegrees()));
         } else {
             speeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
         }
@@ -151,6 +150,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     public void resetGyroscope() {
-        pigeon.setAdjustmentAngle(pigeon.getUnadjustedAngle());
+        gyro.setAdjustmentAngle(gyro.getUnadjustedAngle());
     }
 }

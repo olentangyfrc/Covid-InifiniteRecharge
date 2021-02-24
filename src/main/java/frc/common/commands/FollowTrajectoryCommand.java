@@ -10,8 +10,7 @@ import frc.common.math.Vector2;
 import frc.common.util.HolonomicDriveSignal;
 import frc.common.math.RigidTransform2;
 import frc.common.math.Rotation2;
-import frc.robot.subsystem.telemetry.Pigeon;
-import frc.common.drivers.NavX.Axis;
+import frc.common.drivers.Gyroscope;
 
 import java.util.function.Supplier;
 import java.util.Optional;
@@ -22,7 +21,7 @@ import java.util.logging.Logger;
 public class FollowTrajectoryCommand extends CommandBase {
     private final Supplier<Trajectory> trajectorySupplier;
     private DrivetrainSubsystem2910 driveTrain;
-    private Pigeon pigeon;
+    private Gyroscope gyro;
 
     private Trajectory trajectory;
 
@@ -45,7 +44,6 @@ public class FollowTrajectoryCommand extends CommandBase {
     public void initialize() {
         trajectory = trajectorySupplier.get();
         driveTrain = DrivetrainSubsystem2910.getInstance();
-        pigeon = SubsystemFactory.getInstance().getGyro();
         driveTrain.resetKinematics(Vector2.ZERO, Timer.getFPGATimestamp());
         driveTrain.getFollower().follow(trajectory);
     }
@@ -59,6 +57,7 @@ public class FollowTrajectoryCommand extends CommandBase {
         if (interupted) {
             DrivetrainSubsystem2910.getInstance().getFollower().cancel();
         }
+        //logger.log(Level.INFO, "End Rotation:[" + trajectory.calculateSegment(trajectory.getDuration()).rotation.toDegrees() + "]");
         DrivetrainSubsystem2910.getInstance().setSnapRotation(trajectory.calculateSegment(trajectory.getDuration()).rotation.toRadians());
     }
 

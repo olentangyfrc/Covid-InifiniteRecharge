@@ -65,6 +65,8 @@ import frc.robot.subsystem.transport.commands.StopTransport;
 import frc.robot.subsystem.swerve.DrivetrainSubsystem;
 import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
 import frc.common.drivers.Gyroscope;
+import frc.common.drivers.NavX;
+import edu.wpi.first.wpilibj.SPI;
 
 public class SubsystemFactory {
 
@@ -93,6 +95,8 @@ public class SubsystemFactory {
     private Intake intake;
     private Winch winch;
     private Pigeon pigeon;
+    private NavX navX;
+    
     
     private static ArrayList<SBInterface> subsystemInterfaceList;
 
@@ -147,7 +151,7 @@ public class SubsystemFactory {
                 initRIO3(portMan);
                 break;
             default:
-                initRIO3(portMan); // default to football if we don't know better
+                initCovid(portMan); // default to football if we don't know better
             }
 
             initCommon(portMan);
@@ -155,6 +159,29 @@ public class SubsystemFactory {
         } catch (Exception e) {
             throw e;
         }
+    }
+    public void initCovid(PortMan portMan) throws Exception {
+        logger.info("initializing");
+        navX = new NavX(SPI.Port.kMXP);
+        navX.calibrate();
+        navX.setInverted(true);
+        
+        HashMap<String, String> canAssignments = new HashMap<String, String>();
+        canAssignments.put("FL.Swerve.angle", PortMan.can_35_label);
+        canAssignments.put("FL.Swerve.drive", PortMan.can_34_label);
+
+        canAssignments.put("FR.Swerve.angle", PortMan.can_32_label);
+        canAssignments.put("FR.Swerve.drive", PortMan.can_33_label);
+
+        canAssignments.put("BL.Swerve.angle", PortMan.can_36_label);
+        canAssignments.put("BL.Swerve.drive", PortMan.can_37_label);
+
+        canAssignments.put("BR.Swerve.angle", PortMan.can_31_label);
+        canAssignments.put("BR.Swerve.drive", PortMan.can_30_label);
+
+        driveTrain = DrivetrainSubsystem2910.getInstance();
+        driveTrain.init(portMan, canAssignments);
+
     }
 
     /**
@@ -164,17 +191,27 @@ public class SubsystemFactory {
      */
 
     private void initCommon(PortMan portMan) {
-        pigeon = driveTrain.getGyroscope();
-        pigeon.calibrate();
-        pigeon.setInverted(true);
     }
 
     private void initRIO3(PortMan portMan ) throws Exception {
 
         logger.info("initializing");
         
+        HashMap<String, String> canAssignments = new HashMap<String, String>();
+        canAssignments.put("FL.Swerve.angle", PortMan.can_09_label);
+        canAssignments.put("FL.Swerve.drive", PortMan.can_07_label);
+
+        canAssignments.put("FR.Swerve.angle", PortMan.can_03_label);
+        canAssignments.put("FR.Swerve.drive", PortMan.can_62_label);
+
+        canAssignments.put("BL.Swerve.angle", PortMan.can_61_label);
+        canAssignments.put("BL.Swerve.drive", PortMan.can_11_label);
+
+        canAssignments.put("BR.Swerve.angle", PortMan.can_58_label);
+        canAssignments.put("BR.Swerve.drive", PortMan.can_06_label);
+
         driveTrain  = DrivetrainSubsystem2910.getInstance();
-        //driveTrain.init(portMan);
+        driveTrain.init(portMan, canAssignments);
 
         /**
          * All of the Telemery Stuff goes here
@@ -282,8 +319,12 @@ public class SubsystemFactory {
         return oneWheelShooter;
     }
 
-    public Pigeon getGyro() {
-        return pigeon;
+    public Gyroscope getGyro() {
+        if(pigeon != null) {
+            return pigeon;
+        } else {
+            return navX;
+        }
     }
 
     private String getBotName() throws Exception {
