@@ -105,9 +105,12 @@ public class AutonomousSelector {
     }
 
     public Command getCommand() {
+        SequentialCommandGroup group = new SequentialCommandGroup();
         
-        Command basicLine = new FollowTrajectoryCommand(trajectories.getBasicLineTrajectory());
-        return basicLine;
+        group.addCommands(new FollowTrajectoryCommand(
+            trajectories.getBasicLineTrajectory()
+        ));
+        return group;
     }
 
     public Queue<Command> getHybridQueue() {
