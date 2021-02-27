@@ -116,7 +116,7 @@ public class SubsystemFactory {
         allMACs.put("00:80:2F:27:04:C6", "RIO3"); //eth0
         allMACs.put("00:80:2F:17:D7:4B", "RIO2"); //eth0
         allMACs.put("00:80:2F:17:D7:4C", "RIO2"); //usb0
-        allMACs.put("00:80:2F:25:B4:CA", "RIO4"); //usb0
+        allMACs.put("00:80:2F:25:B4:CA", "CALIFORNIA"); //usb0
     }
 
     public static SubsystemFactory getInstance() {
@@ -158,8 +158,8 @@ public class SubsystemFactory {
             case "COVID":
                 initCovid(portMan);
                 break;
-            case "RIO4":
-                initRIO4(portMan);
+            case "CALIFORNIA":
+                initCalifornia(portMan);
                 break;
             default:
                 initCovid(portMan); // default to football if we don't know better
@@ -202,24 +202,24 @@ public class SubsystemFactory {
         canAssignments.put("BR.Swerve.angle", PortMan.can_31_label);
         canAssignments.put("BR.Swerve.drive", PortMan.can_30_label);
 
-        driveTrain = DrivetrainSubsystem2910.getInstance();
-        driveTrain.init(portMan, canAssignments);
+        double flOff = -Math.toRadians(58.5);
+        double frOff = -Math.toRadians(142.6);
+        double blOff = -Math.toRadians(318.9);
+        double brOff = -Math.toRadians(73.16);
 
+        driveTrain = DrivetrainSubsystem2910.getInstance();
+        driveTrain.init(portMan, canAssignments, flOff, blOff, frOff, brOff);
     }
 
-
-    private void initRIO2(PortMan portMan) throws OzoneException {
+    private void initRIO2(PortMan portMan) throws Exception {
         logger.info("Initializing RIO2");
     }
 
     private void initRIO3(PortMan portMan ) throws Exception {
 
-        logger.info("initializing");
+        logger.info("initializing RIO3");
+        pigeon = new Pigeon(portMan.acquirePort(PortMan.can_21_label, "Pigeon"));
 
-        navX = new NavX(SPI.Port.kMXP);
-        navX.calibrate();
-        navX.setInverted(true);
-        
         HashMap<String, String> canAssignments = new HashMap<String, String>();
         canAssignments.put("FL.Swerve.angle", PortMan.can_09_label);
         canAssignments.put("FL.Swerve.drive", PortMan.can_07_label);
@@ -233,8 +233,42 @@ public class SubsystemFactory {
         canAssignments.put("BR.Swerve.angle", PortMan.can_58_label);
         canAssignments.put("BR.Swerve.drive", PortMan.can_06_label);
 
+        double flOff = -Math.toRadians(1.1);
+        double frOff = -Math.toRadians(311.24);
+        double blOff = -Math.toRadians(119.6);
+        double brOff = -Math.toRadians(262.9);
+
+        driveTrain = DrivetrainSubsystem2910.getInstance();
+        driveTrain.init(portMan, canAssignments, flOff, blOff, frOff, brOff);
+    }
+
+    private void initCalifornia(PortMan portMan) throws Exception {
+        logger.info("Initializing CALIFORNIA");
+
+        navX = new NavX(SPI.Port.kMXP);
+        navX.calibrate();
+        navX.setInverted(true);
+        
+        HashMap<String, String> canAssignments = new HashMap<String, String>();
+        canAssignments.put("FL.Swerve.angle", PortMan.can_17_label);
+        canAssignments.put("FL.Swerve.drive", PortMan.can_06_label);
+
+        canAssignments.put("FR.Swerve.angle", PortMan.can_14_label);
+        canAssignments.put("FR.Swerve.drive", PortMan.can_09_label);
+
+        canAssignments.put("BL.Swerve.angle", PortMan.can_15_label);
+        canAssignments.put("BL.Swerve.drive", PortMan.can_10_label);
+
+        canAssignments.put("BR.Swerve.angle", PortMan.can_59_label);
+        canAssignments.put("BR.Swerve.drive", PortMan.can_60_label);
+
+        double flOff = -Math.toRadians(339.3);
+        double frOff = -Math.toRadians(266.9);
+        double blOff = -Math.toRadians(61.4);
+        double brOff = -Math.toRadians(123.1);
+
         driveTrain  = DrivetrainSubsystem2910.getInstance();
-        driveTrain.init(portMan, canAssignments);
+        driveTrain.init(portMan, canAssignments, flOff, blOff, frOff, brOff);
 
         /**
          * All of the Telemery Stuff goes here
@@ -261,11 +295,6 @@ public class SubsystemFactory {
 
         ChaseBall cch = new ChaseBall(telemetry);
         OI.getInstance().bind(cch, OI.RightJoyButton10, OI.WhileHeld);
-    }
-
-
-    private void initRIO4(PortMan portMan) throws OzoneException {
-        logger.info("Initializing RIO4");
     }
 
     private void initRIO99(PortMan portMan) throws Exception {

@@ -48,7 +48,11 @@ public abstract class SwerveDrivetrain extends HolonomicDrivetrain {
 
     @Override
     public synchronized void updateKinematics(double timestamp) {
-        double robotRotation = getGyroscope().getAngle().toRadians();
+        double robotRotation = 0.0;
+        if (getGyroscope() != null) {
+            robotRotation = getGyroscope().getAngle().toRadians();
+        }
+
         double dt = timestamp - lastKinematicTimestamp;
         lastKinematicTimestamp = timestamp;
 

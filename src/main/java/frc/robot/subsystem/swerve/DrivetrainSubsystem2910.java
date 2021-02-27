@@ -82,11 +82,10 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
     private static final double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(119.6);
     private static final double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(262.9);
     */
-    //Covid bot offsets
-    private static final double FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(58.5);
-    private static final double FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(142.6);
-    private static final double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(318.9);
-    private static final double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(73.16);
+    private double FRONT_LEFT_ANGLE_OFFSET ;
+    private double FRONT_RIGHT_ANGLE_OFFSET;
+    private double BACK_LEFT_ANGLE_OFFSET;
+    private double BACK_RIGHT_ANGLE_OFFSET;
 
     private static DrivetrainSubsystem2910 instance;
 
@@ -106,11 +105,6 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
 
     private DrivetrainSubsystem2910() throws Exception {
         pm = PortMan.getInstance();
-
-        double frontLeftAngleOffset = FRONT_LEFT_ANGLE_OFFSET;
-        double frontRightAngleOffset = FRONT_RIGHT_ANGLE_OFFSET;
-        double backLeftAngleOffset = BACK_LEFT_ANGLE_OFFSET;
-        double backRightAngleOffset = BACK_RIGHT_ANGLE_OFFSET;
     }
 
     public void setSnapRotation(double snapRotation) {
@@ -217,7 +211,12 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
         }
     }
 
-    public void init(PortMan pm, HashMap<String, String> canAssignments) throws OzoneException {
+    public void init(PortMan pm, HashMap<String, String> canAssignments, double flOffset, double blOffset, double frOffset, double brOffset) throws OzoneException {
+
+        FRONT_LEFT_ANGLE_OFFSET = flOffset;
+        FRONT_RIGHT_ANGLE_OFFSET = frOffset;
+        BACK_LEFT_ANGLE_OFFSET = blOffset;
+        BACK_RIGHT_ANGLE_OFFSET = brOffset;
 
         frontLeftModule = new Mk2SwerveModuleBuilder(
             new Vector2(TRACKWIDTH / 2.0, WHEELBASE / 2.0))
