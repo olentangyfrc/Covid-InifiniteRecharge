@@ -8,24 +8,24 @@ import frc.robot.subsystem.SubsystemFactory;
 
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 
-public class DriveToBall extends CommandBase {
+public class ChaseBall extends CommandBase {
   private Telemetry telemetry;
   private boolean stop;
-  private static Logger logger = Logger.getLogger(DriveToBall.class.getName());
+  private static Logger logger = Logger.getLogger(ChaseBall.class.getName());
 
   //private int direction = 0;
 
-  public DriveToBall(Telemetry sqs) {
+  public ChaseBall(Telemetry sqs) {
     // Use addRequirements() here to declare subsystem dependencies.
     telemetry = sqs;
     addRequirements(sqs);
-    logger.info("creates DriveToBall");
+    logger.info("creates ChaseBall");
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    logger.info("starts DriveToBall");
+    logger.info("starts ChaseBall");
     stop = false;
 
   //stop = true; why is there stop = true?
@@ -34,11 +34,11 @@ public class DriveToBall extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SubsystemFactory.getInstance().getDriveTrain().drive(new Translation2d(telemetry.getTranslationalSpeed(), 0), 0, true); 
+    SubsystemFactory.getInstance().getDriveTrain().drive(new Translation2d(telemetry.getTranslationalSpeed(), 0), - telemetry.getRotationalSpeed(), true); 
     logger.info("going");
-    if(telemetry.getBallDistance() <= telemetry.getTargetBallDistance())
-      stop = true;
-      logger.info("checking if at ball");
+    if(telemetry.getBallDistance() <= telemetry.getTargetBallDistance() && telemetry.getBallDirection() == 0)
+      stop = true;  
+    logger.info("checking if at ball");
   }
 
   // Called once the command ends or is interrupted.
@@ -51,7 +51,7 @@ public class DriveToBall extends CommandBase {
   @Override
   public boolean isFinished() {
     logger.info("checking if at ball");
-    if(telemetry.getBallDistance() <= telemetry.getTargetBallDistance())
+    if(telemetry.getBallDistance() <= telemetry.getTargetBallDistance() && telemetry.getBallDirection() == 0)
       return stop;
     else{
       return false;

@@ -44,6 +44,7 @@ public class TelemetrySBTab implements SBInterface {
     public NetworkTableEntry ballDirectionEntry;
     public NetworkTableEntry ballDistanceEntry;
     public NetworkTableEntry seeBallEntry;
+    public NetworkTableEntry targetBallDistance;
 
     public double lidarTolerance = 2.34;
     public String ballDirection = "direction";
@@ -77,6 +78,7 @@ public class TelemetrySBTab implements SBInterface {
         ballDirectionEntry = table.getEntry("BallDirection");
         ballDistanceEntry = table.getEntry("BallDistance");
         seeBallEntry = table.getEntry("SeeBall");
+        targetBallDistance = tab.add("Target Ball Distance", 0.0).getEntry();
         //coprocessorTime = table.getEntry("")
 
          
@@ -99,8 +101,9 @@ public class TelemetrySBTab implements SBInterface {
         
         ballDirection = ballDirectionEntry.getString("direction");
         logger.info("Ball Direction: " + ballDirection);
-        ballDistance = ballDistanceEntry.getDouble(0.0);
         telemetry.setBallDirection(ballDirection);
+        ballDistance = ballDistanceEntry.getDouble(0.0);
         telemetry.setBallDistance(ballDistance);
+        telemetry.setTargetBallDistance(targetBallDistance.getDouble(0.0));
     }
 }
