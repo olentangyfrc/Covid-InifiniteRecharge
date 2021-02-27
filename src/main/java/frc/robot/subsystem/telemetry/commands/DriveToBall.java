@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.telemetry.Telemetry;
+import frc.common.math.Vector2;
 import frc.robot.subsystem.SubsystemFactory;
 
 import edu.wpi.first.wpilibj.geometry.Translation2d;
@@ -34,7 +35,7 @@ public class DriveToBall extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SubsystemFactory.getInstance().getDriveTrain().drive(new Translation2d(telemetry.getTranslationalSpeed(), 0), 0, true); 
+    SubsystemFactory.getInstance().getDriveTrain().holonomicDrive(new Vector2(telemetry.getTranslationalSpeed(), 0), 0, true); 
     logger.info("going");
     if(telemetry.getBallDistance() <= telemetry.getTargetBallDistance())
       stop = true;

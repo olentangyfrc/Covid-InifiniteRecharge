@@ -37,7 +37,9 @@ public class ChaseBall extends CommandBase {
     SubsystemFactory.getInstance().getDriveTrain().drive(new Translation2d(telemetry.getTranslationalSpeed(), 0), - telemetry.getRotationalSpeed(), true); 
     logger.info("going");
     if(telemetry.getBallDistance() <= telemetry.getTargetBallDistance() && telemetry.getBallDirection() == 0)
-      stop = true;  
+      stop = true;
+    if(!telemetry.getSeeBall())
+      SubsystemFactory.getInstance().getDriveTrain().drive(new Translation2d(0, 0), - telemetry.getRotationalSpeed(), true); 
     logger.info("checking if at ball");
   }
 
