@@ -107,8 +107,8 @@ public class SubsystemFactory {
         // as you add mappings here:
         // 1) update the select statement in the init method
         // 2) add the init method for that robot
-        allMACs.put("00:80:2F:17:BD:76", "zombie"); // usb0
-        allMACs.put("00:80:2F:17:BD:75", "zombie"); // eth0
+        allMACs.put("00:80:2F:30:DB:F8", "COVID"); // usb0
+        allMACs.put("00:80:2F:30:DB:F9", "COVID"); // eth0
         allMACs.put("00:80:2F:28:64:39", "plank"); //usb0
         allMACs.put("00:80:2F:28:64:38", "plank"); //eth0
         allMACs.put("00:80:2F:27:04:C7", "RIO3"); //usb0 
@@ -148,6 +148,9 @@ public class SubsystemFactory {
            
             case "RIO3":
                 initRIO3(portMan);
+                break;
+            case "COVID":
+                initCovid(portMan);
                 break;
             default:
                 initCovid(portMan); // default to football if we don't know better
