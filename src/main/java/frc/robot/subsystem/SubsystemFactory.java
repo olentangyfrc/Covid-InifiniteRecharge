@@ -110,12 +110,13 @@ public class SubsystemFactory {
         // 2) add the init method for that robot
         allMACs.put("00:80:2F:30:DB:F8", "COVID"); // usb0
         allMACs.put("00:80:2F:30:DB:F9", "COVID"); // eth0
-        allMACs.put("00:80:2F:28:64:39", "plank"); //usb0
-        allMACs.put("00:80:2F:28:64:38", "plank"); //eth0
+        allMACs.put("00:80:2F:28:64:39", "RIO99"); //usb0
+        allMACs.put("00:80:2F:28:64:38", "RIO99"); //eth0
         allMACs.put("00:80:2F:27:04:C7", "RIO3"); //usb0 
         allMACs.put("00:80:2F:27:04:C6", "RIO3"); //eth0
         allMACs.put("00:80:2F:17:D7:4B", "RIO2"); //eth0
         allMACs.put("00:80:2F:17:D7:4C", "RIO2"); //usb0
+        allMACs.put("00:80:2F:25:B4:CA", "RIO4"); //usb0
     }
 
     public static SubsystemFactory getInstance() {
@@ -138,8 +139,6 @@ public class SubsystemFactory {
         displayManager = dm;
         subsystemInterfaceList = new ArrayList<SBInterface>();
         pdp = new PowerDistributionPanel(1);
-        //botName = "RIO3";
-
 
         try {
 
@@ -150,8 +149,17 @@ public class SubsystemFactory {
             case "RIO3":
                 initRIO3(portMan);
                 break;
+            case "RIO2":
+                initRIO2(portMan);
+                break;
+            case "RIO99":
+                initRIO99(portMan);
+                break;
             case "COVID":
                 initCovid(portMan);
+                break;
+            case "RIO4":
+                initRIO4(portMan);
                 break;
             default:
                 initCovid(portMan); // default to football if we don't know better
@@ -163,8 +171,20 @@ public class SubsystemFactory {
             throw e;
         }
     }
+
+
+    /**
+     * 
+     * init subsystems that are common to all bots
+     * 
+     */
+
+    private void initCommon(PortMan portMan) {
+    }
+
     public void initCovid(PortMan portMan) throws Exception {
-        logger.info("initializing");
+        logger.info("initializing Covid");
+        
         navX = new NavX(SPI.Port.kMXP);
         navX.calibrate();
         navX.setInverted(true);
@@ -187,18 +207,18 @@ public class SubsystemFactory {
 
     }
 
-    /**
-     * 
-     * init subsystems that are common to all bots
-     * 
-     */
 
-    private void initCommon(PortMan portMan) {
+    private void initRIO2(PortMan portMan) throws OzoneException {
+        logger.info("Initializing RIO2");
     }
 
     private void initRIO3(PortMan portMan ) throws Exception {
 
         logger.info("initializing");
+
+        navX = new NavX(SPI.Port.kMXP);
+        navX.calibrate();
+        navX.setInverted(true);
         
         HashMap<String, String> canAssignments = new HashMap<String, String>();
         canAssignments.put("FL.Swerve.angle", PortMan.can_09_label);
@@ -241,63 +261,18 @@ public class SubsystemFactory {
 
         ChaseBall cch = new ChaseBall(telemetry);
         OI.getInstance().bind(cch, OI.RightJoyButton10, OI.WhileHeld);
-
-        /* DrivetrainSubsystem2910 changes
-        frontLeftModule = new Mk2SwerveModuleBuilder(
-            new Vector2(TRACKWIDTH / 2.0, WHEELBASE / 2.0))
-            .angleEncoder(new AnalogInput(pm.acquirePort(PortMan.analog0_label, "FL.Swerve.Encoder")), FRONT_LEFT_ANGLE_OFFSET)
-            .angleMotor(new CANSparkMax(pm.acquirePort(PortMan.can_09_label, "FL.Swerve.angle"), CANSparkMaxLowLevel.MotorType.kBrushless),
-                    Mk2SwerveModuleBuilder.MotorType.NEO)
-            .driveMotor(new CANSparkMax(pm.acquirePort(PortMan.can_07_label, "FL.Swerve.drive"), CANSparkMaxLowLevel.MotorType.kBrushless),
-                    Mk2SwerveModuleBuilder.MotorType.NEO)
-            .build();
-
-        frontRightModule = new Mk2SwerveModuleBuilder(
-            new Vector2(TRACKWIDTH / 2.0, -WHEELBASE / 2.0))
-            .angleEncoder(new AnalogInput(pm.acquirePort(PortMan.analog1_label, "FR.Swerve.Encoder")), FRONT_RIGHT_ANGLE_OFFSET)
-            .angleMotor(new CANSparkMax(pm.acquirePort(PortMan.can_03_label, "FR.Swerve.angle"), CANSparkMaxLowLevel.MotorType.kBrushless),
-                    Mk2SwerveModuleBuilder.MotorType.NEO)
-            .driveMotor(new CANSparkMax(pm.acquirePort(PortMan.can_62_label, "FR.Swerve.drive"), CANSparkMaxLowLevel.MotorType.kBrushless),
-                    Mk2SwerveModuleBuilder.MotorType.NEO)
-            .build();
-            
-        backLeftModule = new Mk2SwerveModuleBuilder(
-            new Vector2(-TRACKWIDTH / 2.0, WHEELBASE / 2.0))
-            .angleEncoder(new AnalogInput(pm.acquirePort(PortMan.analog2_label, "BL.Swerve.Encoder")), BACK_LEFT_ANGLE_OFFSET)
-            .angleMotor(new CANSparkMax(pm.acquirePort(PortMan.can_61_label, "BL.Swerve.angle"), CANSparkMaxLowLevel.MotorType.kBrushless),
-                    Mk2SwerveModuleBuilder.MotorType.NEO)
-            .driveMotor(new CANSparkMax(pm.acquirePort(PortMan.can_11_label, "BL.Swerve.drive"), CANSparkMaxLowLevel.MotorType.kBrushless),
-                    Mk2SwerveModuleBuilder.MotorType.NEO)
-            .build();
-
-        backRightModule = new Mk2SwerveModuleBuilder(
-            new Vector2(-TRACKWIDTH / 2.0, -WHEELBASE / 2.0))
-            .angleEncoder(new AnalogInput(pm.acquirePort(PortMan.analog3_label, "BR.Swerve.Encoder")), BACK_RIGHT_ANGLE_OFFSET)
-            .angleMotor(new CANSparkMax(pm.acquirePort(PortMan.can_58_label, "BR.Swerve.angle"), CANSparkMaxLowLevel.MotorType.kBrushless),
-                    Mk2SwerveModuleBuilder.MotorType.NEO)
-            .driveMotor(new CANSparkMax(pm.acquirePort(PortMan.can_06_label, "BR.Swerve.drive"), CANSparkMaxLowLevel.MotorType.kBrushless),
-                    Mk2SwerveModuleBuilder.MotorType.NEO)
-            .build();
-        */
     }
-    /**
-     * 
-     * init subsystems specific to Football
-     * 
-     */
 
-    private void initFootball(PortMan portMan) throws Exception {
-        logger.info("Initializing Football");
+
+    private void initRIO4(PortMan portMan) throws OzoneException {
+        logger.info("Initializing RIO4");
+    }
+
+    private void initRIO99(PortMan portMan) throws Exception {
+        logger.info("Initializing RIO99");
         
     }
 
-    private void initZombie(PortMan portMan) throws OzoneException {
-        logger.info("Initializing Zombie");
-    }
-
-    private void initRio2(PortMan portMan) throws OzoneException {
-        logger.info("Initializing RIO2");
-    }
 
     public PowerDistributionPanel getPDP(){
         return pdp;
