@@ -111,7 +111,10 @@ public class Robot extends TimedRobot {
       currentTime = Instant.now();
       double elapsedTime = Duration.between(initTime, currentTime).toMillis();
       elapsedTime /= 1000;
-      SubsystemFactory.getInstance().getDriveTrain().updateKinematics(elapsedTime);
+      
+      if (SubsystemFactory.getInstance().getDriveTrain() != null) {
+        SubsystemFactory.getInstance().getDriveTrain().updateKinematics(elapsedTime);
+      }
        
   }
 
