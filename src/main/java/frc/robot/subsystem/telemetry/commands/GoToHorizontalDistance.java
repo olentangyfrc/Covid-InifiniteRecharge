@@ -27,13 +27,11 @@ public class GoToHorizontalDistance extends CommandBase {
     telemetry = sqs;
     lidarTolerance = td;
     addRequirements(sqs);
-    logger.info("creates goToHorizontalDistance");
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    logger.info("starts goToHorizontalDistance");
   stop = false;
 
   //stop = true; why is there stop = true?
@@ -53,10 +51,8 @@ public class GoToHorizontalDistance extends CommandBase {
     
     directionGoToHorizontalDistance = telemetry.directionToGo();
     SubsystemFactory.getInstance().getDriveTrain().drive(new Translation2d(0, telemetry.getTranslationalSpeed() * directionGoToHorizontalDistance), 0, true);
-    logger.info("moving horizontal");
     if(telemetry.directionToGo() == 0)
       stop = true;
-      logger.info("checking if there yet");
   }
 
   // Called once the command ends or is interrupted.
@@ -68,7 +64,6 @@ public class GoToHorizontalDistance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    logger.info("checking if there yet");
     if(telemetry.directionToGo() == 0)
       return stop;
     else{

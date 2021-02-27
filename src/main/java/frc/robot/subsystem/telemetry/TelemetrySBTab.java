@@ -72,8 +72,8 @@ public class TelemetrySBTab implements SBInterface {
         lidarDifference = tab.add("Lidar Difference", 0.0).getEntry();
 
          //network tables vision
-         NetworkTableInstance inst = NetworkTableInstance.getDefault();
-         NetworkTable table = inst.getTable("Vision");
+        NetworkTableInstance inst = NetworkTableInstance.getDefault();
+        NetworkTable table = inst.getTable("Vision");
  
         ballDirectionEntry = table.getEntry("BallDirection");
         ballDistanceEntry = table.getEntry("BallDistance");
@@ -100,7 +100,7 @@ public class TelemetrySBTab implements SBInterface {
         telemetry.setTranslationalSpeed(translationalSpeed.getDouble(0.1));
         
         ballDirection = ballDirectionEntry.getString("direction");
-        logger.info("Ball Direction: " + ballDirection);
+        //logger.info("Ball Direction: " + ballDirection);
         telemetry.setBallDirection(ballDirection);
         ballDistance = ballDistanceEntry.getDouble(0.0);
         telemetry.setBallDistance(ballDistance);

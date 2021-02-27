@@ -11,6 +11,10 @@ import java.util.logging.Logger;
 
 import frc.robot.OI;
 import frc.robot.OzoneException;
+import frc.robot.subsystem.balldelivery.BallDelivery;
+import frc.robot.subsystem.balldelivery.commands.ReverseShooter;
+import frc.robot.subsystem.balldelivery.commands.ShootBall;
+import frc.robot.subsystem.balldelivery.commands.StopShooting;
 import frc.robot.subsystem.climber.Climber;
 import frc.robot.subsystem.controlpanel.ControlPanel;
 import frc.robot.subsystem.controlpanel.commands.RotateToColor;
@@ -90,6 +94,7 @@ public class SubsystemFactory {
     private Climber climber;
     private OneWheelShooter oneWheelShooter;
     private Telemetry telemetry;
+    private BallDelivery ballDelivery;
     private PixyLineCam pixyLineCam;
     private DrivetrainSubsystem2910 driveTrain;
     private Intake intake;
@@ -138,7 +143,7 @@ public class SubsystemFactory {
 
         displayManager = dm;
         subsystemInterfaceList = new ArrayList<SBInterface>();
-        pdp = new PowerDistributionPanel(1);
+        pdp = new PowerDistributionPanel(2);
 
         try {
 
@@ -278,23 +283,39 @@ public class SubsystemFactory {
         telemetry.init(portMan);
         displayManager.addTelemetry(telemetry);
 
-        SquareSelf ccc = new SquareSelf(telemetry, 2.34);
-        OI.getInstance().bind(ccc, OI.LeftJoyButton6, OI.WhenPressed);
+        //SquareSelf ccc = new SquareSelf(telemetry, 2.34);
+        //OI.getInstance().bind(ccc, OI.LeftJoyButton6, OI.WhenPressed);
 
-        GoToHorizontalDistance ccd= new GoToHorizontalDistance(telemetry, 2.34);
-        OI.getInstance().bind(ccd, OI.LeftJoyButton7, OI.WhenPressed);
+        //GoToHorizontalDistance ccd= new GoToHorizontalDistance(telemetry, 2.34);
+        //OI.getInstance().bind(ccd, OI.LeftJoyButton7, OI.WhenPressed);
 
-        GoToVerticalDistance cce = new GoToVerticalDistance(telemetry, 2.34);
-        OI.getInstance().bind(cce, OI.LeftJoyButton10, OI.WhenPressed);
+        //GoToVerticalDistance cce = new GoToVerticalDistance(telemetry, 2.34);
+        //OI.getInstance().bind(cce, OI.LeftJoyButton10, OI.WhenPressed);
 
         DriveToBall ccf = new DriveToBall(telemetry);
         OI.getInstance().bind(ccf, OI.RightJoyButton11, OI.WhileHeld);
 
-        RotateTowardsBall ccg = new RotateTowardsBall(telemetry);
-        OI.getInstance().bind(ccg, OI.LeftJoyButton11, OI.WhileHeld);
+        //RotateTowardsBall ccg = new RotateTowardsBall(telemetry);
+        //OI.getInstance().bind(ccg, OI.LeftJoyButton11, OI.WhileHeld);
 
         ChaseBall cch = new ChaseBall(telemetry);
         OI.getInstance().bind(cch, OI.RightJoyButton10, OI.WhileHeld);
+
+        /**
+        * shooter stuff goes here
+        */
+        ballDelivery = new BallDelivery();
+        ballDelivery.init(portMan);
+        //displayManager.addBallDelivery(ballDelivery);
+
+        ShootBall cci = new ShootBall(ballDelivery);
+        OI.getInstance().bind(cci, OI.LeftJoyButton7, OI.WhenPressed);
+
+        ReverseShooter ccj = new ReverseShooter(ballDelivery);
+        OI.getInstance().bind(ccj, OI.LeftJoyButton10, OI.WhenPressed);
+        
+        StopShooting cck = new StopShooting(ballDelivery);
+        OI.getInstance().bind(cck, OI.LeftJoyButton11, OI.WhenPressed);
     }
 
     private void initRIO99(PortMan portMan) throws Exception {
