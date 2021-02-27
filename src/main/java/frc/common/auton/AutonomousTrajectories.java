@@ -67,6 +67,8 @@ public class AutonomousTrajectories {
         y-: Right
         x+: Forwards
         x-: Backwards
+
+        Unit: inches
 */
     public AutonomousTrajectories(ITrajectoryConstraint... constraints) {
         // <editor-fold desc="Hab to Cargo Ship Side Near">
@@ -74,9 +76,11 @@ public class AutonomousTrajectories {
         basicLinePath.addSegment(
                 new PathLineSegment(
                         new Vector2(0, 0),
-                        new Vector2(-10, 0)
-                )
+                        new Vector2(240, 0)
+                ),
+                Rotation2.fromDegrees(0)
         );
+        
         /*
         basicLinePath.addSegment(
                 new PathLineSegment(

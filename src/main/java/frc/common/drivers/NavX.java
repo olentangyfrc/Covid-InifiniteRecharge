@@ -30,6 +30,18 @@ public final class NavX extends Gyroscope {
     public double getUnadjustedRate() {
         return Math.toRadians(navX.getRate());
     }
+    public double getXAcceleration() {
+        return navX.getWorldLinearAccelX();
+    }
+    public double getYAcceleration() {
+        return navX.getWorldLinearAccelY();
+    }
+    public double getXVelocity() {
+        return navX.getVelocityX();
+    }
+    public double getYVelocity() {
+        return navX.getVelocityY();
+    }
 
     public double getAxis(Axis axis) {
         switch (axis) {
