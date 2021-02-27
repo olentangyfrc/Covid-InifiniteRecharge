@@ -57,7 +57,7 @@ public class Telemetry extends SubsystemBase{
     private int ballDirection; //1 -1 or 0
     private double ballDistance;
     private double targetBallDistance;
-    //private boolean seeBall; don't need this
+    private boolean seeBall;
 
     public Telemetry() {
     }
@@ -230,7 +230,7 @@ public class Telemetry extends SubsystemBase{
 
     public void setRotationalSpeed(double sp)
     {
-        rotationalSpeed = sp;
+        rotationalSpeed = - sp;
     }
 
     public double getRotationalSpeed()
@@ -242,7 +242,7 @@ public class Telemetry extends SubsystemBase{
 
     public void setTranslationalSpeed(double speed)
     {
-        translationalSpeed = - speed;
+        translationalSpeed = speed;
     }
 
     public double getTranslationalSpeed()
@@ -266,10 +266,14 @@ public class Telemetry extends SubsystemBase{
         return ballDistance;
     }
 
-    /*public void setSeeBall(boolean sb)
+    public void setSeeBall(boolean sb)
     {
         seeBall = sb;
-    }*/
+    }
+
+    public boolean getSeeBall() {
+        return seeBall;
+    }
 
     public void setTargetBallDistance(double distance) {
         targetBallDistance = distance;
