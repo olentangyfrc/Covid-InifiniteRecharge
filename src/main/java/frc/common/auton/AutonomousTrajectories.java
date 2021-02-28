@@ -62,6 +62,7 @@ public class AutonomousTrajectories {
     private final Trajectory rocketCargoToCargoSideNearTrajectoryRight;
 
     private final Trajectory basicLineTrajectory;
+    private final Trajectory slalomTrajectory;
 /*
         y+: Left
         y-: Right
@@ -72,6 +73,59 @@ public class AutonomousTrajectories {
 */
     public AutonomousTrajectories(ITrajectoryConstraint... constraints) {
         // <editor-fold desc="Hab to Cargo Ship Side Near">
+        Path slalomPath = new Path(Rotation2.fromDegrees(0));
+        
+        slalomPath.addSegment(
+                PathArcSegment.fromPoints(
+                        new Vector2(0, 0),
+                        new Vector2(50, 20),
+                        new Vector2(60, 60)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        slalomPath.addSegment(
+                PathArcSegment.fromPoints(
+                        new Vector2(60, 60),
+                        new Vector2(90, -10),
+                        new Vector2(130, -60)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        slalomPath.addSegment(
+                PathArcSegment.fromPoints(
+                        new Vector2(130, -60),
+                        new Vector2(150, 0),
+                        new Vector2(150, 60)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        slalomPath.addSegment(
+                PathArcSegment.fromPoints(
+                        new Vector2(150, 60),
+                        new Vector2(160, -10),
+                        new Vector2(190, -60)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        slalomPath.addSegment(
+                PathArcSegment.fromPoints(
+                        new Vector2(190, -60),
+                        new Vector2(240, 10),
+                        new Vector2(240, 60)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        slalomPath.addSegment(
+                PathArcSegment.fromPoints(
+                        new Vector2(240, 60),
+                        new Vector2(250, 10),
+                        new Vector2(300, 0)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        slalomPath.subdivide(SUBDIVIDE_ITERATIONS);
+        slalomTrajectory = new Trajectory(slalomPath, constraints);
+
         Path basicLinePath = new Path(Rotation2.fromDegrees(0));
         basicLinePath.addSegment(
                 new PathLineSegment(
@@ -80,70 +134,6 @@ public class AutonomousTrajectories {
                 ),
                 Rotation2.fromDegrees(0)
         );
-        
-        /*
-        basicLinePath.addSegment(
-                new PathLineSegment(
-                        new Vector2(7.5,-7.5),
-                        new Vector2(24,-7.5)
-                )
-        );
-        basicLinePath.addSegment(
-                new PathLineSegment(
-                        new Vector2(24,-7.5),
-                        new Vector2(24,-21)
-                )
-        );
-        basicLinePath.addSegment(
-                new PathLineSegment(
-                        new Vector2(24,-21),
-                        new Vector2(69,-21)
-                )
-        );
-        basicLinePath.addSegment(
-                new PathLineSegment(
-                        new Vector2(69,-21),
-                        new Vector2(69,-9)
-                )
-        );
-        basicLinePath.addSegment(
-                new PathLineSegment(
-                        new Vector2(69,-9),
-                        new Vector2(78,-9)
-                )
-        );
-        basicLinePath.addSegment(
-                new PathLineSegment(
-                        new Vector2(78,-9),
-                        new Vector2(78,-21)
-                )
-        );
-        basicLinePath.addSegment(
-                new PathLineSegment(
-                        new Vector2(78,-21),
-                        new Vector2(69,-21)
-                )
-        );
-        basicLinePath.addSegment(
-                new PathLineSegment(
-                        new Vector2(69,-21),
-                        new Vector2(69,-9)
-                )
-        );
-        basicLinePath.addSegment(
-                new PathLineSegment(
-                        new Vector2(69,-9),
-                        new Vector2(24,-9)
-                )
-        );
-        basicLinePath.addSegment(
-                new PathLineSegment(
-                        new Vector2(69,0),
-                        new Vector2(69,13.5)
-                )
-        );
-        */
-        
         basicLinePath.subdivide(SUBDIVIDE_ITERATIONS);
         basicLineTrajectory = new Trajectory(basicLinePath, constraints);
         Path habToCargoSideNearPathLeft = new Path(CARGO_SHIP_SIDE_HATCH_ROTATION);
@@ -533,5 +523,8 @@ public class AutonomousTrajectories {
     }
     public Trajectory getBasicLineTrajectory() {
         return basicLineTrajectory;
+    }
+    public Trajectory getSlalomTrajectory() {
+        return slalomTrajectory;
     }
 }

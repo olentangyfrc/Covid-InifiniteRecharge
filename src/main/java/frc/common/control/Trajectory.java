@@ -8,12 +8,17 @@ import frc.common.motion.TrapezoidalMotionProfile;
 
 import java.io.Serializable;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * A trajectory describes how a path is followed.
  * It contains all the motion profiles for a path.
  */
 public class Trajectory implements Serializable {
 	private static final long serialVersionUID = -7533657200117435410L;
+
+	static Logger logger = Logger.getLogger(Trajectory.class.getName());
 
 	private final Path path;
 	private final MotionProfile[] profiles;
@@ -150,6 +155,30 @@ public class Trajectory implements Serializable {
 					profiles[i].calculate(profiles[i].getDuration()).velocity
 			);
 		}
+	}
+	public void logTrajectory() {
+		double resolution = 1;
+		char[][] trajectoryGraph = new char[(int)Math.floor(40 * resolution)][(int)Math.floor(160 * resolution)];
+		String output = "";
+		for(double i = 0; i < getDuration(); i += 0.1) {
+			Segment currentSegment = calculateSegment(i);
+			int currentX = (int) Math.floor(currentSegment.translation.x / (5 / resolution) * (30 / 14));
+			int currentY = (int) Math.floor(currentSegment.translation.y / (5 / resolution));
+			currentX += (4  * resolution);
+			currentY += (16 * resolution);
+			logger.log(Level.INFO, "X: " + currentX + " Y: " + currentY);
+			trajectoryGraph[currentY][currentX] = '0';
+		}
+		trajectoryGraph[(int)Math.floor(calculateSegment(getDuration()).translation.y / (5 / resolution) + (16 * resolution))][(int)Math.floor(calculateSegment(getDuration()).translation.x / 5 + (4  * resolution))] = '\\';
+		trajectoryGraph[(int)Math.floor(0 / (5 / resolution) + (16 * resolution))][(int)Math.floor(300 / (5 / resolution) + (4  * resolution))] = '*';
+		for(int i = trajectoryGraph.length - 1; i >= 0; i--) {
+			String currentLine = "";
+			for(int ii = 0; ii < trajectoryGraph[0].length; ii++) {
+				currentLine += (trajectoryGraph[i][ii] == '\u0000')? '_' : trajectoryGraph[i][ii];
+			}
+			output += currentLine + "\n";
+		}
+		logger.info(output);
 	}
 
 	public Segment calculateSegment(double time) {
