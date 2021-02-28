@@ -5,32 +5,32 @@ import java.util.logging.Logger;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 
-public class ShootBall extends CommandBase {
+public class StopEating extends CommandBase {
   private BallDelivery ballDelivery;
   private boolean stop;
-  private static Logger logger = Logger.getLogger(ShootBall.class.getName());
+  private static Logger logger = Logger.getLogger(StopShooting.class.getName());
 
   //private int direction = 0;
 
-  public ShootBall(BallDelivery bd) {
+  public StopEating(BallDelivery bd) {
     // Use addRequirements() here to declare subsystem dependencies.
     ballDelivery = bd;
     addRequirements(bd);
-    logger.info("creates ShootBall");
+    logger.info("creates StopEating");
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    logger.info("starts ShootBall");
+    logger.info("starts StopEating");
     stop = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    logger.info("shooting ball");
-    ballDelivery.shootBall(8000);    
+    logger.info("stopping to eat balls");
+    ballDelivery.stopEating();    
   }
 
   // Called once the command ends or is interrupted.

@@ -15,6 +15,12 @@ import frc.robot.subsystem.balldelivery.BallDelivery;
 import frc.robot.subsystem.balldelivery.commands.ReverseShooter;
 import frc.robot.subsystem.balldelivery.commands.ShootBall;
 import frc.robot.subsystem.balldelivery.commands.StopShooting;
+import frc.robot.subsystem.balldelivery.commands.StopEating;
+import frc.robot.subsystem.balldelivery.commands.EatBalls;
+import frc.robot.subsystem.balldelivery.commands.SpinCarousel;
+import frc.robot.subsystem.balldelivery.commands.SpitOutBalls;
+import frc.robot.subsystem.balldelivery.commands.AngleHood;
+import frc.robot.subsystem.balldelivery.commands.StopCarousel;
 import frc.robot.subsystem.climber.Climber;
 import frc.robot.subsystem.controlpanel.ControlPanel;
 import frc.robot.subsystem.controlpanel.commands.RotateToColor;
@@ -292,14 +298,14 @@ public class SubsystemFactory {
         //GoToVerticalDistance cce = new GoToVerticalDistance(telemetry, 2.34);
         //OI.getInstance().bind(cce, OI.LeftJoyButton10, OI.WhenPressed);
 
-        DriveToBall ccf = new DriveToBall(telemetry);
-        OI.getInstance().bind(ccf, OI.RightJoyButton11, OI.WhileHeld);
+        //DriveToBall ccf = new DriveToBall(telemetry);
+        //OI.getInstance().bind(ccf, OI.RightJoyButton11, OI.WhileHeld);
 
         //RotateTowardsBall ccg = new RotateTowardsBall(telemetry);
         //OI.getInstance().bind(ccg, OI.LeftJoyButton11, OI.WhileHeld);
 
-        ChaseBall cch = new ChaseBall(telemetry);
-        OI.getInstance().bind(cch, OI.RightJoyButton10, OI.WhileHeld);
+        //ChaseBall cch = new ChaseBall(telemetry);
+        //OI.getInstance().bind(cch, OI.RightJoyButton10, OI.WhileHeld);
 
         /**
         * shooter stuff goes here
@@ -316,6 +322,24 @@ public class SubsystemFactory {
         
         StopShooting cck = new StopShooting(ballDelivery);
         OI.getInstance().bind(cck, OI.LeftJoyButton11, OI.WhenPressed);
+
+        EatBalls ccl = new EatBalls(ballDelivery);
+        OI.getInstance().bind(ccl, OI.RightJoyButton11, OI.WhenPressed);
+
+        StopEating ccm = new StopEating(ballDelivery);
+        OI.getInstance().bind(ccm, OI.RightJoyButton10, OI.WhenPressed);
+
+        SpitOutBalls ccn = new SpitOutBalls(ballDelivery);
+        OI.getInstance().bind(ccn, OI.RightJoyButton3, OI.WhenPressed);
+
+        SpinCarousel cco = new SpinCarousel(ballDelivery);
+        OI.getInstance().bind(cco, OI.RightJoyButton6, OI.WhenPressed);
+
+        AngleHood ccp = new AngleHood(ballDelivery);
+        OI.getInstance().bind(ccp, OI.RightJoyButton4, OI.WhenPressed);
+
+        StopCarousel ccq = new StopCarousel(ballDelivery);
+        OI.getInstance().bind(ccq, OI.RightJoyButton7, OI.WhenPressed);
     }
 
     private void initRIO99(PortMan portMan) throws Exception {

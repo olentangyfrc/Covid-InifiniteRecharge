@@ -13,6 +13,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -25,11 +27,11 @@ import frc.robot.subsystem.PortMan;
 public class BallDelivery extends SubsystemBase{
 
     private static Logger logger = Logger.getLogger(BallDelivery.class.getName());
-    private TalonFX shootingMotorLeft;
-    private TalonFX shootingMotorRight;
-    private TalonSRX eatingMotor;
-    private TalonSRX carouselMotor;
-    private TalonSRX hoodMotor;
+    private WPI_TalonFX shootingMotorLeft;
+    private WPI_TalonFX shootingMotorRight;
+    private WPI_TalonSRX eatingMotor;
+    private WPI_TalonSRX carouselMotor;
+    private WPI_TalonSRX hoodMotor;
 
     private DigitalInput stopCarousel;
     private DigitalInput zeroShooter;
@@ -45,19 +47,19 @@ public class BallDelivery extends SubsystemBase{
     
     public void init(final PortMan portMan) throws Exception {
         logger.info("init");
-        shootingMotorLeft = new TalonFX(portMan.acquirePort(PortMan.can_43_label, "ShootingMotorLeft"));
-        shootingMotorRight = new TalonFX(portMan.acquirePort(PortMan.can_42_label, "ShootingMotorRight"));
-        eatingMotor = new TalonSRX(portMan.acquirePort(PortMan.can_12_label, "EatingMotor"));
-        carouselMotor = new TalonSRX(portMan.acquirePort(PortMan.can_11_label, "CarouselMotor"));
-        hoodMotor = new TalonSRX(portMan.acquirePort(PortMan.can_27_label, "HoodMotor"));
+        shootingMotorLeft = new WPI_TalonFX(portMan.acquirePort(PortMan.can_43_label, "ShootingMotorLeft"));
+        shootingMotorRight = new WPI_TalonFX(portMan.acquirePort(PortMan.can_42_label, "ShootingMotorRight"));
+        eatingMotor = new WPI_TalonSRX(portMan.acquirePort(PortMan.can_12_label, "EatingMotor"));
+        carouselMotor = new WPI_TalonSRX(portMan.acquirePort(PortMan.can_11_label, "CarouselMotor"));
+        hoodMotor = new WPI_TalonSRX(portMan.acquirePort(PortMan.can_27_label, "HoodMotor"));
         
         shootingMotorLeft.setInverted(true);
         shootingMotorRight.follow(shootingMotorLeft);
         //shootingMotorLeft.setInverted(false);
 
-        pValue = .9;
+        pValue = .4;
         iValue = 0;
-        dValue = .02;
+        dValue = .2;
         carouselVelocity = 100; //don't know if this value is right
         eatingVelocity = 100;
         shootingVelocity = 100;
@@ -126,12 +128,17 @@ public class BallDelivery extends SubsystemBase{
         carouselMotor.set(ControlMode.Velocity, carouselVelocity);
         logger.info("[" + carouselVelocity + "]");
 
-        // if switch is triggered, set percent output to 0 to stop spinning
+        /*// if switch is triggered, set percent output to 0 to stop spinning
         if(!stopCarousel.get())
         {
             logger.info("stop carousel");
-            carouselMotor.set(ControlMode.PercentOutput, 0);
-        }
+            stopCarousel();
+        }*/
+    }
+
+    public void stopCarousel()
+    {
+        carouselMotor.set(ControlMode.PercentOutput, 0);
     }
 
     //angle the shooter
