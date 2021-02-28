@@ -5,24 +5,24 @@ import java.util.logging.Logger;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 
-public class ShootBall extends CommandBase {
+public class SpinCarousel extends CommandBase {
   private BallDelivery ballDelivery;
   private boolean stop;
   private static Logger logger = Logger.getLogger(ShootBall.class.getName());
 
   //private int direction = 0;
 
-  public ShootBall(BallDelivery bd) {
+  public SpinCarousel(BallDelivery bd) {
     // Use addRequirements() here to declare subsystem dependencies.
     ballDelivery = bd;
     addRequirements(bd);
-    logger.info("creates ShootBall");
+    logger.info("creates SpinCarousel");
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    logger.info("starts ShootBall");
+    logger.info("starts SpinCarousel");
     stop = false;
   }
 
@@ -30,7 +30,7 @@ public class ShootBall extends CommandBase {
   @Override
   public void execute() {
     logger.info("shooting ball");
-    ballDelivery.shootBall(8000);    
+    ballDelivery.spinCarousel(600);
   }
 
   // Called once the command ends or is interrupted.
@@ -45,3 +45,4 @@ public class ShootBall extends CommandBase {
     return true;
   }
 }
+
