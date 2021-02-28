@@ -7,6 +7,7 @@
 
 package frc.robot.subsystem;
 
+import frc.robot.subsystem.balldelivery.BallDelivery;
 import frc.robot.subsystem.climber.Climber;
 import frc.robot.subsystem.climber.ClimberSBTab;
 import frc.robot.subsystem.controlpanel.ControlPanel;
@@ -67,6 +68,11 @@ public class DisplayManager {
         subsystemUpdateList.add(telemetryDisplay);
 
     }
+
+    /*public void addBallDelivery(BallDelivery bd) {
+        ballDeliveryDisplay = new BallDeliverySBTab(bd);
+        subsystemUpdateList.add(ballDeliveryDisplay);
+    }*/
 
     public void addPixyLineCam(PixyLineCam p) {
         pixyDisplay = new PixyLineCamSBTab(p);
