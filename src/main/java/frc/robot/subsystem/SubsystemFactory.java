@@ -220,6 +220,37 @@ public class SubsystemFactory {
 
         driveTrain = DrivetrainSubsystem2910.getInstance();
         driveTrain.init(portMan, canAssignments, flOff, blOff, frOff, brOff);
+
+        ballDelivery = new BallDelivery();
+        ballDelivery.init(portMan);
+        //displayManager.addBallDelivery(ballDelivery);
+
+        ShootBall cci = new ShootBall(ballDelivery);
+        OI.getInstance().bind(cci, OI.LeftJoyButton7, OI.WhenPressed);
+
+        ReverseShooter ccj = new ReverseShooter(ballDelivery);
+        OI.getInstance().bind(ccj, OI.LeftJoyButton10, OI.WhenPressed);
+        
+        StopShooting cck = new StopShooting(ballDelivery);
+        OI.getInstance().bind(cck, OI.LeftJoyButton11, OI.WhenPressed);
+
+        EatBalls ccl = new EatBalls(ballDelivery);
+        OI.getInstance().bind(ccl, OI.RightJoyButton11, OI.WhenPressed);
+
+        StopEating ccm = new StopEating(ballDelivery);
+        OI.getInstance().bind(ccm, OI.RightJoyButton10, OI.WhenPressed);
+
+        SpitOutBalls ccn = new SpitOutBalls(ballDelivery);
+        OI.getInstance().bind(ccn, OI.RightJoyButton3, OI.WhenPressed);
+
+        SpinCarousel cco = new SpinCarousel(ballDelivery);
+        OI.getInstance().bind(cco, OI.RightJoyButton6, OI.WhenPressed);
+
+        AngleHood ccp = new AngleHood(ballDelivery);
+        OI.getInstance().bind(ccp, OI.RightJoyButton4, OI.WhenPressed);
+
+        StopCarousel ccq = new StopCarousel(ballDelivery);
+        OI.getInstance().bind(ccq, OI.RightJoyButton7, OI.WhenPressed);
     }
 
     private void initRIO2(PortMan portMan) throws Exception {
