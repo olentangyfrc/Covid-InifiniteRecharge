@@ -59,8 +59,9 @@ public class BallDelivery extends SubsystemBase{
         carouselMotor = new WPI_TalonSRX(portMan.acquirePort(PortMan.can_11_label, "CarouselMotor"));
         hoodMotor = new WPI_TalonSRX(portMan.acquirePort(PortMan.can_27_label, "HoodMotor"));
         
-        shootingMotorLeft.setInverted(true);
         shootingMotorRight.follow(shootingMotorLeft);
+        shootingMotorLeft.setInverted(true);
+
         //shootingMotorLeft.setInverted(false);
 
         pValue = .4;
