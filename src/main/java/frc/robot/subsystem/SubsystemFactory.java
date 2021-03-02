@@ -225,7 +225,7 @@ public class SubsystemFactory {
 
         ballDelivery = new BallDelivery();
         ballDelivery.init(portMan);
-        //displayManager.addBallDelivery(ballDelivery);
+        displayManager.addBallDelivery(ballDelivery);
 
         ShootBall cci = new ShootBall(ballDelivery);
         OI.getInstance().bind(cci, OI.LeftJoyButton7, OI.WhenPressed);
