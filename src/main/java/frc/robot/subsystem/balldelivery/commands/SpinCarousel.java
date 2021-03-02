@@ -30,7 +30,7 @@ public class SpinCarousel extends CommandBase {
   @Override
   public void execute() {
     logger.info("shooting ball");
-    ballDelivery.spinCarousel(600);
+    ballDelivery.spinCarousel();
   }
 
   // Called once the command ends or is interrupted.

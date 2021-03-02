@@ -29,7 +29,7 @@ public class StopShooting extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    logger.info("shooting ball");
+    logger.info("stop shooting");
     ballDelivery.stopShooting();    
   }
 

@@ -8,6 +8,7 @@
 package frc.robot.subsystem;
 
 import frc.robot.subsystem.balldelivery.BallDelivery;
+import frc.robot.subsystem.balldelivery.BallDeliverySBTab;
 import frc.robot.subsystem.climber.Climber;
 import frc.robot.subsystem.climber.ClimberSBTab;
 import frc.robot.subsystem.controlpanel.ControlPanel;
@@ -34,6 +35,7 @@ public class DisplayManager {
     private TransportSBTab transportDisplay;
     private ClimberSBTab climberDisplay;
     private TelemetrySBTab telemetryDisplay;
+    private BallDeliverySBTab ballDeliveryDisplay;
     private PixyLineCamSBTab pixyDisplay;
     private OneWheelShooterSBTab oneWheelShooter;
     private IntakeSBTab intake;
@@ -69,10 +71,10 @@ public class DisplayManager {
 
     }
 
-    /*public void addBallDelivery(BallDelivery bd) {
+    public void addBallDelivery(BallDelivery bd) {
         ballDeliveryDisplay = new BallDeliverySBTab(bd);
         subsystemUpdateList.add(ballDeliveryDisplay);
-    }*/
+    }
 
     public void addPixyLineCam(PixyLineCam p) {
         pixyDisplay = new PixyLineCamSBTab(p);
