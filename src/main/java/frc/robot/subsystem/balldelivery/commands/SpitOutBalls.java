@@ -30,7 +30,7 @@ public class SpitOutBalls extends CommandBase {
   @Override
   public void execute() {
     logger.info("shooting ball");
-    ballDelivery.spitOut(-1000);    
+    ballDelivery.spitOut();    
   }
 
   // Called once the command ends or is interrupted.
@@ -42,6 +42,7 @@ public class SpitOutBalls extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    //add conditional to stop command
     return true;
   }
 }
