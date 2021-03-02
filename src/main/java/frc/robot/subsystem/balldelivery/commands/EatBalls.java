@@ -30,7 +30,7 @@ public class EatBalls extends CommandBase {
   @Override
   public void execute() {
     logger.info("eating balls");
-    ballDelivery.eatBall(1000);    
+    ballDelivery.eatBall();    
   }
 
   // Called once the command ends or is interrupted.

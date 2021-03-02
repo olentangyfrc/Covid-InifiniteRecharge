@@ -27,8 +27,8 @@ import frc.robot.subsystem.PortMan;
 public class BallDelivery extends SubsystemBase{
 
     private static Logger logger = Logger.getLogger(BallDelivery.class.getName());
-    private WPI_TalonFX shootingMotorLeft;
-    private WPI_TalonFX shootingMotorRight;
+    private WPI_TalonFX shootingMotorLeft; //master
+    private WPI_TalonFX shootingMotorRight; //follower
     private WPI_TalonSRX eatingMotor;
     private WPI_TalonSRX carouselMotor;
     private WPI_TalonSRX hoodMotor;
@@ -40,10 +40,16 @@ public class BallDelivery extends SubsystemBase{
     private double iValue;
     private double dValue;
 
-    private double carouselVelocity;
-    private double eatingVelocity;
-    private double shootingVelocity;
-    private double anglePosition;
+    private double targetCarouselVelocity;
+    private double targetEatingVelocity;
+    private double targetShootingVelocity;
+    private double targetHoodPosition;
+
+    private boolean atTargetEatingVel;
+    private boolean atTargetShootingVel;
+
+    public double eatingTol;
+    public double shootingTol;
     
     public void init(final PortMan portMan) throws Exception {
         logger.info("init");
@@ -60,10 +66,10 @@ public class BallDelivery extends SubsystemBase{
         pValue = .4;
         iValue = 0;
         dValue = .2;
-        carouselVelocity = 100; //don't know if this value is right
-        eatingVelocity = 100;
-        shootingVelocity = 100;
-        anglePosition = 0.0;
+        targetCarouselVelocity = 100; 
+        targetEatingVelocity = 100;
+        targetShootingVelocity = 100;
+        targetHoodPosition = 0.0;
 
         shootingMotorLeft.setNeutralMode(NeutralMode.Coast);
         shootingMotorLeft.configFactoryDefault();
@@ -105,7 +111,7 @@ public class BallDelivery extends SubsystemBase{
         carouselMotor.config_kF(0, 0, 0);
         carouselMotor.configClosedloopRamp(.9);
 
-        hoodMotor.setNeutralMode(NeutralMode.Coast);
+        hoodMotor.setNeutralMode(NeutralMode.Brake);
         hoodMotor.configFactoryDefault();
         hoodMotor.configAllowableClosedloopError(0, 5);
         hoodMotor.setSelectedSensorPosition(0, 0, 0);
@@ -118,15 +124,14 @@ public class BallDelivery extends SubsystemBase{
     }
     
     //spin the carousel
-    public void spinCarousel(double vel){
-        carouselVelocity = vel;
+    public void spinCarousel(){
 
         logger.info("spin carousel");
-        logger.info("spin [" + carouselVelocity + "]");
+        logger.info("spin [" + targetCarouselVelocity + "]");
 
         //spin carousel
-        carouselMotor.set(ControlMode.Velocity, carouselVelocity);
-        logger.info("[" + carouselVelocity + "]");
+        carouselMotor.set(ControlMode.Velocity, targetCarouselVelocity);
+        logger.info("[" + targetCarouselVelocity + "]");
 
         /*// if switch is triggered, set percent output to 0 to stop spinning
         if(!stopCarousel.get())
@@ -150,22 +155,18 @@ public class BallDelivery extends SubsystemBase{
         //start motors, stop when it's in the right position
     }
 
-    public void eatBall(double vel){
-        eatingVelocity = vel;
-
+    public void eatBall(){
         logger.info("eat ball");
-        logger.info("spin green wheels [" + eatingVelocity + "]");
-        eatingMotor.set(ControlMode.Velocity, eatingVelocity);
-        logger.info("[" + eatingVelocity + "]");
+        logger.info("spin green wheels [" + targetEatingVelocity + "]");
+        eatingMotor.set(ControlMode.Velocity, targetEatingVelocity);
+        logger.info("[" + targetEatingVelocity + "]");
     }
 
-    public void spitOut(double vel){
-        eatingVelocity = vel; 
-
+    public void spitOut(){
         logger.info("spit out ball");
-        logger.info("spin green wheels [" + eatingVelocity + "]");
-        eatingMotor.set(ControlMode.Velocity, eatingVelocity);
-        logger.info("[" + eatingVelocity + "]");
+        logger.info("spin green wheels [" + - targetEatingVelocity + "]");
+        eatingMotor.set(ControlMode.Velocity, - targetEatingVelocity);
+        logger.info("[" + - targetEatingVelocity + "]");
     }
 
     public void stopEating(){
@@ -174,23 +175,18 @@ public class BallDelivery extends SubsystemBase{
         eatingMotor.set(ControlMode.PercentOutput, 0);
     }
 
-    public void shootBall(double vel){
-        shootingVelocity = vel; 
-
+    public void shootBall(){
         logger.info("shoot ball");
-        logger.info("shoot ball [" + shootingVelocity + "]");
-        shootingMotorLeft.set(ControlMode.Velocity, shootingVelocity);
-        logger.info("[" + shootingVelocity + "]" );
+        logger.info("shoot ball [" + targetShootingVelocity + "]");
+        shootingMotorLeft.set(ControlMode.Velocity, targetShootingVelocity);
+        logger.info("[" + targetShootingVelocity + "]" );
     }
 
-    public void reverseShooter(double vel){
-        //enter regular positive velocity, method will spin it backwards. can also assume velocity parameter is negative
-        shootingVelocity = -vel; 
-
+    public void reverseShooter(){
         logger.info("reverse shooter");
-        logger.info("reverse shooter [" + shootingVelocity + "]");
-        shootingMotorLeft.set(ControlMode.Velocity, shootingVelocity);
-        logger.info("[" + shootingVelocity + "]"); 
+        logger.info("reverse shooter [" + - targetShootingVelocity + "]");
+        shootingMotorLeft.set(ControlMode.Velocity, - targetShootingVelocity);
+        logger.info("[" + - targetShootingVelocity + "]"); 
     }
 
     public void stopShooting(){
@@ -220,24 +216,24 @@ public class BallDelivery extends SubsystemBase{
         return shootingMotorLeft.getSelectedSensorVelocity();
     }
     
-    public double getCurrentAnglePosition(){
+    public double getCurrentHoodPosition(){
         return hoodMotor.getSelectedSensorPosition();
     }
 
-    public double getCarouselVelocity(){
-        return carouselVelocity;
+    public double getTargetCarouselVelocity(){
+        return targetCarouselVelocity;
     }
 
-    public double getEatingVelocity(){
-        return eatingVelocity;
+    public double getTargetEatingVelocity(){
+        return targetEatingVelocity;
     }
 
-    public double getShootingVelocity(){
-        return shootingVelocity;
+    public double getTargetShootingVelocity(){
+        return targetShootingVelocity;
     }
 
-    public double getAnglePosition(){
-        return anglePosition;
+    public double getTargetHoodPosition(){
+        return targetHoodPosition;
     }
 
     public double getPValue(){
@@ -250,6 +246,62 @@ public class BallDelivery extends SubsystemBase{
 
     public double getDValue(){
         return dValue;
+    }
+
+    public double getEatingTolerance(){
+        return eatingTol;
+    }
+    
+    public double getShootingTolerance(){
+        return shootingTol;
+    }
+
+    public void setPValue(double p){
+        pValue = p;
+    }
+
+    public void setIValue(double i){
+        iValue = i;
+    }
+
+    public void setDValue(double d){
+        dValue = d;
+    }
+
+    public void setTargetCarouselVelocity(double vel){
+        targetCarouselVelocity = vel;
+    }
+
+    public void setTargetEatingVelocity(double vel){
+        targetEatingVelocity = vel;
+    }
+
+    public void setTargetShootingVelocity(double vel){
+        targetShootingVelocity = vel;
+    }
+    
+    public void setTargetHoodPosition(double pos){
+        targetHoodPosition = pos;
+    }
+
+    public void setEatingTolerance(double tol){
+        eatingTol = tol;
+    }
+
+    public void setShootingTolerance(double tol){
+        shootingTol = tol;
+    }
+
+    public boolean isAtShootingVelocity(){
+        if(Math.abs(getCurrentShootingVelocity() - targetShootingVelocity) <= shootingTol)
+            atTargetShootingVel = true;
+        return atTargetShootingVel;
+    }
+
+    public boolean isAtEatingVelocity(){
+        if(Math.abs(getCurrentEatingVelocity() - targetEatingVelocity) <= eatingTol)
+            atTargetEatingVel = true;
+        return atTargetEatingVel;
     }
 
     /*public double getCurrent(){

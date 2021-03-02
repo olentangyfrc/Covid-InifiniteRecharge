@@ -20,6 +20,8 @@ import frc.robot.subsystem.balldelivery.commands.EatBalls;
 import frc.robot.subsystem.balldelivery.commands.SpinCarousel;
 import frc.robot.subsystem.balldelivery.commands.SpitOutBalls;
 import frc.robot.subsystem.balldelivery.commands.AngleHood;
+import frc.robot.subsystem.balldelivery.commands.DeliverBall;
+import frc.robot.subsystem.balldelivery.commands.StopDelivery;
 import frc.robot.subsystem.balldelivery.commands.StopCarousel;
 import frc.robot.subsystem.climber.Climber;
 import frc.robot.subsystem.controlpanel.ControlPanel;
@@ -312,10 +314,10 @@ public class SubsystemFactory {
         */
         ballDelivery = new BallDelivery();
         ballDelivery.init(portMan);
-        //displayManager.addBallDelivery(ballDelivery);
+        displayManager.addBallDelivery(ballDelivery);
 
-        ShootBall cci = new ShootBall(ballDelivery);
-        OI.getInstance().bind(cci, OI.LeftJoyButton7, OI.WhenPressed);
+        //ShootBall cci = new ShootBall(ballDelivery);
+        //OI.getInstance().bind(cci, OI.LeftJoyButton7, OI.WhenPressed);
 
         ReverseShooter ccj = new ReverseShooter(ballDelivery);
         OI.getInstance().bind(ccj, OI.LeftJoyButton10, OI.WhenPressed);
@@ -340,6 +342,12 @@ public class SubsystemFactory {
 
         StopCarousel ccq = new StopCarousel(ballDelivery);
         OI.getInstance().bind(ccq, OI.RightJoyButton7, OI.WhenPressed);
+
+        DeliverBall ccr = new DeliverBall(ballDelivery);
+        OI.getInstance().bind(ccr, OI.LeftJoyButton6, OI.WhenPressed);
+        
+        StopDelivery ccs = new StopDelivery(ballDelivery);
+        OI.getInstance().bind(ccs, OI.LeftJoyButton7, OI.WhenPressed);
     }
 
     private void initRIO99(PortMan portMan) throws Exception {

@@ -30,7 +30,7 @@ public class ReverseShooter extends CommandBase {
   @Override
   public void execute() {
     logger.info("reversing shooter");
-    ballDelivery.reverseShooter(200);    
+    ballDelivery.reverseShooter();    
   }
 
   // Called once the command ends or is interrupted.
@@ -42,6 +42,7 @@ public class ReverseShooter extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    //add conditional to finish command
     return true;
   }
 }
