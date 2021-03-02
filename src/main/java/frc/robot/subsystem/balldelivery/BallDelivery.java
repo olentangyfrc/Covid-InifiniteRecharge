@@ -35,6 +35,7 @@ public class BallDelivery extends SubsystemBase{
 
     private DigitalInput stopCarousel;
     private DigitalInput zeroShooter;
+    private DigitalInput stopHoodMotor;
 
     private double pValue;
     private double iValue;
@@ -148,6 +149,12 @@ public class BallDelivery extends SubsystemBase{
         
         //set off switch to start (be at bottom)
         //start motors, stop when it's in the right position
+        while(stopHoodMotor.get()){
+            hoodMotor.set(ControlMode.Velocity, 300);
+        }
+        hoodMotor.set(ControlMode.PercentOutput, 0);
+
+        hoodMotor.set(ControlMode.Position, pos);
     }
 
     public void eatBall(double vel){
