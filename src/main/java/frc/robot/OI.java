@@ -91,7 +91,7 @@ public class OI {
     public static final int LeftButtonBox3 = 36; 
     public static final int LeftButtonBox4 = 37; 
     public static final int LeftButtonBox5 = 38; 
-    public static final int LeftButtonBox6 = 39; 
+    public static final int LeftButtonBox6 = 39;  //comment
     public static final int LeftButtonBox7 = 40; 
     public static final int LeftButtonBox8 = 41;
     public static final int LeftButtonBox9 = 42; 
