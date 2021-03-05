@@ -38,10 +38,10 @@ public class BallDeliverySBTab implements SBInterface{
         currentShootingVelocity = tab.add("Current Shooting Velocity", 0.0).getEntry();
         currentEatingVelocity = tab.add("Current Eating Velocity", 0.0).getEntry();
         currentHoodPosition = tab.add("Current Hood Position", 0.0).getEntry();
-        targetCarouselVelocity = tab.add("Target Carousel Velocity", 600).getEntry();
-        targetShootingVelocity = tab.add("Target Shooting Velocity", 6000).getEntry();
-        targetEatingVelocity = tab.add("Target Eating Velocity", 600).getEntry();
-        targetHoodPosition = tab.add("Target Hood Position", 0).getEntry();
+        targetCarouselVelocity = tab.add("Target Carousel Velocity", 0.0).getEntry();
+        targetShootingVelocity = tab.add("Target Shooting Velocity", 0.0).getEntry();
+        targetEatingVelocity = tab.add("Target Eating Velocity", 0.0).getEntry();
+        targetHoodPosition = tab.add("Target Hood Position", 0.0).getEntry();
         pValue = tab.add("p Value", 0.0).getEntry();
         iValue = tab.add("i Value", 0.0).getEntry();
         dValue = tab.add("d Value", 0.0).getEntry();
@@ -55,10 +55,10 @@ public class BallDeliverySBTab implements SBInterface{
         currentEatingVelocity.setDouble(ballDelivery.getCurrentEatingVelocity());
         logger.info("Eating Vel: " + ballDelivery.getCurrentEatingVelocity());
         currentShootingVelocity.setDouble(ballDelivery.getCurrentShootingVelocity());
-        logger.info("Shooting Vel: " + ballDelivery.getCurrentShootingVelocity());
         currentHoodPosition.setDouble(ballDelivery.getCurrentHoodPosition());
+        logger.info("Shooting Vel: " + ballDelivery.getCurrentShootingVelocity());
         ballDelivery.setTargetCarouselVelocity(targetCarouselVelocity.getDouble(600.0));
-        ballDelivery.setTargetShootingVelocity(targetShootingVelocity.getDouble(6000.0));
+        ballDelivery.setTargetShootingVelocity(targetShootingVelocity.getDouble(100.0));
         ballDelivery.setTargetEatingVelocity(targetEatingVelocity.getDouble(600.0));
         ballDelivery.setTargetHoodPosition(targetHoodPosition.getDouble(0.0));
         ballDelivery.setPValue(pValue.getDouble(0.4));
