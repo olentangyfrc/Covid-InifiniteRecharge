@@ -40,6 +40,7 @@ public class BallDelivery extends SubsystemBase{
     private double pValue;
     private double iValue;
     private double dValue;
+    private double fValue;
 
     private double targetCarouselVelocity;
     private double targetEatingVelocity;
@@ -64,9 +65,10 @@ public class BallDelivery extends SubsystemBase{
         shootingMotorRight.follow(shootingMotorLeft);
         //shootingMotorLeft.setInverted(false);
 
-        pValue = .4;
+        pValue = 0.4;
         iValue = 0;
-        dValue = .2;
+        dValue = 0.2;
+        fValue = 0;
         targetCarouselVelocity = 100; 
         targetEatingVelocity = 100;
         targetShootingVelocity = 100;
@@ -79,7 +81,7 @@ public class BallDelivery extends SubsystemBase{
         shootingMotorLeft.config_kP(0, pValue, 0);
         shootingMotorLeft.config_kI(0, iValue, 0);
         shootingMotorLeft.config_kD(0, dValue, 0);
-        shootingMotorLeft.config_kF(0, 0, 0);
+        shootingMotorLeft.config_kF(0, fValue, 0);
         shootingMotorLeft.configClosedloopRamp(.9);
 
         shootingMotorRight.setNeutralMode(NeutralMode.Coast);
@@ -89,7 +91,7 @@ public class BallDelivery extends SubsystemBase{
         shootingMotorRight.config_kP(0, pValue, 0);
         shootingMotorRight.config_kI(0, iValue, 0);
         shootingMotorRight.config_kD(0, dValue, 0);
-        shootingMotorRight.config_kF(0, 0, 0);
+        shootingMotorRight.config_kF(0, fValue, 0);
         shootingMotorRight.configClosedloopRamp(.9);
 
         eatingMotor.setNeutralMode(NeutralMode.Coast);
@@ -127,12 +129,12 @@ public class BallDelivery extends SubsystemBase{
     //spin the carousel
     public void spinCarousel(){
 
-        logger.info("spin carousel");
-        logger.info("spin [" + targetCarouselVelocity + "]");
+        //logger.info("spin carousel");
+        //logger.info("spin [" + targetCarouselVelocity + "]");
 
         //spin carousel
         carouselMotor.set(ControlMode.Velocity, targetCarouselVelocity);
-        logger.info("[" + targetCarouselVelocity + "]");
+        //logger.info("[" + targetCarouselVelocity + "]");
 
         /*// if switch is triggered, set percent output to 0 to stop spinning
         if(!stopCarousel.get())
@@ -149,8 +151,8 @@ public class BallDelivery extends SubsystemBase{
 
     //angle the shooter
     public void angleShooter(double pos){
-        logger.info("angle shooter");
-        logger.info("angle [" + pos + "]");
+        //logger.info("angle shooter");
+        //logger.info("angle [" + pos + "]");
         
         //set off switch to start (be at bottom)
         //start motors, stop when it's in the right position
@@ -163,42 +165,47 @@ public class BallDelivery extends SubsystemBase{
     }
 
     public void eatBall(){
-        logger.info("eat ball");
-        logger.info("spin green wheels [" + targetEatingVelocity + "]");
+        //logger.info("eat ball");
+        //logger.info("spin green wheels [" + targetEatingVelocity + "]");
         eatingMotor.set(ControlMode.Velocity, targetEatingVelocity);
-        logger.info("[" + targetEatingVelocity + "]");
+        //logger.info("[" + targetEatingVelocity + "]");
     }
 
     public void spitOut(){
-        logger.info("spit out ball");
-        logger.info("spin green wheels [" + - targetEatingVelocity + "]");
+        //logger.info("spit out ball");
+        //logger.info("spin green wheels [" + - targetEatingVelocity + "]");
         eatingMotor.set(ControlMode.Velocity, - targetEatingVelocity);
-        logger.info("[" + - targetEatingVelocity + "]");
+        //logger.info("[" + - targetEatingVelocity + "]");
     }
 
     public void stopEating(){
         //stop eating
-        logger.info("stop eating");
+        //logger.info("stop eating");
         eatingMotor.set(ControlMode.PercentOutput, 0);
     }
 
     public void shootBall(){
-        logger.info("shoot ball");
-        logger.info("shoot ball [" + targetShootingVelocity + "]");
+        //logger.info("shoot ball");
+        //logger.info("shoot ball [" + targetShootingVelocity + "]");
+        shootingMotorLeft.config_kP(0, pValue, 0);
+        shootingMotorLeft.config_kI(0, iValue, 0);
+        shootingMotorLeft.config_kD(0, dValue, 0);
+        shootingMotorLeft.config_kF(0, fValue, 0);
         shootingMotorLeft.set(ControlMode.Velocity, targetShootingVelocity);
-        logger.info("[" + targetShootingVelocity + "]" );
+        //logger.info("[" + targetShootingVelocity + "]" );
+        
     }
 
     public void reverseShooter(){
-        logger.info("reverse shooter");
-        logger.info("reverse shooter [" + - targetShootingVelocity + "]");
+        //logger.info("reverse shooter");
+        //logger.info("reverse shooter [" + - targetShootingVelocity + "]");
         shootingMotorLeft.set(ControlMode.Velocity, - targetShootingVelocity);
-        logger.info("[" + - targetShootingVelocity + "]"); 
+        //logger.info("[" + - targetShootingVelocity + "]"); 
     }
 
     public void stopShooting(){
         //stop the shooter
-        logger.info("stop shooting");
+        //logger.info("stop shooting");
         shootingMotorLeft.set(ControlMode.PercentOutput, 0);
     }
 
@@ -254,6 +261,10 @@ public class BallDelivery extends SubsystemBase{
     public double getDValue(){
         return dValue;
     }
+    
+    public double getFValue(){
+        return fValue;
+    }
 
     public double getEatingTolerance(){
         return eatingTol;
@@ -273,6 +284,10 @@ public class BallDelivery extends SubsystemBase{
 
     public void setDValue(double d){
         dValue = d;
+    }
+
+    public void setFValue(double f){
+        fValue = f;
     }
 
     public void setTargetCarouselVelocity(double vel){

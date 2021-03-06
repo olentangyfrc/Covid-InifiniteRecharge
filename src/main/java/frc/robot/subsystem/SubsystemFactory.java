@@ -227,8 +227,8 @@ public class SubsystemFactory {
         ballDelivery.init(portMan);
         displayManager.addBallDelivery(ballDelivery);
 
-        ShootBall cci = new ShootBall(ballDelivery);
-        OI.getInstance().bind(cci, OI.LeftJoyButton7, OI.WhenPressed);
+        //ShootBall cci = new ShootBall(ballDelivery);
+        //OI.getInstance().bind(cci, OI.LeftJoyButton7, OI.WhenPressed);
 
         ReverseShooter ccj = new ReverseShooter(ballDelivery);
         OI.getInstance().bind(ccj, OI.LeftJoyButton10, OI.WhenPressed);
@@ -257,8 +257,8 @@ public class SubsystemFactory {
         DeliverBall ccr = new DeliverBall(ballDelivery);
         OI.getInstance().bind(ccr, OI.LeftJoyButton6, OI.WhenPressed);
         
-        //StopDelivery ccs = new StopDelivery(ballDelivery);
-        //OI.getInstance().bind(ccs, OI.LeftJoyButton7, OI.WhenPressed);
+        StopDelivery ccs = new StopDelivery(ballDelivery);
+        OI.getInstance().bind(ccs, OI.LeftJoyButton7, OI.WhenPressed);
     }
 
     private void initRIO2(PortMan portMan) throws Exception {
