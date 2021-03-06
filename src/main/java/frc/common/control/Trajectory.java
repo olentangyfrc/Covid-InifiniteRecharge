@@ -169,8 +169,10 @@ public class Trajectory implements Serializable {
 			logger.log(Level.INFO, "X: " + currentX + " Y: " + currentY);
 			trajectoryGraph[currentY][currentX] = '0';
 		}
-		trajectoryGraph[(int)Math.floor(calculateSegment(getDuration()).translation.y / (5 / resolution) + (16 * resolution))][(int)Math.floor(calculateSegment(getDuration()).translation.x / 5 + (4  * resolution))] = '\\';
-		trajectoryGraph[(int)Math.floor(0 / (5 / resolution) + (16 * resolution))][(int)Math.floor(300 / (5 / resolution) + (4  * resolution))] = '*';
+		trajectoryGraph[(int)Math.floor(calculateSegment(getDuration()).translation.y  / (5 / resolution) + 16 * resolution)][(int)Math.floor(calculateSegment(getDuration()).translation.x / (5 / resolution) * (30 / 14) + 4 * resolution)] = '\\';
+		trajectoryGraph[(int)Math.floor(-30 / (5 / resolution) + 16 * resolution)][(int)Math.floor(90 / (5 / resolution) * (30 / 14) + 4 * resolution)] = '*';
+		trajectoryGraph[(int)Math.floor(-30 / (5 / resolution) + 16 * resolution)][(int)Math.floor(140 / (5 / resolution) * (30 / 14) + 4 * resolution)] = '*';
+		trajectoryGraph[(int)Math.floor(-30 / (5 / resolution) + 16 * resolution)][(int)Math.floor(170 / (5 / resolution) * (30 / 14) + 4 * resolution)] = '*';
 		for(int i = trajectoryGraph.length - 1; i >= 0; i--) {
 			String currentLine = "";
 			for(int ii = 0; ii < trajectoryGraph[0].length; ii++) {

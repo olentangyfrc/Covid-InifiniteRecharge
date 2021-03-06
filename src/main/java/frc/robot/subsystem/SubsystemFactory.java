@@ -138,7 +138,7 @@ public class SubsystemFactory {
 
         displayManager = dm;
         subsystemInterfaceList = new ArrayList<SBInterface>();
-        pdp = new PowerDistributionPanel(1);
+        pdp = new PowerDistributionPanel(2);
 
         try {
 
@@ -278,23 +278,27 @@ public class SubsystemFactory {
         telemetry.init(portMan);
         displayManager.addTelemetry(telemetry);
 
-        SquareSelf ccc = new SquareSelf(telemetry, 2.34);
-        OI.getInstance().bind(ccc, OI.LeftJoyButton6, OI.WhenPressed);
+        //SquareSelf ccc = new SquareSelf(telemetry, 2.34);
+        //OI.getInstance().bind(ccc, OI.LeftJoyButton6, OI.WhenPressed);
 
-        GoToHorizontalDistance ccd= new GoToHorizontalDistance(telemetry, 2.34);
-        OI.getInstance().bind(ccd, OI.LeftJoyButton7, OI.WhenPressed);
+        //GoToHorizontalDistance ccd= new GoToHorizontalDistance(telemetry, 2.34);
+        //OI.getInstance().bind(ccd, OI.LeftJoyButton7, OI.WhenPressed);
 
-        GoToVerticalDistance cce = new GoToVerticalDistance(telemetry, 2.34);
-        OI.getInstance().bind(cce, OI.LeftJoyButton10, OI.WhenPressed);
+        //GoToVerticalDistance cce = new GoToVerticalDistance(telemetry, 2.34);
+        //OI.getInstance().bind(cce, OI.LeftJoyButton10, OI.WhenPressed);
 
         DriveToBall ccf = new DriveToBall(telemetry);
         OI.getInstance().bind(ccf, OI.RightJoyButton11, OI.WhileHeld);
 
-        RotateTowardsBall ccg = new RotateTowardsBall(telemetry);
-        OI.getInstance().bind(ccg, OI.LeftJoyButton11, OI.WhileHeld);
+        //RotateTowardsBall ccg = new RotateTowardsBall(telemetry);
+        //OI.getInstance().bind(ccg, OI.LeftJoyButton11, OI.WhileHeld);
 
         ChaseBall cch = new ChaseBall(telemetry);
         OI.getInstance().bind(cch, OI.RightJoyButton10, OI.WhileHeld);
+
+        /**
+        * shooter stuff goes here
+        */
     }
 
     private void initRIO99(PortMan portMan) throws Exception {
