@@ -26,6 +26,7 @@ public class BallDeliverySBTab implements SBInterface{
     public NetworkTableEntry pValue;
     public NetworkTableEntry iValue;
     public NetworkTableEntry dValue;
+    public NetworkTableEntry fValue;
     public NetworkTableEntry eatingTolerance;
     public NetworkTableEntry shootingTolerance;
 
@@ -45,6 +46,7 @@ public class BallDeliverySBTab implements SBInterface{
         pValue = tab.add("p Value", 0.0).getEntry();
         iValue = tab.add("i Value", 0.0).getEntry();
         dValue = tab.add("d Value", 0.0).getEntry();
+        fValue = tab.add("f Value", 0.0).getEntry();
         eatingTolerance = tab.add("Eating Tolerance", 0.0).getEntry();
         shootingTolerance = tab.add("Shooting Tolerance", 0.0).getEntry();
 
@@ -61,9 +63,10 @@ public class BallDeliverySBTab implements SBInterface{
         ballDelivery.setTargetShootingVelocity(targetShootingVelocity.getDouble(100.0));
         ballDelivery.setTargetEatingVelocity(targetEatingVelocity.getDouble(600.0));
         ballDelivery.setTargetHoodPosition(targetHoodPosition.getDouble(0.0));
-        ballDelivery.setPValue(pValue.getDouble(0.4));
+        ballDelivery.setPValue(pValue.getDouble(0.0));
         ballDelivery.setIValue(iValue.getDouble(0.0));
-        ballDelivery.setDValue(dValue.getDouble(0.2));
+        ballDelivery.setDValue(dValue.getDouble(0.0));
+        ballDelivery.setFValue(fValue.getDouble(0.0));
         ballDelivery.setEatingTolerance(eatingTolerance.getDouble(0.0));
         ballDelivery.setShootingTolerance(shootingTolerance.getDouble(0.0));
     }
