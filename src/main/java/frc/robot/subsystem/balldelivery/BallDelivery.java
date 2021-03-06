@@ -162,6 +162,8 @@ public class BallDelivery extends SubsystemBase{
         }
         hoodMotor.set(ControlMode.PercentOutput, 0);
 
+        hoodMotor.set(ControlMode.Position, 0);
+
         hoodMotor.set(ControlMode.Position, pos);
     }
 
