@@ -160,6 +160,8 @@ public class BallDelivery extends SubsystemBase{
         logger.info("angle hood");
         logger.info("angle [" + pos + "]");
 
+        hoodMotor.set(ControlMode.Position, 0);
+
         hoodMotor.set(ControlMode.Position, pos);
     }
 
