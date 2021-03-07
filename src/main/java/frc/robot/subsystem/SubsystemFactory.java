@@ -17,6 +17,7 @@ import frc.robot.subsystem.balldelivery.commands.ShootBall;
 import frc.robot.subsystem.balldelivery.commands.StopShooting;
 import frc.robot.subsystem.balldelivery.commands.StopEating;
 import frc.robot.subsystem.balldelivery.commands.EatBalls;
+import frc.robot.subsystem.balldelivery.commands.PutHoodDown;
 import frc.robot.subsystem.balldelivery.commands.SpinCarousel;
 import frc.robot.subsystem.balldelivery.commands.SpitOutBalls;
 import frc.robot.subsystem.balldelivery.commands.AngleHood;
@@ -263,6 +264,9 @@ public class SubsystemFactory {
 
         StopAngling cct = new StopAngling(ballDelivery);
         OI.getInstance().bind(cct, OI.RightJoyButton5, OI.WhenPressed);
+
+        PutHoodDown ccu = new PutHoodDown(ballDelivery);
+        OI.getInstance().bind(ccu, OI.RightJoyButton8, OI.WhenPressed);
 
     }
 

@@ -171,6 +171,17 @@ public class BallDelivery extends SubsystemBase{
         hoodMotor.set(ControlMode.PercentOutput, 0);
     }
 
+    public void putHoodDown(){
+        logger.info("putting hood down");
+
+        while(stopHoodMotor.get())
+        {
+            hoodMotor.set(ControlMode.Velocity, 100);
+        }
+        hoodMotor.set(ControlMode.PercentOutput, 0);
+    }   
+
+
     public void eatBall(){
         //logger.info("eat ball");
         //logger.info("spin green wheels [" + targetEatingVelocity + "]");
