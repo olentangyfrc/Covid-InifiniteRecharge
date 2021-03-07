@@ -20,6 +20,7 @@ import frc.robot.subsystem.balldelivery.commands.EatBalls;
 import frc.robot.subsystem.balldelivery.commands.SpinCarousel;
 import frc.robot.subsystem.balldelivery.commands.SpitOutBalls;
 import frc.robot.subsystem.balldelivery.commands.AngleHood;
+import frc.robot.subsystem.balldelivery.commands.StopAngling;
 import frc.robot.subsystem.balldelivery.commands.DeliverBall;
 import frc.robot.subsystem.balldelivery.commands.StopDelivery;
 import frc.robot.subsystem.balldelivery.commands.StopCarousel;
@@ -151,7 +152,7 @@ public class SubsystemFactory {
 
         displayManager = dm;
         subsystemInterfaceList = new ArrayList<SBInterface>();
-        pdp = new PowerDistributionPanel(2);
+        //pdp = new PowerDistributionPanel(2);
 
         try {
 
@@ -259,6 +260,10 @@ public class SubsystemFactory {
         
         StopDelivery ccs = new StopDelivery(ballDelivery);
         OI.getInstance().bind(ccs, OI.LeftJoyButton7, OI.WhenPressed);
+
+        StopAngling cct = new StopAngling(ballDelivery);
+        OI.getInstance().bind(cct, OI.RightJoyButton5, OI.WhenPressed);
+
     }
 
     private void initRIO2(PortMan portMan) throws Exception {

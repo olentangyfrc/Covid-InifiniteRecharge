@@ -115,15 +115,20 @@ public class BallDelivery extends SubsystemBase{
         carouselMotor.config_kF(0, 0, 0);
         carouselMotor.configClosedloopRamp(.9);
 
-        hoodMotor.setNeutralMode(NeutralMode.Brake);
         hoodMotor.configFactoryDefault();
-        hoodMotor.configAllowableClosedloopError(0, 5);
-        hoodMotor.setSelectedSensorPosition(0, 0, 0);
-        hoodMotor.config_kP(0, pValue, 0);
+        hoodMotor.setSensorPhase(true);
+        hoodMotor.setNeutralMode(NeutralMode.Brake);
+        hoodMotor.setInverted(false);
+        hoodMotor.configAllowableClosedloopError(0, 1);
+        //hoodMotor.setSelectedSensorPosition(0, 0, 0);
+        hoodMotor.config_kP(0, .5, 0);
         hoodMotor.config_kI(0, iValue, 0);
-        hoodMotor.config_kD(0, dValue, 0);
+        hoodMotor.config_kD(0, 0, 0);
         hoodMotor.config_kF(0, 0, 0);
         hoodMotor.configClosedloopRamp(.9);
+
+        //hoodMotor.set(ControlMode.Position, 1000);
+
         
     }
     
@@ -151,18 +156,19 @@ public class BallDelivery extends SubsystemBase{
     }
 
     //angle the shooter
-    public void angleShooter(double pos){
-        //logger.info("angle shooter");
-        //logger.info("angle [" + pos + "]");
-        
-        //set off switch to start (be at bottom)
-        //start motors, stop when it's in the right position
-        while(stopHoodMotor.get()){
-            hoodMotor.set(ControlMode.Velocity, 300);
-        }
-        hoodMotor.set(ControlMode.PercentOutput, 0);
+    public void angleHood(double pos){
+        logger.info("angle hood");
+        logger.info("angle [" + pos + "]");
+
+        hoodMotor.set(ControlMode.Position, 0);
 
         hoodMotor.set(ControlMode.Position, pos);
+    }
+
+    public void stopAngling(){
+        logger.info("stop angling hood");
+
+        hoodMotor.set(ControlMode.PercentOutput, 0);
     }
 
     public void eatBall(){
