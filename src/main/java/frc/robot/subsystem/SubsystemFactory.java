@@ -370,8 +370,8 @@ public class SubsystemFactory {
         EatBalls ccl = new EatBalls(ballDelivery);
         OI.getInstance().bind(ccl, OI.RightJoyButton11, OI.WhenPressed);
 
-        StopEating ccm = new StopEating(ballDelivery);
-        OI.getInstance().bind(ccm, OI.RightJoyButton10, OI.WhenPressed);
+        //StopEating ccm = new StopEating(ballDelivery);
+        //OI.getInstance().bind(ccm, OI.RightJoyButton10, OI.WhenPressed);
 
         SpitOutBalls ccn = new SpitOutBalls(ballDelivery);
         OI.getInstance().bind(ccn, OI.RightJoyButton3, OI.WhenPressed);

@@ -66,6 +66,8 @@ public class BallDelivery extends SubsystemBase{
 
         //shootingMotorLeft.setInverted(false);
 
+        //add p value variables for each motor? 
+
         pValue = 0.4;
         iValue = 0;
         dValue = 0.2;
@@ -74,6 +76,8 @@ public class BallDelivery extends SubsystemBase{
         targetEatingVelocity = 100;
         targetShootingVelocity = 100;
         targetHoodPosition = 0.0;
+
+        shootingTol = 100;
 
         shootingMotorLeft.setNeutralMode(NeutralMode.Coast);
         shootingMotorLeft.configFactoryDefault();
@@ -317,9 +321,9 @@ public class BallDelivery extends SubsystemBase{
         eatingTol = tol;
     }
 
-    public void setShootingTolerance(double tol){
+    /*public void setShootingTolerance(double tol){
         shootingTol = tol;
-    }
+    }*/
 
     public boolean isAtShootingVelocity(){
         if(Math.abs(getCurrentShootingVelocity() - targetShootingVelocity) <= shootingTol)
