@@ -64,6 +64,7 @@ public class AutonomousTrajectories {
     private final Trajectory basicLineTrajectory;
     private final Trajectory bounceTrajectory;
     private final Trajectory boxyBounceTrajectory;
+    private final Trajectory slalomTrajectory;
 /*
         y+: Left
         y-: Right
@@ -74,75 +75,96 @@ public class AutonomousTrajectories {
 */
     public AutonomousTrajectories(ITrajectoryConstraint... constraints) {
         // <editor-fold desc="Hab to Cargo Ship Side Near">
+        Path slalomPath = new Path(Rotation2.ZERO);
+
+        slalomPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(0, 0),
+                        new Vector2(65, 70)
+                ),
+                Rotation2.ZERO
+        );
+
+        slalomPath.subdivide(SUBDIVIDE_ITERATIONS);
+        slalomTrajectory = new Trajectory(slalomPath, constraints);
+
+
         Path boxyBouncePath = new Path(Rotation2.fromDegrees(0));
         
         boxyBouncePath.addSegment(
                 new PathLineSegment(
                         new Vector2(0, 0),
-                        new Vector2(44, 0)
+                        new Vector2(33, 0)
                 ),
                 Rotation2.fromDegrees(0)
         );
         boxyBouncePath.addSegment(
                 new PathLineSegment(
-                        new Vector2(44, 0),
-                        new Vector2(44, 43)
+                        new Vector2(33, 0),
+                        new Vector2(33, 50)
                 ),
                 Rotation2.fromDegrees(0)
         );
         boxyBouncePath.addSegment(
                 new PathLineSegment(
-                        new Vector2(44, 43),
-                        new Vector2(84, -77)
+                        new Vector2(33, 50),
+                        new Vector2(25, 10)
                 ),
                 Rotation2.fromDegrees(0)
         );
         boxyBouncePath.addSegment(
                 new PathLineSegment(
-                        new Vector2(84, -77),
-                        new Vector2(134, -77)
+                        new Vector2(25, 10),
+                        new Vector2(80, -100)
                 ),
                 Rotation2.fromDegrees(0)
         );
         boxyBouncePath.addSegment(
                 new PathLineSegment(
-                        new Vector2(134, -77),
-                        new Vector2(134, 43)
+                        new Vector2(80, -100),
+                        new Vector2(114, -100)
                 ),
                 Rotation2.fromDegrees(0)
         );
         boxyBouncePath.addSegment(
                 new PathLineSegment(
-                        new Vector2(134, 43),
-                        new Vector2(134, -77)
+                        new Vector2(114, -100),
+                        new Vector2(114, 55)
                 ),
                 Rotation2.fromDegrees(0)
         );
         boxyBouncePath.addSegment(
                 new PathLineSegment(
-                        new Vector2(134, -77),
-                        new Vector2(224, -77)
+                        new Vector2(114, 55),
+                        new Vector2(114, -100)
                 ),
                 Rotation2.fromDegrees(0)
         );
         boxyBouncePath.addSegment(
                 new PathLineSegment(
-                        new Vector2(224, -77),
-                        new Vector2(224, 43)
+                        new Vector2(114, -100),
+                        new Vector2(204, -100)
                 ),
                 Rotation2.fromDegrees(0)
         );
         boxyBouncePath.addSegment(
                 new PathLineSegment(
-                        new Vector2(224, 43),
-                        new Vector2(224, 0)
+                        new Vector2(204, -100),
+                        new Vector2(204, 45)
                 ),
                 Rotation2.fromDegrees(0)
         );
         boxyBouncePath.addSegment(
                 new PathLineSegment(
-                        new Vector2(224, 0),
-                        new Vector2(284, 0)
+                        new Vector2(204, 45),
+                        new Vector2(204, -50)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(204, -50),
+                        new Vector2(254, -50)
                 ),
                 Rotation2.fromDegrees(0)
         );
@@ -703,5 +725,8 @@ public class AutonomousTrajectories {
     }
     public Trajectory getBoxyBounceTrajectory() {
         return boxyBounceTrajectory;
+    }
+    public Trajectory getSlalomTrajectory() {
+            return slalomTrajectory;
     }
 }

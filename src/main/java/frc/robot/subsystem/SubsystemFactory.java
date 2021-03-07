@@ -138,7 +138,7 @@ public class SubsystemFactory {
 
         displayManager = dm;
         subsystemInterfaceList = new ArrayList<SBInterface>();
-        pdp = new PowerDistributionPanel(2);
+        pdp = new PowerDistributionPanel(1);
 
         try {
 
@@ -262,10 +262,10 @@ public class SubsystemFactory {
         canAssignments.put("BR.Swerve.angle", PortMan.can_59_label);
         canAssignments.put("BR.Swerve.drive", PortMan.can_60_label);
 
-        double flOff = -Math.toRadians(339.3);
-        double frOff = -Math.toRadians(266.9);
-        double blOff = -Math.toRadians(61.4);
-        double brOff = -Math.toRadians(123.1);
+        double flOff = -Math.toRadians(338.2);
+        double frOff = -Math.toRadians(266.45);
+        double blOff = -Math.toRadians(61.5);
+        double brOff = -Math.toRadians(125);
 
         driveTrain  = DrivetrainSubsystem2910.getInstance();
         driveTrain.init(portMan, canAssignments, flOff, blOff, frOff, brOff);
