@@ -161,6 +161,10 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
   }
 
+  @Override
+  public void testInit() {
+    autonomousTrajectories.getbounceTrajectory().logTrajectory();
+  }
   /**
    * This function is called periodically during test mode.
    */

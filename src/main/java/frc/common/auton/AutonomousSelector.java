@@ -108,7 +108,7 @@ public class AutonomousSelector {
         SequentialCommandGroup group = new SequentialCommandGroup();
         
         group.addCommands(new FollowTrajectoryCommand(
-            trajectories.getBasicLineTrajectory()
+            trajectories.getBoxyBounceTrajectory()
         ));
         return group;
     }

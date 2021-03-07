@@ -62,6 +62,9 @@ public class AutonomousTrajectories {
     private final Trajectory rocketCargoToCargoSideNearTrajectoryRight;
 
     private final Trajectory basicLineTrajectory;
+    private final Trajectory bounceTrajectory;
+    private final Trajectory boxyBounceTrajectory;
+    private final Trajectory slalomTrajectory;
 /*
         y+: Left
         y-: Right
@@ -72,6 +75,253 @@ public class AutonomousTrajectories {
 */
     public AutonomousTrajectories(ITrajectoryConstraint... constraints) {
         // <editor-fold desc="Hab to Cargo Ship Side Near">
+        Path slalomPath = new Path(Rotation2.ZERO);
+
+        slalomPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(0, 0),
+                        new Vector2(65, 70)
+                ),
+                Rotation2.ZERO
+        );
+
+        slalomPath.subdivide(SUBDIVIDE_ITERATIONS);
+        slalomTrajectory = new Trajectory(slalomPath, constraints);
+
+
+        Path boxyBouncePath = new Path(Rotation2.fromDegrees(0));
+        
+        boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(0, 0),
+                        new Vector2(33, 0)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(33, 0),
+                        new Vector2(33, 50)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(33, 50),
+                        new Vector2(25, 10)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(25, 10),
+                        new Vector2(80, -100)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(80, -100),
+                        new Vector2(114, -100)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(114, -100),
+                        new Vector2(114, 55)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(114, 55),
+                        new Vector2(114, -100)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(114, -100),
+                        new Vector2(204, -100)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(204, -100),
+                        new Vector2(204, 45)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(204, 45),
+                        new Vector2(204, -50)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(204, -50),
+                        new Vector2(254, -50)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+
+        /*boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(0, 0),
+                        new Vector2(35, 0)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(35, 0),
+                        new Vector2(35, 55)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(35, 55),
+                        new Vector2(35, -20)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(35, 0),
+                        new Vector2(90, -85)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(90, -85),
+                        new Vector2(140, -85)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(140, -85),
+                        new Vector2(140, 25)
+                ),
+                Rotation2.fromDegrees(0)
+        );//End edit
+        boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(135, 50),
+                        new Vector2(135, -60)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(135, -60),
+                        new Vector2(225, -60)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(225, -60),
+                        new Vector2(225, 60)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(225, 60),
+                        new Vector2(225, 0)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        boxyBouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(225, 0),
+                        new Vector2(285, 0)
+                ),
+                Rotation2.fromDegrees(0)
+        );*/
+
+        boxyBouncePath.subdivide(SUBDIVIDE_ITERATIONS);
+        boxyBounceTrajectory = new Trajectory(boxyBouncePath, constraints);
+
+        Path bouncePath = new Path(Rotation2.fromDegrees(0));
+        
+        bouncePath.addSegment(
+                PathArcSegment.fromPoints(
+                        new Vector2(15, 0),
+                        new Vector2(59, 10),
+                        new Vector2(59, 50)
+                ),
+                Rotation2.fromDegrees(0)
+        );/*
+        bouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(75, 45),
+                        new Vector2(115, -40)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        bouncePath.addSegment(
+                PathArcSegment.fromPoints(
+                        new Vector2(115, -40),
+                        new Vector2(135, -65),
+                        new Vector2(185, -40)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        bouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(185, -40),
+                        new Vector2(185, 50)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        bouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(185, 50),
+                        new Vector2(185, -40)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        bouncePath.addSegment(
+                PathArcSegment.fromPoints(
+                        new Vector2(185, -40),
+                        new Vector2(215, -65),
+                        new Vector2(275, -40)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        bouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(275, -40),
+                        new Vector2(275, 50)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        bouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(275, 50),
+                        new Vector2(275, 0)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        bouncePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(275, 0),
+                        new Vector2(335, 0)
+                ),
+                Rotation2.fromDegrees(0)
+        );
+        */
+        bouncePath.subdivide(SUBDIVIDE_ITERATIONS);
+        bounceTrajectory = new Trajectory(bouncePath, constraints);
+
         Path basicLinePath = new Path(Rotation2.fromDegrees(0));
         basicLinePath.addSegment(
                 new PathLineSegment(
@@ -80,70 +330,6 @@ public class AutonomousTrajectories {
                 ),
                 Rotation2.fromDegrees(0)
         );
-        
-        /*
-        basicLinePath.addSegment(
-                new PathLineSegment(
-                        new Vector2(7.5,-7.5),
-                        new Vector2(24,-7.5)
-                )
-        );
-        basicLinePath.addSegment(
-                new PathLineSegment(
-                        new Vector2(24,-7.5),
-                        new Vector2(24,-21)
-                )
-        );
-        basicLinePath.addSegment(
-                new PathLineSegment(
-                        new Vector2(24,-21),
-                        new Vector2(69,-21)
-                )
-        );
-        basicLinePath.addSegment(
-                new PathLineSegment(
-                        new Vector2(69,-21),
-                        new Vector2(69,-9)
-                )
-        );
-        basicLinePath.addSegment(
-                new PathLineSegment(
-                        new Vector2(69,-9),
-                        new Vector2(78,-9)
-                )
-        );
-        basicLinePath.addSegment(
-                new PathLineSegment(
-                        new Vector2(78,-9),
-                        new Vector2(78,-21)
-                )
-        );
-        basicLinePath.addSegment(
-                new PathLineSegment(
-                        new Vector2(78,-21),
-                        new Vector2(69,-21)
-                )
-        );
-        basicLinePath.addSegment(
-                new PathLineSegment(
-                        new Vector2(69,-21),
-                        new Vector2(69,-9)
-                )
-        );
-        basicLinePath.addSegment(
-                new PathLineSegment(
-                        new Vector2(69,-9),
-                        new Vector2(24,-9)
-                )
-        );
-        basicLinePath.addSegment(
-                new PathLineSegment(
-                        new Vector2(69,0),
-                        new Vector2(69,13.5)
-                )
-        );
-        */
-        
         basicLinePath.subdivide(SUBDIVIDE_ITERATIONS);
         basicLineTrajectory = new Trajectory(basicLinePath, constraints);
         Path habToCargoSideNearPathLeft = new Path(CARGO_SHIP_SIDE_HATCH_ROTATION);
@@ -533,5 +719,14 @@ public class AutonomousTrajectories {
     }
     public Trajectory getBasicLineTrajectory() {
         return basicLineTrajectory;
+    }
+    public Trajectory getbounceTrajectory() {
+        return bounceTrajectory;
+    }
+    public Trajectory getBoxyBounceTrajectory() {
+        return boxyBounceTrajectory;
+    }
+    public Trajectory getSlalomTrajectory() {
+            return slalomTrajectory;
     }
 }
