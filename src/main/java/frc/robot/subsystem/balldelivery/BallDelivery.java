@@ -115,18 +115,19 @@ public class BallDelivery extends SubsystemBase{
         carouselMotor.config_kF(0, 0, 0);
         carouselMotor.configClosedloopRamp(.9);
 
+        hoodMotor.configFactoryDefault();
+        hoodMotor.setSensorPhase(true);
         hoodMotor.setNeutralMode(NeutralMode.Brake);
         hoodMotor.setInverted(false);
-        hoodMotor.configFactoryDefault();
-        hoodMotor.configAllowableClosedloopError(0, 100);
-        hoodMotor.setSelectedSensorPosition(0, 0, 0);
+        hoodMotor.configAllowableClosedloopError(0, 1);
+        //hoodMotor.setSelectedSensorPosition(0, 0, 0);
         hoodMotor.config_kP(0, .5, 0);
         hoodMotor.config_kI(0, iValue, 0);
-        hoodMotor.config_kD(0, dValue, 0);
-        hoodMotor.config_kF(0, 0.0045, 0);
+        hoodMotor.config_kD(0, 0, 0);
+        hoodMotor.config_kF(0, 0, 0);
         hoodMotor.configClosedloopRamp(.9);
 
-        //hoodMotor.set(ControlMode.Position, -1000);
+        //hoodMotor.set(ControlMode.Position, 1000);
 
         
     }
@@ -235,7 +236,7 @@ public class BallDelivery extends SubsystemBase{
     }
     
     public double getCurrentHoodPosition(){
-        return -hoodMotor.getSelectedSensorPosition();
+        return hoodMotor.getSelectedSensorPosition();
     }
 
     public double getTargetCarouselVelocity(){

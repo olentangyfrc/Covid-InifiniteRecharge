@@ -45,13 +45,14 @@ public class AngleHood extends CommandBase {
   }
 
   public boolean isFinished() {
-    if (Math.abs(Math.abs(ballDelivery.getCurrentHoodPosition()) - Math.abs(targetHoodPosition)) < 10) {
+    /*if (Math.abs(Math.abs(ballDelivery.getCurrentHoodPosition()) - Math.abs(targetHoodPosition)) < 10) {
       ballDelivery.stopAngling();
       return true;
     } else {
       logger.info("current hood position " + ballDelivery.getCurrentHoodPosition());
       return false;
-    }
+    }*/
+    return true;
   }
   // Called once the command ends or is interrupted.
   @Override
