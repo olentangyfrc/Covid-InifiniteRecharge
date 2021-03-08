@@ -10,6 +10,7 @@ package frc.robot.subsystem.balldelivery;
 import java.util.logging.Logger;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -120,11 +121,12 @@ public class BallDelivery extends SubsystemBase{
         carouselMotor.configClosedloopRamp(.9);
 
         hoodMotor.configFactoryDefault();
+        hoodMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
         hoodMotor.setSensorPhase(true);
         hoodMotor.setNeutralMode(NeutralMode.Brake);
-        hoodMotor.setInverted(false);
-        hoodMotor.configAllowableClosedloopError(0, 1);
-        //hoodMotor.setSelectedSensorPosition(0, 0, 0);
+        hoodMotor.setInverted(true);
+        hoodMotor.configAllowableClosedloopError(0, 10);
+        hoodMotor.setSelectedSensorPosition(0, 0, 0);
         hoodMotor.config_kP(0, .5, 0);
         hoodMotor.config_kI(0, iValue, 0);
         hoodMotor.config_kD(0, 0, 0);
@@ -144,14 +146,6 @@ public class BallDelivery extends SubsystemBase{
 
         //spin carousel
         carouselMotor.set(ControlMode.Velocity, targetCarouselVelocity);
-        //logger.info("[" + targetCarouselVelocity + "]");
-
-        /*// if switch is triggered, set percent output to 0 to stop spinning
-        if(!stopCarousel.get())
-        {
-            logger.info("stop carousel");
-            stopCarousel();
-        }*/
     }
 
     public void stopCarousel()
@@ -163,8 +157,6 @@ public class BallDelivery extends SubsystemBase{
     public void angleHood(double pos){
         logger.info("angle hood");
         logger.info("angle [" + pos + "]");
-
-        hoodMotor.set(ControlMode.Position, 0);
 
         hoodMotor.set(ControlMode.Position, pos);
     }
