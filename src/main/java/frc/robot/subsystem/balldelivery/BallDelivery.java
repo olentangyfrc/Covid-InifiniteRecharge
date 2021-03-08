@@ -32,7 +32,7 @@ public class BallDelivery extends SubsystemBase{
     private WPI_TalonFX shootingMotorRight; //follower
     private WPI_TalonSRX eatingMotor;
     private WPI_TalonSRX carouselMotor;
-    private WPI_TalonSRX hoodMotor;
+    private TalonSRX hoodMotor;
 
     private DigitalInput stopCarousel;
     private DigitalInput zeroShooter;
@@ -125,13 +125,13 @@ public class BallDelivery extends SubsystemBase{
         hoodMotor.setSensorPhase(true);
         hoodMotor.setNeutralMode(NeutralMode.Brake);
         hoodMotor.setInverted(true);
-        hoodMotor.configAllowableClosedloopError(0, 10);
+        //hoodMotor.configAllowableClosedloopError(0, 10);
         hoodMotor.setSelectedSensorPosition(0, 0, 0);
         hoodMotor.config_kP(0, .5, 0);
-        hoodMotor.config_kI(0, iValue, 0);
+        hoodMotor.config_kI(0, 0.0, 0);
         hoodMotor.config_kD(0, 0, 0);
         hoodMotor.config_kF(0, 0, 0);
-        hoodMotor.configClosedloopRamp(.9);
+        hoodMotor.configClosedloopRamp(0);
 
         //hoodMotor.set(ControlMode.Position, 1000);
 
