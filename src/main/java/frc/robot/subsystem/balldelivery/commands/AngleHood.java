@@ -33,9 +33,9 @@ public class AngleHood extends CommandBase {
   @Override
   public void execute() {
     targetHoodPosition = ballDelivery.getTargetHoodPosition(); 
-    logger.info("targetHood position [" + targetHoodPosition + "]");
-    if(!firstTime)
+    if(firstTime)
     {
+      logger.info("targetHood position [" + targetHoodPosition + "]");
       logger.info("angling hood");
       ballDelivery.angleHood(targetHoodPosition);   
     }
