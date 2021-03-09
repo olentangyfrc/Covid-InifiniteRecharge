@@ -33,7 +33,7 @@ public class OI {
     static Logger logger = Logger.getLogger(SubsystemFactory.class.getName());
     
     private double  deadzone    = 0.09;
-    private double  scaleFactor = 1.0;
+    private double  scaleFactor = 1.2;
 
     private HashMap<Integer, String> allocatedJoyButtons = new HashMap<Integer, String>();
 
@@ -125,6 +125,7 @@ public class OI {
         auxJoy = new Joystick(2);
         leftButtonBox = new Joystick(3);
         rightButtonBox = new Joystick(4);
+        xbox = new XboxController(5);
     }
     public void init2910() {
         xbox = new XboxController(0);
@@ -148,9 +149,12 @@ public class OI {
     public double getAuxJoystickXValue() {
         return getFilteredValue (auxJoy.getX());
     }
-
     public double getAuxJoystickYValue() {
         return getFilteredValue (auxJoy.getY());
+    }
+
+    public double getAuxJoystickZValue() {
+        return getFilteredValue(auxJoy.getZ());
     }
 
     public double getLeftXboxYValue(){
