@@ -57,6 +57,12 @@ public class BallDelivery extends SubsystemBase{
     public double shootingTol;
 
     private CommandBase angleHood;
+
+    public static enum ShootingZone {
+        Green,
+        Yellow,
+        Blue
+    };
     
     public void init(final PortMan portMan) throws Exception {
         logger.info("init");
@@ -142,6 +148,25 @@ public class BallDelivery extends SubsystemBase{
 
     public void setHoodPercentOutput(double output) {
         hoodMotor.set(ControlMode.PercentOutput, output);
+    }
+
+    /**
+     * this should all parameters related to a zone. hood position, shooter velocity, etc
+     * @param zone
+     */
+    public void setShootingZone(BallDelivery.ShootingZone zone) {
+
+        switch (zone) {
+            case Green:
+                targetHoodPosition  = 100;
+                break;
+            case Yellow:
+                targetHoodPosition  = 300;
+                break;
+            case Blue:
+                targetHoodPosition  = 500;
+                break;
+        }
     }
     
     //spin the carousel
