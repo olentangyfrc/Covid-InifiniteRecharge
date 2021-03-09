@@ -35,7 +35,7 @@ public class BallDelivery extends SubsystemBase{
 
     private DigitalInput stopCarousel;
     private DigitalInput zeroShooter;
-    private DigitalInput stopHoodMotor;
+    private DigitalInput stopHoodMotor = new DigitalInput(0);
 
     private double pValue;
     private double iValue;
@@ -174,7 +174,7 @@ public class BallDelivery extends SubsystemBase{
     public void putHoodDown(){
         logger.info("putting hood down");
 
-        while(stopHoodMotor.get())
+        while(stopHoodMotor.get() != true)
         {
             hoodMotor.set(ControlMode.Velocity, 100);
         }
