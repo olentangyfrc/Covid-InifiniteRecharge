@@ -150,7 +150,7 @@ public class BallDelivery extends SubsystemBase{
     public void setHoodPercentOutput(double output) {
 
         logger.log(Level.INFO, String.format("Motor Voltage[%f] Motor%[%f] Set%[%f]",
-            hoodMotor.getMotorOutputVoltage(), hoodMotor.getMotorOutputPercent()));
+            hoodMotor.getMotorOutputVoltage(), hoodMotor.getMotorOutputPercent(), output));
 
         hoodMotor.set(ControlMode.PercentOutput, output);
     }
