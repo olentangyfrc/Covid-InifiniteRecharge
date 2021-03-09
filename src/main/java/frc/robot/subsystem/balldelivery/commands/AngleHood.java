@@ -31,11 +31,14 @@ public class AngleHood extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    double output = 0.0;
+    p = 1.0;
+
     targetHoodPosition = ballDelivery.getTargetHoodPosition(); 
+    output  = (targetHoodPosition - ballDelivery.getCurrentHoodPosition() ) / targetHoodPosition * p;
+
     if (Math.abs(ballDelivery.getCurrentHoodPosition() - targetHoodPosition) > 5) {
-      ballDelivery.setHoodPercentOutput(
-          (targetHoodPosition - ballDelivery.getCurrentHoodPosition() > 0 ) ? p :-p
-          );   
+      ballDelivery.setHoodPercentOutput(output);
     } else {
       ballDelivery.setHoodPercentOutput(0.0);
     }

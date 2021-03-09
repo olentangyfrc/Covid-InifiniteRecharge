@@ -7,6 +7,7 @@
 
 package frc.robot.subsystem.balldelivery;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -90,8 +91,8 @@ public class BallDelivery extends SubsystemBase{
 
         shootingTol = 100;
 
-        shootingMotorLeft.setNeutralMode(NeutralMode.Coast);
         shootingMotorLeft.configFactoryDefault();
+        shootingMotorLeft.setNeutralMode(NeutralMode.Coast);
         shootingMotorLeft.configAllowableClosedloopError(0, 5);
         shootingMotorLeft.setSelectedSensorPosition(0, 0, 0);
         shootingMotorLeft.config_kP(0, pValue, 0);
@@ -100,8 +101,8 @@ public class BallDelivery extends SubsystemBase{
         shootingMotorLeft.config_kF(0, fValue, 0);
         shootingMotorLeft.configClosedloopRamp(.9);
 
-        shootingMotorRight.setNeutralMode(NeutralMode.Coast);
         shootingMotorRight.configFactoryDefault();
+        shootingMotorRight.setNeutralMode(NeutralMode.Coast);
         shootingMotorRight.configAllowableClosedloopError(0, 5);
         shootingMotorRight.setSelectedSensorPosition(0, 0, 0);
         shootingMotorRight.config_kP(0, pValue, 0);
@@ -110,8 +111,8 @@ public class BallDelivery extends SubsystemBase{
         shootingMotorRight.config_kF(0, fValue, 0);
         shootingMotorRight.configClosedloopRamp(.9);
 
-        eatingMotor.setNeutralMode(NeutralMode.Coast);
         eatingMotor.configFactoryDefault();
+        eatingMotor.setNeutralMode(NeutralMode.Coast);
         eatingMotor.configAllowableClosedloopError(0, 5);
         eatingMotor.setSelectedSensorPosition(0, 0, 0);
         eatingMotor.config_kP(0, pValue, 0);
@@ -120,8 +121,8 @@ public class BallDelivery extends SubsystemBase{
         eatingMotor.config_kF(0, 0, 0);
         eatingMotor.configClosedloopRamp(.9);
         
-        carouselMotor.setNeutralMode(NeutralMode.Coast);
         carouselMotor.configFactoryDefault();
+        carouselMotor.setNeutralMode(NeutralMode.Coast);
         carouselMotor.configAllowableClosedloopError(0, 5);
         carouselMotor.setSelectedSensorPosition(0, 0, 0);
         carouselMotor.config_kP(0, pValue, 0);
@@ -135,11 +136,11 @@ public class BallDelivery extends SubsystemBase{
         hoodMotor.setSensorPhase(true);
         hoodMotor.setNeutralMode(NeutralMode.Brake);
         hoodMotor.setInverted(true);
-        //hoodMotor.configAllowableClosedloopError(0, 0);
+        hoodMotor.configAllowableClosedloopError(0, 5);
         hoodMotor.setSelectedSensorPosition(0, 0, 0);
         hoodMotor.config_kP(0, 1.0, 0);
         hoodMotor.config_kI(0, 0.0, 0);
-        hoodMotor.config_kD(0, 100, 0);
+        hoodMotor.config_kD(0, 0, 0);
         hoodMotor.config_kF(0, 0, 0);
 
         angleHood = new AngleHood(this);
@@ -147,6 +148,10 @@ public class BallDelivery extends SubsystemBase{
     }
 
     public void setHoodPercentOutput(double output) {
+
+        logger.log(Level.INFO, String.format("Motor Voltage[%f] Motor%[%f] Set%[%f]",
+            hoodMotor.getMotorOutputVoltage(), hoodMotor.getMotorOutputPercent()));
+
         hoodMotor.set(ControlMode.PercentOutput, output);
     }
 
