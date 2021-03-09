@@ -35,7 +35,7 @@ public class BallDelivery extends SubsystemBase{
 
     private DigitalInput stopCarousel;
     private DigitalInput zeroShooter;
-    private DigitalInput stopHoodMotor = new DigitalInput(0);
+    private DigitalInput stopHoodMotor;
 
     private double pValue;
     private double iValue;
@@ -60,6 +60,8 @@ public class BallDelivery extends SubsystemBase{
         eatingMotor = new WPI_TalonSRX(portMan.acquirePort(PortMan.can_12_label, "EatingMotor"));
         carouselMotor = new WPI_TalonSRX(portMan.acquirePort(PortMan.can_11_label, "CarouselMotor"));
         hoodMotor = new WPI_TalonSRX(portMan.acquirePort(PortMan.can_27_label, "HoodMotor"));
+
+        stopHoodMotor = new DigitalInput(0);
         
         shootingMotorRight.follow(shootingMotorLeft);
         shootingMotorLeft.setInverted(true);
