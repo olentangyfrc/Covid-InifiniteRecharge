@@ -65,6 +65,7 @@ public class AutonomousTrajectories {
     private final Trajectory bounceTrajectory;
     private final Trajectory boxyBounceTrajectory;
     private final Trajectory slalomTrajectory;
+    private final Trajectory barrelRacingTrajectory;
 /*
         y+: Left
         y-: Right
@@ -75,12 +76,171 @@ public class AutonomousTrajectories {
 */
     public AutonomousTrajectories(ITrajectoryConstraint... constraints) {
         // <editor-fold desc="Hab to Cargo Ship Side Near">
+        Path barrelRacingPath = new Path(Rotation2.ZERO);
+        barrelRacingPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(0, 0),
+                        new Vector2(135, 0)
+                ),
+                Rotation2.ZERO
+        );
+        barrelRacingPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(135, 0),
+                        new Vector2(135, -50)
+                ),
+                Rotation2.ZERO
+        );
+        barrelRacingPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(135, -50),
+                        new Vector2(75, -50)
+                ),
+                Rotation2.ZERO
+        );
+        barrelRacingPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(75, -50),
+                        new Vector2(75, 0)
+                ),
+                Rotation2.ZERO
+        );
+        barrelRacingPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(75, 0),
+                        new Vector2(225, 0)
+                ),
+                Rotation2.ZERO
+        );
+        barrelRacingPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(225, 0),
+                        new Vector2(225, 60)
+                ),
+                Rotation2.ZERO
+        );
+        barrelRacingPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(225, 60),
+                        new Vector2(165, 60)
+                ),
+                Rotation2.ZERO
+        );
+        barrelRacingPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(165, 60),
+                        new Vector2(165, 0)
+                ),
+                Rotation2.ZERO
+        );
+        barrelRacingPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(165, 0),
+                        new Vector2(225, -45)
+                ),
+                Rotation2.ZERO
+        );
+        barrelRacingPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(225, -45),
+                        new Vector2(285, -45)
+                ),
+                Rotation2.ZERO
+        );
+        barrelRacingPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(285, -45),
+                        new Vector2(285, 0)
+                ),
+                Rotation2.ZERO
+        );
+        barrelRacingPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(285, 0),
+                        new Vector2(10, 0)
+                ),
+                Rotation2.ZERO
+        );
+
+        barrelRacingPath.subdivide(SUBDIVIDE_ITERATIONS);
+        barrelRacingTrajectory = new Trajectory(barrelRacingPath, constraints);
+
         Path slalomPath = new Path(Rotation2.ZERO);
 
         slalomPath.addSegment(
                 new PathLineSegment(
                         new Vector2(0, 0),
-                        new Vector2(65, 70)
+                        new Vector2(30, 0)
+                ),
+                Rotation2.ZERO
+        );
+        slalomPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(30, 0),
+                        new Vector2(30, 70)
+                ),
+                Rotation2.ZERO
+        );
+        slalomPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(30, 70),
+                        new Vector2(225, 70)
+                ),
+                Rotation2.ZERO
+        );
+        slalomPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(225, 70),
+                        new Vector2(225, -10)
+                ),
+                Rotation2.ZERO
+        );
+        slalomPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(225, -10),
+                        new Vector2(275, -10)
+                ),
+                Rotation2.ZERO
+        );
+        slalomPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(275, -10),
+                        new Vector2(275, 90)
+                ),
+                Rotation2.ZERO
+        );
+        slalomPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(275, 90),
+                        new Vector2(205, 90)
+                ),
+                Rotation2.ZERO
+        );
+        slalomPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(205, 90),
+                        new Vector2(215, -10)
+                ),
+                Rotation2.ZERO
+        );
+        slalomPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(215, -10),
+                        new Vector2(40, -10)
+                ),
+                Rotation2.ZERO
+        );
+        slalomPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(40, -10),
+                        new Vector2(40, 70)
+                ),
+                Rotation2.ZERO
+        );
+        slalomPath.addSegment(
+                new PathLineSegment(
+                        new Vector2(40, 70),
+                        new Vector2(-10, 70)
                 ),
                 Rotation2.ZERO
         );
@@ -727,6 +887,9 @@ public class AutonomousTrajectories {
         return boxyBounceTrajectory;
     }
     public Trajectory getSlalomTrajectory() {
-            return slalomTrajectory;
+        return slalomTrajectory;
+    }
+    public Trajectory getBarrelRacingTrajectory() {
+        return barrelRacingTrajectory;
     }
 }
