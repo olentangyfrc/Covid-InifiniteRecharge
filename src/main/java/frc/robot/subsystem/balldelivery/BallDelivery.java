@@ -344,6 +344,16 @@ public class BallDelivery extends SubsystemBase{
         return atTargetEatingVel;
     }
 
+    public boolean isHoodLimitSwitchHit(){
+        if(stopHoodMotor.get() == true)
+        {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     /*public double getCurrent(){
         //return motor.getSupplyCurrent();
     }*/

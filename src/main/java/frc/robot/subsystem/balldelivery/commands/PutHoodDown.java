@@ -42,6 +42,12 @@ public class PutHoodDown extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    if(ballDelivery.isHoodLimitSwitchHit())
+    {
+      return stop;
+    }
+    else{
+      return false;
+    }
   }
 }
