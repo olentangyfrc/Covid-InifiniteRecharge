@@ -71,6 +71,8 @@ public class BallDelivery extends SubsystemBase{
         eatingMotor = new WPI_TalonSRX(portMan.acquirePort(PortMan.can_12_label, "EatingMotor"));
         carouselMotor = new WPI_TalonSRX(portMan.acquirePort(PortMan.can_11_label, "CarouselMotor"));
         hoodMotor = new WPI_TalonSRX(portMan.acquirePort(PortMan.can_27_label, "HoodMotor"));
+
+        stopHoodMotor = new DigitalInput(0);
         
         shootingMotorRight.follow(shootingMotorLeft);
         shootingMotorLeft.setInverted(true);
@@ -197,6 +199,17 @@ public class BallDelivery extends SubsystemBase{
 
         hoodMotor.set(ControlMode.PercentOutput, 0);
     }
+
+    public void putHoodDown(){
+        logger.info("putting hood down");
+
+        while(stopHoodMotor.get() != true)
+        {
+            hoodMotor.set(ControlMode.Velocity, 100);
+        }
+        hoodMotor.set(ControlMode.PercentOutput, 0);
+    }   
+
 
     public void eatBall(){
         //logger.info("eat ball");
@@ -358,6 +371,16 @@ public class BallDelivery extends SubsystemBase{
         if(Math.abs(getCurrentEatingVelocity() - targetEatingVelocity) <= eatingTol)
             atTargetEatingVel = true;
         return atTargetEatingVel;
+    }
+
+    public boolean isHoodLimitSwitchHit(){
+        if(stopHoodMotor.get() == true)
+        {
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     /*public double getCurrent(){
