@@ -10,16 +10,19 @@ package frc.robot.subsystem.balldelivery;
 import java.util.logging.Logger;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.controller.HolonomicDriveController;
 import frc.robot.subsystem.PortMan;
+import frc.robot.subsystem.balldelivery.commands.AngleHood;
 
 /**
  * Add your docs here.
@@ -31,7 +34,7 @@ public class BallDelivery extends SubsystemBase{
     private WPI_TalonFX shootingMotorRight; //follower
     private WPI_TalonSRX eatingMotor;
     private WPI_TalonSRX carouselMotor;
-    private WPI_TalonSRX hoodMotor;
+    private TalonSRX hoodMotor;
 
     private DigitalInput stopCarousel;
     private DigitalInput zeroShooter;
@@ -52,6 +55,8 @@ public class BallDelivery extends SubsystemBase{
 
     public double eatingTol;
     public double shootingTol;
+
+    private CommandBase angleHood;
     
     public void init(final PortMan portMan) throws Exception {
         logger.info("init");
@@ -120,20 +125,23 @@ public class BallDelivery extends SubsystemBase{
         carouselMotor.configClosedloopRamp(.9);
 
         hoodMotor.configFactoryDefault();
+        hoodMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
         hoodMotor.setSensorPhase(true);
         hoodMotor.setNeutralMode(NeutralMode.Brake);
-        hoodMotor.setInverted(false);
-        hoodMotor.configAllowableClosedloopError(0, 1);
-        //hoodMotor.setSelectedSensorPosition(0, 0, 0);
-        hoodMotor.config_kP(0, .5, 0);
-        hoodMotor.config_kI(0, iValue, 0);
-        hoodMotor.config_kD(0, 0, 0);
+        hoodMotor.setInverted(true);
+        //hoodMotor.configAllowableClosedloopError(0, 0);
+        hoodMotor.setSelectedSensorPosition(0, 0, 0);
+        hoodMotor.config_kP(0, 1.0, 0);
+        hoodMotor.config_kI(0, 0.0, 0);
+        hoodMotor.config_kD(0, 100, 0);
         hoodMotor.config_kF(0, 0, 0);
-        hoodMotor.configClosedloopRamp(.9);
 
-        //hoodMotor.set(ControlMode.Position, 1000);
+        angleHood = new AngleHood(this);
+        setDefaultCommand(angleHood);
+    }
 
-        
+    public void setHoodPercentOutput(double output) {
+        hoodMotor.set(ControlMode.PercentOutput, output);
     }
     
     //spin the carousel
@@ -144,14 +152,6 @@ public class BallDelivery extends SubsystemBase{
 
         //spin carousel
         carouselMotor.set(ControlMode.Velocity, targetCarouselVelocity);
-        //logger.info("[" + targetCarouselVelocity + "]");
-
-        /*// if switch is triggered, set percent output to 0 to stop spinning
-        if(!stopCarousel.get())
-        {
-            logger.info("stop carousel");
-            stopCarousel();
-        }*/
     }
 
     public void stopCarousel()
@@ -163,8 +163,6 @@ public class BallDelivery extends SubsystemBase{
     public void angleHood(double pos){
         logger.info("angle hood");
         logger.info("angle [" + pos + "]");
-
-        hoodMotor.set(ControlMode.Position, 0);
 
         hoodMotor.set(ControlMode.Position, pos);
     }

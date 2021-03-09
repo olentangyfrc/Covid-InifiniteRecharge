@@ -379,8 +379,10 @@ public class SubsystemFactory {
         SpinCarousel cco = new SpinCarousel(ballDelivery);
         OI.getInstance().bind(cco, OI.RightJoyButton6, OI.WhenPressed);
 
+        /*
         AngleHood ccp = new AngleHood(ballDelivery);
         OI.getInstance().bind(ccp, OI.RightJoyButton4, OI.WhenPressed);
+        */
 
         StopCarousel ccq = new StopCarousel(ballDelivery);
         OI.getInstance().bind(ccq, OI.RightJoyButton7, OI.WhenPressed);
