@@ -17,10 +17,12 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.controller.HolonomicDriveController;
 import frc.robot.subsystem.PortMan;
+import frc.robot.subsystem.balldelivery.commands.AngleHood;
 
 /**
  * Add your docs here.
@@ -53,6 +55,8 @@ public class BallDelivery extends SubsystemBase{
 
     public double eatingTol;
     public double shootingTol;
+
+    private CommandBase angleHood;
     
     public void init(final PortMan portMan) throws Exception {
         logger.info("init");
@@ -125,17 +129,19 @@ public class BallDelivery extends SubsystemBase{
         hoodMotor.setSensorPhase(true);
         hoodMotor.setNeutralMode(NeutralMode.Brake);
         hoodMotor.setInverted(true);
-        //hoodMotor.configAllowableClosedloopError(0, 10);
+        //hoodMotor.configAllowableClosedloopError(0, 0);
         hoodMotor.setSelectedSensorPosition(0, 0, 0);
-        hoodMotor.config_kP(0, .5, 0);
+        hoodMotor.config_kP(0, 1.0, 0);
         hoodMotor.config_kI(0, 0.0, 0);
-        hoodMotor.config_kD(0, 0, 0);
+        hoodMotor.config_kD(0, 100, 0);
         hoodMotor.config_kF(0, 0, 0);
-        hoodMotor.configClosedloopRamp(0);
 
-        //hoodMotor.set(ControlMode.Position, 1000);
+        angleHood = new AngleHood(this);
+        setDefaultCommand(angleHood);
+    }
 
-        
+    public void setHoodPercentOutput(double output) {
+        hoodMotor.set(ControlMode.PercentOutput, output);
     }
     
     //spin the carousel

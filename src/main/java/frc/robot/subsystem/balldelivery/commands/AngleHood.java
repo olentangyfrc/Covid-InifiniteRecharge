@@ -9,6 +9,7 @@ public class AngleHood extends CommandBase {
   private BallDelivery ballDelivery;
   private double targetHoodPosition;
   private boolean firstTime = true; 
+  double p = 0.2;
   private boolean stop;
   private static Logger logger = Logger.getLogger(StopShooting.class.getName());
 
@@ -18,7 +19,6 @@ public class AngleHood extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     ballDelivery = bd;
     addRequirements(bd);
-    logger.info("creates AngleHood");
   }
 
   // Called when the command is initially scheduled.
@@ -26,33 +26,23 @@ public class AngleHood extends CommandBase {
   public void initialize() {
     logger.info("starts AngleHood");
     stop = false;
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     targetHoodPosition = ballDelivery.getTargetHoodPosition(); 
-    if(firstTime)
-    {
-      logger.info("targetHood position [" + targetHoodPosition + "]");
-      logger.info("angling hood");
-      ballDelivery.angleHood(targetHoodPosition);   
+    if (Math.abs(ballDelivery.getCurrentHoodPosition() - targetHoodPosition) > 5) {
+      ballDelivery.setHoodPercentOutput(
+          (targetHoodPosition - ballDelivery.getCurrentHoodPosition() > 0 ) ? p :-p
+          );   
+    } else {
+      ballDelivery.setHoodPercentOutput(0.0);
     }
-
-    firstTime = false;
-     
   }
 
   public boolean isFinished() {
-    /*if (Math.abs(Math.abs(ballDelivery.getCurrentHoodPosition()) - Math.abs(targetHoodPosition)) < 10) {
-      ballDelivery.stopAngling();
-      return true;
-    } else {
-      logger.info("current hood position " + ballDelivery.getCurrentHoodPosition());
-      return false;
-    }*/
-    return true;
+    return false;
   }
   // Called once the command ends or is interrupted.
   @Override
