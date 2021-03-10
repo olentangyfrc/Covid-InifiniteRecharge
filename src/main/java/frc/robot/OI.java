@@ -287,9 +287,4 @@ public class OI {
             return raw * (scaleFactor); // Set the output to a ceratin percent of of the input
         }
     }
-
-    public void setUseXBox(boolean xbox) {
-        useXbox = xbox;
-    }
-
 }
