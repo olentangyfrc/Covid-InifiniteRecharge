@@ -85,8 +85,6 @@ public class Robot extends TimedRobot {
 
     try {
       subsystemFactory.init(dManager, PortMan.getInstance());
-      DriverStation ds;
-
     } catch (Exception e) {
       StringWriter writer = new StringWriter();
       PrintWriter pw  = new PrintWriter(writer);
