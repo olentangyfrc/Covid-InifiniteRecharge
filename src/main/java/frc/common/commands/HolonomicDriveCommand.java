@@ -57,7 +57,7 @@ public class HolonomicDriveCommand extends CommandBase {
 
         Vector2 translation = new Vector2(forward, strafe);
         //logger.log(Level.INFO, output);
-        DrivetrainSubsystem2910.getInstance().holonomicDrive(translation, rotation, true);
+        DrivetrainSubsystem2910.getInstance().holonomicDrive(translation, rotation, false);
         //String output = String.format("Translation: (%f,%f), Rotation: %f, FieldOriented: %b", translation.getX(), translation.getY(), rotation, false);
         //logger.log(Level.INFO, output);
 

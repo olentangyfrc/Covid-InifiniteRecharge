@@ -65,7 +65,7 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
     );
 
     public static final ITrajectoryConstraint[] CONSTRAINTS = {
-            new MaxVelocityConstraint(MAX_VELOCITY * 0.3),
+            new MaxVelocityConstraint(MAX_VELOCITY * 0.6),
             new MaxAccelerationConstraint(13.0 * 12.0),
             new CentripetalAccelerationConstraint(25.0 * 12.0)
     };

@@ -108,20 +108,20 @@ public class AutonomousTrajectories {
         barrelRacingPath.addSegment(
                 new PathLineSegment(
                         new Vector2(75, 0),
-                        new Vector2(225, 0)
+                        new Vector2(215, 0)
                 ),
                 Rotation2.ZERO
         );
         barrelRacingPath.addSegment(
                 new PathLineSegment(
-                        new Vector2(225, 0),
-                        new Vector2(225, 60)
+                        new Vector2(215, 0),
+                        new Vector2(215, 60)
                 ),
                 Rotation2.ZERO
         );
         barrelRacingPath.addSegment(
                 new PathLineSegment(
-                        new Vector2(225, 60),
+                        new Vector2(215, 60),
                         new Vector2(165, 60)
                 ),
                 Rotation2.ZERO
@@ -136,20 +136,20 @@ public class AutonomousTrajectories {
         barrelRacingPath.addSegment(
                 new PathLineSegment(
                         new Vector2(165, 0),
-                        new Vector2(225, -45)
+                        new Vector2(205, -50)
                 ),
                 Rotation2.ZERO
         );
         barrelRacingPath.addSegment(
                 new PathLineSegment(
-                        new Vector2(225, -45),
-                        new Vector2(285, -45)
+                        new Vector2(205, -50),
+                        new Vector2(285, -50)
                 ),
                 Rotation2.ZERO
         );
         barrelRacingPath.addSegment(
                 new PathLineSegment(
-                        new Vector2(285, -45),
+                        new Vector2(285, -50),
                         new Vector2(285, 0)
                 ),
                 Rotation2.ZERO
@@ -157,7 +157,7 @@ public class AutonomousTrajectories {
         barrelRacingPath.addSegment(
                 new PathLineSegment(
                         new Vector2(285, 0),
-                        new Vector2(10, 0)
+                        new Vector2(0, 0)
                 ),
                 Rotation2.ZERO
         );
