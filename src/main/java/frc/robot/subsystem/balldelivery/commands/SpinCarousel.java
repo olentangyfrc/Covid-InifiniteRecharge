@@ -8,6 +8,7 @@ import frc.robot.subsystem.balldelivery.BallDelivery;
 public class SpinCarousel extends CommandBase {
   private BallDelivery ballDelivery;
   private boolean stop;
+  private boolean isFirstTime;
   private static Logger logger = Logger.getLogger(ShootBall.class.getName());
 
   //private int direction = 0;
@@ -24,13 +25,19 @@ public class SpinCarousel extends CommandBase {
   public void initialize() {
     logger.info("starts SpinCarousel");
     stop = false;
+    isFirstTime = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    logger.info("shooting ball");
-    ballDelivery.spinCarousel();
+    logger.info("spinning carousel");
+    if(isFirstTime == false)
+    {
+      ballDelivery.spinCarousel();
+      isFirstTime = true;
+    }
+    ballDelivery.stopCarouselSwitch();
   }
 
   // Called once the command ends or is interrupted.
@@ -42,7 +49,7 @@ public class SpinCarousel extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return ballDelivery.stopCarouselSwitch();
   }
 }
 

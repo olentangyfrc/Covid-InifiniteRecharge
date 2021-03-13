@@ -56,6 +56,9 @@ public class BallDelivery extends SubsystemBase{
     public double eatingTol;
     public double shootingTol;
 
+    private DigitalInput carouselReceiverSwitch;
+    private DigitalInput carouselSenderSwitch;
+
     private CommandBase angleHood;
 
     public static enum ShootingZone {
@@ -76,6 +79,9 @@ public class BallDelivery extends SubsystemBase{
         
         shootingMotorRight.follow(shootingMotorLeft);
         shootingMotorLeft.setInverted(true);
+
+        carouselReceiverSwitch = new DigitalInput(portMan.acquirePort(PortMan.digital1_label, "CarouselSensor1"));
+        carouselSenderSwitch = new DigitalInput(portMan.acquirePort(PortMan.digital2_label, "CarouselSensor2"));
 
         //shootingMotorLeft.setInverted(false);
 
@@ -184,6 +190,15 @@ public class BallDelivery extends SubsystemBase{
     public void stopCarousel()
     {
         carouselMotor.set(ControlMode.PercentOutput, 0);
+    }
+
+    public boolean stopCarouselSwitch(){
+       if(carouselReceiverSwitch.get() == true)
+       {
+           stopCarousel();
+            return true;
+       }
+       return false;
     }
 
     //angle the shooter
@@ -381,6 +396,14 @@ public class BallDelivery extends SubsystemBase{
         else{
             return false;
         }
+    }
+
+    public boolean getCarouselSenderSwitch(){
+        return carouselSenderSwitch.get();
+    }
+
+    public boolean getCarouselReceiverSwitch(){
+        return carouselReceiverSwitch.get();
     }
 
     /*public double getCurrent(){
