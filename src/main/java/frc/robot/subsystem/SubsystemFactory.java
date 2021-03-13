@@ -274,6 +274,8 @@ public class SubsystemFactory {
 
     private void initRIO2(PortMan portMan) throws Exception {
         logger.info("Initializing RIO2");
+        FootballPlayground footballPlayground = new FootballPlayground();
+        footballPlayground.init(portMan);
     }
 
     private void initRIO3(PortMan portMan ) throws Exception {

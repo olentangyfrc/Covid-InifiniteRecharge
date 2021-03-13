@@ -14,6 +14,6 @@ public class FootballPlayground extends SubsystemBase{
 
     public void init(final PortMan portMan) throws Exception {
         beamBrakerSender = new DigitalInput(portMan.acquirePort(PortMan.digital0_label, "Beam Braker Sender"));
-        beamBrakerReceiver = new DigitalInput(portMan.acquirePort(PortMan.digital1_label, "Beam Braker Sender"));
+        beamBrakerReceiver = new DigitalInput(portMan.acquirePort(PortMan.digital1_label, "Beam Braker Receiver"));
     }
 }
