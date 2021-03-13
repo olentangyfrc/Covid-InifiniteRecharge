@@ -334,6 +334,10 @@ public class BallDelivery extends SubsystemBase{
         return shootingTol;
     }
 
+    public boolean getCarouselReceiverSwitch(){
+        return carouselReceiverSwitch.get();
+    }
+
     public void setPValue(double p){
         pValue = p;
     }
@@ -396,9 +400,6 @@ public class BallDelivery extends SubsystemBase{
         }
     }
 
-    public boolean getCarouselReceiverSwitch(){
-        return carouselReceiverSwitch.get();
-    }
 
     /*public double getCurrent(){
         //return motor.getSupplyCurrent();
