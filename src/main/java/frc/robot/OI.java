@@ -3,13 +3,15 @@ package frc.robot;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.GenericHID.HIDType;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 //import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystem.SubsystemFactory;
 
 
@@ -110,6 +112,13 @@ public class OI {
     public static final int RightButtonBox10 = 54;
     public static final int RightButtonBox11 = 55; 
 
+    public static final int XboxA = 56;
+    public static final int XboxB = 57;
+    public static final int XboxX = 58;
+    public static final int XboxY = 59;
+    public static final int XboxLB = 60;
+	public static final int XboxRB = 61;
+
     public static final int WhenPressed         = 1;
     public static final int WhenReleased        = 2;
     public static final int WhileHeld           = 3;
@@ -117,7 +126,7 @@ public class OI {
     public static final int CancelWhenPressed   = 5;
 
     public void init() {
-       init4611();
+        xbox = new XboxController(0);
     }
     public void init4611() {
         leftJoy = new Joystick(0); // The left joystick exists on this port in robot map
@@ -132,42 +141,75 @@ public class OI {
     }
 
     public double getLeftJoystickXValue() {
-        return getFilteredValue (leftJoy.getX());
+        if(leftJoy != null) {
+            return getFilteredValue (leftJoy.getX());
+        }
+        return 0;
     }
 
     public double getLeftJoystickYValue() {
-        return getFilteredValue (leftJoy.getY());
+        if(leftJoy != null) {
+            return getFilteredValue (leftJoy.getY());
+        }
+        return 0;
     }
 
     public double getRightJoystickXValue() {
-        return getFilteredValue (rightJoy.getX());
+        if(rightJoy != null) {
+            return getFilteredValue (rightJoy.getX());
+        }
+        return 0;
     }
 
     public double getRightJoystickYValue() {
-        return getFilteredValue (rightJoy.getY());
+        if(rightJoy != null) {
+            return getFilteredValue (rightJoy.getY());
+        }
+        return 0;
     }
     public double getAuxJoystickXValue() {
-        return getFilteredValue (auxJoy.getX());
+        if(auxJoy != null) {
+            return getFilteredValue (auxJoy.getX());
+        }
+        return 0;
     }
     public double getAuxJoystickYValue() {
-        return getFilteredValue (auxJoy.getY());
+        if(auxJoy != null) {
+            return getFilteredValue (auxJoy.getY());
+        }
+        return 0;
     }
 
     public double getAuxJoystickZValue() {
-        return getFilteredValue(auxJoy.getZ());
+        if(auxJoy != null) {
+            return getFilteredValue (auxJoy.getZ());
+        }
+        return 0;
     }
 
     public double getLeftXboxYValue(){
-        return getFilteredValue(xbox.getY(Hand.kLeft));
+        if(xbox != null) {
+            return getFilteredValue(xbox.getY(Hand.kLeft));
+        }
+        return 0;
     }
     public double getLeftXboxXValue() {
-        return getFilteredValue(xbox.getX(Hand.kLeft));
+        if(xbox != null) {
+            return getFilteredValue(xbox.getX(Hand.kLeft));
+        }
+        return 0;
     }
     public double getRightXboxYValue(){
-        return getFilteredValue(xbox.getY(Hand.kRight));
+        if(xbox != null) {
+            return getFilteredValue(xbox.getY(Hand.kRight));
+        }
+        return 0;
     }
     public double getRightXboxXValue() {
-        return getFilteredValue(xbox.getX(Hand.kRight));
+        if(xbox != null) {
+            return getFilteredValue(xbox.getX(Hand.kRight));
+        }
+        return 0;
     }
     /**
      * this method binds a Command to a Joystick button for an action
@@ -176,11 +218,11 @@ public class OI {
      * @param action - the button action that invokes the Command
      */
     public void bind(Command c, int button, int action) throws OzoneException {
-        Joystick    j;
+        GenericHID j;
         // see constants in this file LeftJoyButton1  = 1;
         // see constants in this file RightJoyButton1  = 11;
         // Joystick button values 1-10 are for left joystick
-        // Joystick button values 11-20 are for righ joystick
+        // Joystick button values 11-20 are for right joystick
         
         if(allocatedJoyButtons.get(button) != null) {
             if(action == 2) {
@@ -214,15 +256,19 @@ public class OI {
             j = rightButtonBox;
             button -= 44;
         }
+        else if(button >= 56 && button <= 61) {
+            j = xbox;
+            button -= 55;
+        }
         else {
             throw new OzoneException ("Unrecognized joystick button [" + button + "]");
         }
-
+        logger.info("Input type: " + j.getType().toString());
 		String []parts	= c.getClass().getName().split("\\.");
         logger.info("binding [" + parts[parts.length-1] + "] to joy[" + j.getPort() + "] b[" + button + "]");
 
-        Button  b = new JoystickButton(j, button);
-        
+        JoystickButton b = new JoystickButton(j, button);
+
         switch (action) {
             case OI.WhenPressed:
                 b.whenPressed(c);
