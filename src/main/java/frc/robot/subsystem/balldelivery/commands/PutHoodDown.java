@@ -5,49 +5,49 @@ import java.util.logging.Logger;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 
-public class AngleHood extends CommandBase {
+public class PutHoodDown extends CommandBase {
   private BallDelivery ballDelivery;
-  private double targetHoodPosition;
-  private boolean firstTime = true; 
-  double p = 0.4;
   private boolean stop;
   private static Logger logger = Logger.getLogger(StopShooting.class.getName());
 
   //private int direction = 0;
 
-  public AngleHood(BallDelivery bd) {
+  public PutHoodDown(BallDelivery bd) {
     // Use addRequirements() here to declare subsystem dependencies.
     ballDelivery = bd;
     addRequirements(bd);
+    logger.info("creates PutHoodDown");
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    logger.info("starts AngleHood");
+    logger.info("starts PutHoodDown");
     stop = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    targetHoodPosition = ballDelivery.getTargetHoodPosition(); 
-    if (Math.abs(ballDelivery.getCurrentHoodPosition() - targetHoodPosition) > 10) {
-      ballDelivery.setHoodPercentOutput(
-          (targetHoodPosition - ballDelivery.getCurrentHoodPosition() > 0 ) ? p :-p
-          );   
-    } else {
-      ballDelivery.setHoodPercentOutput(0.0);
-    }
+    logger.info("putting hood down");
+    ballDelivery.putHoodDown();   
   }
 
-  public boolean isFinished() {
-    return false;
-  }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     stop = true;
   }
 
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    if(ballDelivery.isHoodLimitSwitchHit())
+    {
+      return stop;
+    }
+    else{
+      return false;
+    }
+  }
 }

@@ -72,7 +72,8 @@ public class Mk2SwerveModule extends SwerveModule {
         this.angleMotor = angleMotor;
         this.angleEncoder = angleEncoder;
         this.driveMotor = driveMotor;
-        this.driveEncoder = new CANEncoder(driveMotor);
+        //this.driveEncoder = new CANEncoder(driveMotor);
+        this.driveEncoder = driveMotor.getEncoder();
 
         driveMotor.setSmartCurrentLimit(60);
         driveMotor.setPeriodicFramePeriod(CANSparkMaxLowLevel.PeriodicFrame.kStatus0, 500);

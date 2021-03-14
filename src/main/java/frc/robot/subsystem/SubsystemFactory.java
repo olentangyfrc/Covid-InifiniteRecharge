@@ -17,9 +17,11 @@ import frc.robot.subsystem.balldelivery.commands.ShootBall;
 import frc.robot.subsystem.balldelivery.commands.StopShooting;
 import frc.robot.subsystem.balldelivery.commands.StopEating;
 import frc.robot.subsystem.balldelivery.commands.EatBalls;
+import frc.robot.subsystem.balldelivery.commands.PutHoodDown;
 import frc.robot.subsystem.balldelivery.commands.SpinCarousel;
 import frc.robot.subsystem.balldelivery.commands.SpitOutBalls;
 import frc.robot.subsystem.balldelivery.commands.AngleHood;
+import frc.robot.subsystem.balldelivery.commands.SetShootingZone;
 import frc.robot.subsystem.balldelivery.commands.StopAngling;
 import frc.robot.subsystem.balldelivery.commands.DeliverBall;
 import frc.robot.subsystem.balldelivery.commands.StopDelivery;
@@ -76,10 +78,12 @@ import frc.robot.subsystem.transport.commands.*;
 import frc.robot.subsystem.transport.commands.TakeIn;
 import frc.robot.subsystem.transport.commands.StopTransport;
 import frc.robot.subsystem.swerve.DrivetrainSubsystem;
+import frc.robot.subsystem.telemetry.commands.ZeroGyro;
 import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
 import frc.common.drivers.Gyroscope;
 import frc.common.drivers.NavX;
 import edu.wpi.first.wpilibj.SPI;
+import frc.robot.subsystem.swerve.commands.ToggleKeepSquare;
 
 public class SubsystemFactory {
 
@@ -216,10 +220,10 @@ public class SubsystemFactory {
         canAssignments.put("BR.Swerve.angle", PortMan.can_31_label);
         canAssignments.put("BR.Swerve.drive", PortMan.can_30_label);
 
-        double flOff = -Math.toRadians(58.5);
-        double frOff = -Math.toRadians(142.6);
-        double blOff = -Math.toRadians(318.9);
-        double brOff = -Math.toRadians(73.16);
+        double flOff = -Math.toRadians(58.7);
+        double frOff = -Math.toRadians(143.5);
+        double blOff = -Math.toRadians(319);
+        double brOff = -Math.toRadians(72.9);
 
         driveTrain = DrivetrainSubsystem2910.getInstance();
         driveTrain.init(portMan, canAssignments, flOff, blOff, frOff, brOff);
@@ -228,10 +232,13 @@ public class SubsystemFactory {
         ballDelivery.init(portMan);
         displayManager.addBallDelivery(ballDelivery);
 
+        OI.getInstance().bind(new ToggleKeepSquare(driveTrain), OI.XboxA, OI.WhenPressed);
+        OI.getInstance().bind(new ZeroGyro(navX), OI.XboxY, OI.WhenPressed);
+
         //ShootBall cci = new ShootBall(ballDelivery);
         //OI.getInstance().bind(cci, OI.LeftJoyButton7, OI.WhenPressed);
 
-        ReverseShooter ccj = new ReverseShooter(ballDelivery);
+        /*ReverseShooter ccj = new ReverseShooter(ballDelivery);
         OI.getInstance().bind(ccj, OI.LeftJoyButton10, OI.WhenPressed);
         
         StopShooting cck = new StopShooting(ballDelivery);
@@ -263,6 +270,10 @@ public class SubsystemFactory {
 
         StopAngling cct = new StopAngling(ballDelivery);
         OI.getInstance().bind(cct, OI.RightJoyButton5, OI.WhenPressed);
+
+        PutHoodDown ccu = new PutHoodDown(ballDelivery);
+        OI.getInstance().bind(ccu, OI.RightJoyButton8, OI.WhenPressed);
+        */
 
     }
 
@@ -317,11 +328,11 @@ public class SubsystemFactory {
         canAssignments.put("BR.Swerve.angle", PortMan.can_59_label);
         canAssignments.put("BR.Swerve.drive", PortMan.can_60_label);
 
-        double flOff = -Math.toRadians(338.2);
-        double frOff = -Math.toRadians(266.45);
-        double blOff = -Math.toRadians(61.5);
-        double brOff = -Math.toRadians(125);
-
+        double flOff = -Math.toRadians(339.7);
+        double frOff = -Math.toRadians(266.8);
+        double blOff = -Math.toRadians(271.7);
+        double brOff = -Math.toRadians(122.9);
+      
         driveTrain  = DrivetrainSubsystem2910.getInstance();
         driveTrain.init(portMan, canAssignments, flOff, blOff, frOff, brOff);
 
@@ -332,6 +343,8 @@ public class SubsystemFactory {
         telemetry = new Telemetry();
         telemetry.init(portMan);
         displayManager.addTelemetry(telemetry);
+        
+        OI.getInstance().bind(new ToggleKeepSquare(driveTrain), OI.XboxA, OI.WhenPressed);
 
         //SquareSelf ccc = new SquareSelf(telemetry, 2.34);
         //OI.getInstance().bind(ccc, OI.LeftJoyButton6, OI.WhenPressed);
@@ -348,9 +361,9 @@ public class SubsystemFactory {
         //RotateTowardsBall ccg = new RotateTowardsBall(telemetry);
         //OI.getInstance().bind(ccg, OI.LeftJoyButton11, OI.WhileHeld);
 
-        ChaseBall cch = new ChaseBall(telemetry);
+        /*ChaseBall cch = new ChaseBall(telemetry);
         OI.getInstance().bind(cch, OI.RightJoyButton10, OI.WhileHeld);
-
+        */
         /**
         * shooter stuff goes here
         */
@@ -361,7 +374,7 @@ public class SubsystemFactory {
         //ShootBall cci = new ShootBall(ballDelivery);
         //OI.getInstance().bind(cci, OI.LeftJoyButton7, OI.WhenPressed);
 
-        ReverseShooter ccj = new ReverseShooter(ballDelivery);
+        /*ReverseShooter ccj = new ReverseShooter(ballDelivery);
         OI.getInstance().bind(ccj, OI.LeftJoyButton10, OI.WhenPressed);
         
         StopShooting cck = new StopShooting(ballDelivery);
@@ -370,8 +383,8 @@ public class SubsystemFactory {
         EatBalls ccl = new EatBalls(ballDelivery);
         OI.getInstance().bind(ccl, OI.RightJoyButton11, OI.WhenPressed);
 
-        StopEating ccm = new StopEating(ballDelivery);
-        OI.getInstance().bind(ccm, OI.RightJoyButton10, OI.WhenPressed);
+        //StopEating ccm = new StopEating(ballDelivery);
+        //OI.getInstance().bind(ccm, OI.RightJoyButton10, OI.WhenPressed);
 
         SpitOutBalls ccn = new SpitOutBalls(ballDelivery);
         OI.getInstance().bind(ccn, OI.RightJoyButton3, OI.WhenPressed);
@@ -379,7 +392,7 @@ public class SubsystemFactory {
         SpinCarousel cco = new SpinCarousel(ballDelivery);
         OI.getInstance().bind(cco, OI.RightJoyButton6, OI.WhenPressed);
 
-        AngleHood ccp = new AngleHood(ballDelivery);
+        SetShootingZone ccp = new SetShootingZone(ballDelivery, BallDelivery.ShootingZone.Green);
         OI.getInstance().bind(ccp, OI.RightJoyButton4, OI.WhenPressed);
 
         StopCarousel ccq = new StopCarousel(ballDelivery);
@@ -390,6 +403,7 @@ public class SubsystemFactory {
         
         StopDelivery ccs = new StopDelivery(ballDelivery);
         OI.getInstance().bind(ccs, OI.LeftJoyButton7, OI.WhenPressed);
+        */
     }
 
     private void initRIO99(PortMan portMan) throws Exception {

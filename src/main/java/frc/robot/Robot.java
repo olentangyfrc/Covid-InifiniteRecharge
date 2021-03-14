@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -84,7 +85,6 @@ public class Robot extends TimedRobot {
 
     try {
       subsystemFactory.init(dManager, PortMan.getInstance());
-
     } catch (Exception e) {
       StringWriter writer = new StringWriter();
       PrintWriter pw  = new PrintWriter(writer);
