@@ -21,36 +21,16 @@ public class HolonomicDriveCommand extends CommandBase {
     @Override
     public void execute() {
         //These should be negated if not on Covid bot
-        double forward;
-        if(OI.getInstance().getLeftXboxYValue() != 0) {
-            forward = - OI.getInstance().getLeftXboxYValue();
-        } else if(OI.getInstance().getAuxJoystickYValue() != 0) {
-            forward = - OI.getInstance().getAuxJoystickYValue();
-        } else {
-            forward = - OI.getInstance().getLeftJoystickYValue();
-        }
+        double forward = - OI.getInstance().getLeftXboxYValue();
+        
         // Square the forward stick
         forward = Math.copySign(Math.pow(forward, 2.0), forward);
 
-        double strafe;
-        if(OI.getInstance().getLeftXboxXValue() != 0) {
-            strafe = - OI.getInstance().getLeftXboxXValue();
-        } else if(OI.getInstance().getAuxJoystickXValue() != 0) {
-            strafe = - OI.getInstance().getAuxJoystickXValue();
-        } else {
-            strafe = - OI.getInstance().getLeftJoystickXValue();
-        }
+        double strafe = - OI.getInstance().getLeftXboxXValue();
         // Square the strafe stick
         strafe = Math.copySign(Math.pow(strafe, 2.0), strafe);
 
-        double rotation;
-        if(OI.getInstance().getRightXboxXValue() != 0) {
-            rotation = - OI.getInstance().getRightXboxXValue();
-        } else if(OI.getInstance().getAuxJoystickZValue() != 0) {
-            rotation = - OI.getInstance().getAuxJoystickZValue();
-        } else {
-            rotation = - OI.getInstance().getRightJoystickXValue();
-        }
+        double rotation = - OI.getInstance().getRightXboxXValue();
         // Square the rotation stick
         rotation = Math.copySign(Math.pow(rotation, 2.0), rotation);
 
