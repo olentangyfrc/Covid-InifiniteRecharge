@@ -22,7 +22,7 @@ public class AutonomousSelector {
         SequentialCommandGroup group = new SequentialCommandGroup();
         
         group.addCommands(new FollowTrajectoryCommand(
-            trajectories.getBarrelRacingTrajectory()
+            trajectories.getGreenZoneToReIntroductionZone()
         ));
         return group;
     }

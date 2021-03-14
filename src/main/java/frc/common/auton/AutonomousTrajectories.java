@@ -11,9 +11,22 @@ public class AutonomousTrajectories {
 
     private static final int SUBDIVIDE_ITERATIONS = 8;
 
+
+    //AutonNav Trajectories
     private final Trajectory boxyBounceTrajectory;
     private final Trajectory slalomTrajectory;
     private final Trajectory barrelRacingTrajectory;
+
+    //Insterstellar accuracy Trajectories
+    private final Trajectory greenZonetoReIntroductionZone;/*
+    private final Trajectory reIntroductionZoneToYellowZone;
+    private final Trajectory yellowZonetoReIntroductionZone;
+    private final Trajectory reIntroductionZoneToBlueZone;
+    private final Trajectory blueZonetoReIntroductionZone;
+    private final Trajectory reIntroductionZoneToRedZone;
+    private final Trajectory redZonetoReIntroductionZone;
+    */
+    
 /*
         y+: Left
         y-: Right
@@ -23,6 +36,17 @@ public class AutonomousTrajectories {
 */
     public AutonomousTrajectories(ITrajectoryConstraint... constraints) {
         // <editor-fold desc="Hab to Cargo Ship Side Near">
+        Path greenZoneToReIntroductionZonePath = new Path(Rotation2.fromDegrees(23.2));
+        greenZoneToReIntroductionZonePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(0, 0),
+                        new Vector2(-221, 0)
+                ),
+                Rotation2.ZERO
+        );
+        greenZoneToReIntroductionZonePath.subdivide(SUBDIVIDE_ITERATIONS);
+        greenZonetoReIntroductionZone = new Trajectory(greenZoneToReIntroductionZonePath, constraints);
+
         Path barrelRacingPath = new Path(Rotation2.ZERO);
         barrelRacingPath.addSegment(
                 new PathLineSegment(
@@ -287,5 +311,8 @@ public class AutonomousTrajectories {
     }
     public Trajectory getBarrelRacingTrajectory() {
         return barrelRacingTrajectory;
+    }
+    public Trajectory getGreenZoneToReIntroductionZone() {
+        return greenZonetoReIntroductionZone;
     }
 }
