@@ -11,7 +11,8 @@ public class FootballPlayground extends SubsystemBase{
 
     private DigitalInput beamBrakerSender;
     private DigitalInput beamBrakerReceiver;
-    private boolean lastReading = false;
+    private boolean lastReading = true;
+    private int count = 1;
 
     public void init(final PortMan portMan) throws Exception {
         //beamBrakerSender = new DigitalInput(portMan.acquirePort(PortMan.digital0_label, "Beam Braker Sender"));
@@ -26,7 +27,14 @@ public class FootballPlayground extends SubsystemBase{
         if (lastReading != reading) {
             logger.info(" Receiver [" + reading + "] lastReading [" + lastReading +"]");
             lastReading = reading;
-        }
+            if(lastReading == true){
+                count++;
+                logger.info("" + count);
+            }
 
+            if(count % 4 == 0){
+                logger.info("stop");
+            }
+        }
     }
 }
