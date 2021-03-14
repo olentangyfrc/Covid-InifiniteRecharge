@@ -36,7 +36,7 @@ public class AutonomousTrajectories {
 */
     public AutonomousTrajectories(ITrajectoryConstraint... constraints) {
         // <editor-fold desc="Hab to Cargo Ship Side Near">
-        Path greenZoneToReIntroductionZonePath = new Path(Rotation2.fromDegrees(23.2));
+        Path greenZoneToReIntroductionZonePath = new Path(Rotation2.fromDegrees(26.6));
         greenZoneToReIntroductionZonePath.addSegment(
                 new PathLineSegment(
                         new Vector2(0, 0),

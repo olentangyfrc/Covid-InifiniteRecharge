@@ -37,6 +37,7 @@ import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
 
 import frc.robot.subsystem.SBInterface;
 import frc.robot.subsystem.controlpanel.ControlPanelSBTab;
+import frc.robot.subsystem.InterstellarAccuracyAuton.InterstellarAccuracyAuton;
 
 import java.time.Instant;
 import java.time.Duration;
@@ -72,7 +73,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     resetTime();
-    initTime = Instant.now();
 
     subsystemFactory = SubsystemFactory.getInstance();
 
@@ -163,12 +163,15 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
+    InterstellarAccuracyAuton interstellarAuton = new InterstellarAccuracyAuton(SubsystemFactory.getInstance().getBallDelivery());
+    interstellarAuton.schedule();
   }
   /**
    * This function is called periodically during test mode.
    */
   @Override
   public void testPeriodic() {
+    CommandScheduler.getInstance().run();
   }
   public static void resetTime() {
     initTime = Instant.now();

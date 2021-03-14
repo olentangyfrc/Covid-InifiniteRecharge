@@ -355,7 +355,6 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
         if(!keepSquare) {
             logger.info("KEEP SQUARE ON");
             setSnapRotation(gyro.getAngle().toRadians());
-            snapRotationController.setSetpoint(snapRotation);
             keepSquare = true;
         } else {
             logger.info("KEEP SQUARE OFF");
