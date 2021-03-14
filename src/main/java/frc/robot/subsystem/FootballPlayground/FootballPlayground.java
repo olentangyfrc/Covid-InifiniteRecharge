@@ -11,14 +11,22 @@ public class FootballPlayground extends SubsystemBase{
 
     private DigitalInput beamBrakerSender;
     private DigitalInput beamBrakerReceiver;
+    private boolean lastReading = false;
 
     public void init(final PortMan portMan) throws Exception {
-        beamBrakerSender = new DigitalInput(portMan.acquirePort(PortMan.digital0_label, "Beam Braker Sender"));
+        //beamBrakerSender = new DigitalInput(portMan.acquirePort(PortMan.digital0_label, "Beam Braker Sender"));
         beamBrakerReceiver = new DigitalInput(portMan.acquirePort(PortMan.digital1_label, "Beam Braker Receiver"));
     }
 
     @Override
     public void periodic() {
-        logger.info(" Receiver [" + beamBrakerReceiver.get() + "]");
+
+        boolean reading;
+        reading = beamBrakerReceiver.get();
+        if (lastReading != reading) {
+            logger.info(" Receiver [" + reading + "] lastReading [" + lastReading +"]");
+            lastReading = reading;
+        }
+
     }
 }
