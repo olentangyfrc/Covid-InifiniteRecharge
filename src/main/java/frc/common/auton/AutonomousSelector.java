@@ -14,13 +14,10 @@ public class AutonomousSelector {
     private Queue<Command> hybridCommandQueue = new LinkedList<>();
 
     static Logger logger = Logger.getLogger(AutonomousSelector.class.getName());
-
+  
     public AutonomousSelector(AutonomousTrajectories trajectories) {
         this.trajectories = trajectories;
     }
-
-    
-
     public Command getCommand() {
         SequentialCommandGroup group = new SequentialCommandGroup();
         
