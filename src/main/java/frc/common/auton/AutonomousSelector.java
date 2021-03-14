@@ -40,70 +40,10 @@ public class AutonomousSelector {
     private Queue<Command> hybridCommandQueue = new LinkedList<>();
 
     static Logger logger = Logger.getLogger(AutonomousSelector.class.getName());
-
-    static {
-        ShuffleboardTab sandstormTab = Shuffleboard.getTab("Sandstorm settings");
-
-        sideChooser = new SendableChooser<>();
-        sideChooser.addOption("Left", Side.LEFT);
-        sideChooser.setDefaultOption("Right", Side.RIGHT);
-        sandstormTab.add("Starting Side", sideChooser);
-
-        orientationChooser = new SendableChooser<>();
-        orientationChooser.setDefaultOption("Forward", Rotation2.ZERO);
-        orientationChooser.addOption("Backwards", Rotation2.fromDegrees(180.0));
-        orientationChooser.addOption("Left", Rotation2.fromDegrees(90.0));
-        orientationChooser.addOption("Right", Rotation2.fromDegrees(270.0));
-        sandstormTab.add("Starting Orientation", orientationChooser);
-
-        autonomousModeChooser = new SendableChooser<>();
-        autonomousModeChooser.setDefaultOption("Driven", AutonomousMode.DRIVEN);
-        autonomousModeChooser.addOption("Hybrid", AutonomousMode.HYBRID);
-        autonomousModeChooser.addOption("Autonomous", AutonomousMode.AUTONOMOUS);
-        sandstormTab.add("Mode", autonomousModeChooser);
-
-        onHab2Entry = sandstormTab.add("On HAB 2", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
-        placeThirdPanelEntry = sandstormTab.add("Place 3rd Hatch", false).withWidget(BuiltInWidgets.kToggleButton)
-                .getEntry();
-        placeFourthPanelEntry = sandstormTab.add("Place 4th Hatch", false).withWidget(BuiltInWidgets.kToggleButton)
-                .getEntry();
-        rocketAutoEntry = sandstormTab.add("Rocket Auto", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
-    }
-
+    
     public AutonomousSelector(AutonomousTrajectories trajectories) {
         this.trajectories = trajectories;
     }
-
-    private Command getFillRocketBottomCommand() {
-        // First leave the hab and drive to the far rocket
-        AutonomousMode mode = autonomousModeChooser.getSelected();
-        Rotation2 startingOrientation = orientationChooser.getSelected();
-        Side startingSide = sideChooser.getSelected();
-        boolean onHab2 = onHab2Entry.getBoolean(false);
-
-        SequentialCommandGroup group = new SequentialCommandGroup();
-
-        if (onHab2) {
-            group.andThen(new FollowTrajectoryCommand(
-                    trajectories.getHab2ToRocketFarTrajectory(startingSide)
-            ));
-        } else {
-            group.andThen(new FollowTrajectoryCommand(
-                    trajectories.getHab1ToRocketFarTrajectory(startingSide)
-            ));
-        }
-
-        // Go back to the loading station and grab the next hatch
-        group.andThen(new FollowTrajectoryCommand(
-                trajectories.getRocketFarToLoadingStationTrajectory(startingSide)
-        ));
-        // Go to the near rocket and place
-        group.andThen(new FollowTrajectoryCommand(
-                trajectories.getLoadingStationToRocketNearTrajectory(startingSide)
-        ));
-        return group;
-    }
-
     public Command getCommand() {
         SequentialCommandGroup group = new SequentialCommandGroup();
         
