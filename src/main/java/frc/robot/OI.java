@@ -131,7 +131,7 @@ public class OI {
     private int auxJoyIndex  = 2;
     private int leftButtonBoxIndex  = 3;
     private int rightButtonBoxIndex = 4;
-    private int xboxIndex   = 5;
+    private int xboxIndex   = 0;
 
     public void init() {
         xbox = new XboxController(0);
@@ -150,25 +150,25 @@ public class OI {
 
     public double getLeftJoystickXValue() {
 
-        if (!DriverStation.getInstance().isJoystickConnected(leftJoyIndex))
+        if (!DriverStation.getInstance().isJoystickConnected(leftJoyIndex) || DriverStation.getInstance().getJoystickIsXbox(leftJoyIndex))
             return 0.0;
         return getFilteredValue (leftJoy.getX());
     }
 
     public double getLeftJoystickYValue() {
-        if (!DriverStation.getInstance().isJoystickConnected(leftJoyIndex))
+        if (!DriverStation.getInstance().isJoystickConnected(leftJoyIndex) || DriverStation.getInstance().getJoystickIsXbox(leftJoyIndex))
             return 0.0;
         return getFilteredValue (leftJoy.getY());
     }
 
     public double getRightJoystickXValue() {
-        if (!DriverStation.getInstance().isJoystickConnected(rightJoyIndex))
+        if (!DriverStation.getInstance().isJoystickConnected(rightJoyIndex) || DriverStation.getInstance().getJoystickIsXbox(rightJoyIndex))
             return 0.0;
         return getFilteredValue (rightJoy.getX());
     }
 
     public double getRightJoystickYValue() {
-        if (!DriverStation.getInstance().isJoystickConnected(rightJoyIndex))
+        if (!DriverStation.getInstance().isJoystickConnected(rightJoyIndex) || DriverStation.getInstance().getJoystickIsXbox(rightJoyIndex))
             return 0.0;
         return getFilteredValue (rightJoy.getY());
     }

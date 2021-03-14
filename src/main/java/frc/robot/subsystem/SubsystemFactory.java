@@ -78,6 +78,7 @@ import frc.robot.subsystem.transport.commands.*;
 import frc.robot.subsystem.transport.commands.TakeIn;
 import frc.robot.subsystem.transport.commands.StopTransport;
 import frc.robot.subsystem.swerve.DrivetrainSubsystem;
+import frc.robot.subsystem.telemetry.commands.ZeroGyro;
 import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
 import frc.common.drivers.Gyroscope;
 import frc.common.drivers.NavX;
@@ -232,6 +233,7 @@ public class SubsystemFactory {
         displayManager.addBallDelivery(ballDelivery);
 
         OI.getInstance().bind(new ToggleKeepSquare(driveTrain), OI.XboxA, OI.WhenPressed);
+        OI.getInstance().bind(new ZeroGyro(navX), OI.XboxY, OI.WhenPressed);
 
         //ShootBall cci = new ShootBall(ballDelivery);
         //OI.getInstance().bind(cci, OI.LeftJoyButton7, OI.WhenPressed);

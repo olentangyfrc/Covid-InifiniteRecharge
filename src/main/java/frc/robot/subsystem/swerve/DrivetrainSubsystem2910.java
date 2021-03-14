@@ -73,7 +73,7 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
     private boolean keepSquare = false;
 
     private static final PidConstants FOLLOWER_TRANSLATION_CONSTANTS = new PidConstants(0.05, 0.01, 0.0);
-    private static final PidConstants FOLLOWER_ROTATION_CONSTANTS = new PidConstants(0.2, 0.01, 0.0);
+    private static final PidConstants FOLLOWER_ROTATION_CONSTANTS = new PidConstants(1, 0.01, 0.0);
     private static final HolonomicFeedforward FOLLOWER_FEEDFORWARD_CONSTANTS = new HolonomicFeedforward(
             new DrivetrainFeedforwardConstants(1.0 / (14.0 * 12.0), 0.0, 0.0)
     );
@@ -355,6 +355,7 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
         if(!keepSquare) {
             logger.info("KEEP SQUARE ON");
             setSnapRotation(gyro.getAngle().toRadians());
+            snapRotationController.setSetpoint(snapRotation);
             keepSquare = true;
         } else {
             logger.info("KEEP SQUARE OFF");
