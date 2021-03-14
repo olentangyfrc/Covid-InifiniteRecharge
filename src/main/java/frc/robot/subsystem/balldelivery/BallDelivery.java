@@ -140,7 +140,7 @@ public class BallDelivery extends SubsystemBase{
         //hoodMotor.configAllowableClosedloopError(0, 0);
         hoodMotor.setSelectedSensorPosition(0, 0, 0);
         hoodMotor.config_kP(0, 1.0, 0);
-        hoodMotor.config_kI(0, 0.0, 0);
+        hoodMotor.config_kI(0, 0, 0);
         hoodMotor.config_kD(0, 100, 0);
         hoodMotor.config_kF(0, 0, 0);
 
