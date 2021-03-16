@@ -134,7 +134,9 @@ public class OI {
     private int xboxIndex   = 0;
 
     public void init() {
-        xbox = new XboxController(0);
+        //xbox = new XboxController(0);
+        leftJoy = new Joystick(leftJoyIndex);
+        rightJoy = new Joystick(rightJoyIndex);
     }
     public void init4611() {
         leftJoy = new Joystick(leftJoyIndex); // The left joystick exists on this port in robot map
@@ -147,6 +149,7 @@ public class OI {
     public void init2910() {
         xbox = new XboxController(0);
     }
+
 
     public double getLeftJoystickXValue() {
 
