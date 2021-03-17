@@ -119,7 +119,11 @@ public class OI {
     public static final int XboxX = 58;
     public static final int XboxY = 59;
     public static final int XboxLB = 60;
-	public static final int XboxRB = 61;
+    public static final int XboxRB = 61;
+    public static final int XboxView = 62;
+    public static final int XboxMenu = 63;
+    public static final int XboxLeftStick = 64;
+    public static final int XboxRightStick = 65;
 
     public static final int WhenPressed         = 1;
     public static final int WhenReleased        = 2;
@@ -258,7 +262,7 @@ public class OI {
             j = rightButtonBox;
             button -= 44;
         }
-        else if(button >= 56 && button <= 61) {
+        else if(button >= 56 && button <= 65) {
             j = xbox;
             button -= 55;
         }
@@ -318,7 +322,7 @@ public class OI {
         else if(button >= 45 && button <= 55){
             button -= 44;
         }
-        else if(button >= 56 && button <= 61) {
+        else if(button >= 56 && button <= 65) {
             button -= 55;
         }
         return button;
