@@ -131,14 +131,16 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    SubsystemFactory.getInstance().getDriveTrain().stopSnap();
+    /*SubsystemFactory.getInstance().getDriveTrain().stopSnap();
     resetTime();
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
 
     autonomousCommand = autonomousSelector.getCommand();
-    autonomousCommand.schedule();
+    autonomousCommand.schedule();*/
+    InterstellarAccuracyAuton interstellarAuton = new InterstellarAccuracyAuton(SubsystemFactory.getInstance().getBallDelivery());
+    interstellarAuton.schedule();
   }
 
   /**
@@ -163,15 +165,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
-    InterstellarAccuracyAuton interstellarAuton = new InterstellarAccuracyAuton(SubsystemFactory.getInstance().getBallDelivery());
-    interstellarAuton.schedule();
   }
   /**
    * This function is called periodically during test mode.
    */
   @Override
   public void testPeriodic() {
-    CommandScheduler.getInstance().run();
   }
   public static void resetTime() {
     initTime = Instant.now();

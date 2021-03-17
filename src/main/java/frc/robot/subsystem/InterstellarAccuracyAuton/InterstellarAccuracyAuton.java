@@ -18,7 +18,8 @@ import frc.robot.subsystem.SubsystemFactory;
 import frc.common.auton.AutonomousTrajectories;
 import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
 import frc.robot.subsystem.InterstellarAccuracyAuton.commands.DelayCommand;
-
+import frc.robot.subsystem.InterstellarAccuracyAuton.commands.WaitForInputCommand;
+import frc.robot.OI;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,9 +43,15 @@ public class InterstellarAccuracyAuton extends SequentialCommandGroup{
     this.ballDelivery = ballDelivery; 
     addCommands(
       new DeliverBall(ballDelivery),
-      new DelayCommand(10),
+      new DelayCommand(2),
       new StopDelivery(ballDelivery),
-      new FollowTrajectoryCommand(trajectories.getGreenZoneToReIntroductionZone())
+      new FollowTrajectoryCommand(trajectories.getGreenZoneToReIntroductionZone()),
+      new WaitForInputCommand(OI.getButton(OI.XboxX)),
+      new FollowTrajectoryCommand(trajectories.getReIntroductionZoneToYellowZone()),
+      new DeliverBall(ballDelivery),
+      new DelayCommand(2),
+      new StopDelivery(ballDelivery),
+      new FollowTrajectoryCommand(trajectories.getYellowZoneToReIntroductionZone())
     );
   }
 }

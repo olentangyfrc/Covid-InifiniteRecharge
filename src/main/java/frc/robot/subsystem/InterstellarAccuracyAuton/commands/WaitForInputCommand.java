@@ -8,32 +8,46 @@
 package frc.robot.subsystem.InterstellarAccuracyAuton.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.OI;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.XboxController;
 
-public class DelayCommand extends CommandBase {
-  
-  private long delayTime;
+public class WaitForInputCommand extends CommandBase {
+
+  private boolean end = false;
+  private int button;
+  private XboxController xbox;
+  private JoystickButton btn;
+
+  private class RegisterInput implements Runnable {
+    @Override
+    public void run() {
+      end = true;
+    }
+  }
 
   /**
-   * Creates a new DelayCommand. Used in command groups to put a pause in between commands.
-   * @param delayTime Time to delay in seconds
+   * Creates a new WaitForInputCommand.
+   * This command is to be used in command groups to make the group wait for a controller input to continue with the next command.
+   * @param button use OI.getButton(OI.[whichever button you want])
    */
-  //Delay time in seconds
-  public DelayCommand(double delayTime) {
-    //Convert to milliseconds
-    this.delayTime = (long) Math.floor(delayTime * 1000);
+  public WaitForInputCommand(int button) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    this.button = button;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    try {
-      Thread.sleep(delayTime);
-    } catch(Exception ex) {}
+    xbox = OI.getInstance().getXbox();
+    btn = new JoystickButton(xbox, button);
+    btn.whenPressed( new RegisterInput());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    
   }
 
   // Called once the command ends or is interrupted.
@@ -44,6 +58,6 @@ public class DelayCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return end;
   }
 }

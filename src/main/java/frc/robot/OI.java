@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystem.SubsystemFactory;
+import frc.common.math.MathUtils;
 
 
 
@@ -209,6 +210,9 @@ public class OI {
             return 0.0;
         return getFilteredValue(xbox.getX(Hand.kRight));
     }
+    public XboxController getXbox() {
+        return xbox;
+    }
     /**
      * this method binds a Command to a Joystick button for an action
      * @param c - the Command
@@ -298,7 +302,25 @@ public class OI {
         if (Math.abs(raw) < deadzone) {
             return 0; 
         } else {
-            return raw * (scaleFactor); // Set the output to a ceratin percent of of the input
+            return MathUtils.clamp(raw * (scaleFactor), -1, 1); // Set the output to a ceratin percent of of the input
         }
+    }
+    //Used for getting the actual assignment value of a button.
+    public static int getButton(int button) {
+        if (button >= 12 && button <= 22 ) {
+            button  -= 11;
+        } else if (button >= 23 && button <= 33) {
+            button -= 22;
+        }
+        else if(button >= 34 && button <= 44){
+            button -= 33;
+        } 
+        else if(button >= 45 && button <= 55){
+            button -= 44;
+        }
+        else if(button >= 56 && button <= 61) {
+            button -= 55;
+        }
+        return button;
     }
 }
