@@ -1,7 +1,10 @@
 package frc.robot;
 
+import java.sql.Driver;
 import java.util.HashMap;
 import java.util.logging.Logger;
+
+import com.ctre.phoenix.CANifier.GeneralPin;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.HIDType;
@@ -14,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystem.SubsystemFactory;
+import frc.common.math.MathUtils;
 
 
 
@@ -29,6 +33,7 @@ public class OI {
     private Joystick leftJoy;
     private Joystick rightJoy;
     private Joystick auxJoy;
+    private GenericHID input;
     private Joystick leftButtonBox;
     private Joystick rightButtonBox;
     private XboxController xbox;  
@@ -118,7 +123,11 @@ public class OI {
     public static final int XboxX = 58;
     public static final int XboxY = 59;
     public static final int XboxLB = 60;
-	public static final int XboxRB = 61;
+    public static final int XboxRB = 61;
+    public static final int XboxView = 62;
+    public static final int XboxMenu = 63;
+    public static final int XboxLeftStick = 64;
+    public static final int XboxRightStick = 65;
 
     public static final int WhenPressed         = 1;
     public static final int WhenReleased        = 2;
@@ -133,81 +142,79 @@ public class OI {
     private int rightButtonBoxIndex = 4;
     private int xboxIndex   = 0;
 
+    private static final GenericHID.HIDType XBOX_TYPE = GenericHID.HIDType.kHIDGamepad;
+    private static final GenericHID.HIDType JOYSTICK_TYPE = GenericHID.HIDType.kHIDJoystick;
+    private static final GenericHID.HIDType UNKNOWN_TYPE = GenericHID.HIDType.kUnknown;
+
+    private GenericHID.HIDType inputType;
+
+
     public void init() {
-        xbox = new XboxController(0);
-    }
-    public void init4611() {
-        leftJoy = new Joystick(leftJoyIndex); // The left joystick exists on this port in robot map
-        rightJoy = new Joystick(rightJoyIndex); // The right joystick exists on this port in robot map
-        auxJoy = new Joystick(auxJoyIndex);
-        leftButtonBox = new Joystick(leftButtonBoxIndex);
-        rightButtonBox = new Joystick(rightJoyIndex);
-        xbox = new XboxController(xboxIndex);
-    }
-    public void init2910() {
-        xbox = new XboxController(0);
+        if(DriverStation.getInstance().isJoystickConnected(0)) {
+            if(GenericHID.HIDType.valueOf(DriverStation.getInstance().getJoystickName(0)) == XBOX_TYPE) {
+                inputType = XBOX_TYPE;
+                xbox = new XboxController(0);
+            } else if(GenericHID.HIDType.valueOf(DriverStation.getInstance().getJoystickName(0)) == JOYSTICK_TYPE && GenericHID.HIDType.valueOf(DriverStation.getInstance().getJoystickName(1)) == JOYSTICK_TYPE) {
+                inputType = JOYSTICK_TYPE;
+                leftJoy = new Joystick(0);
+                rightJoy = new Joystick(1);
+            } else {
+                inputType = UNKNOWN_TYPE;
+                DriverStation.reportError("Incorrect Joystick format. Check Inputs.", false);
+            }
+        } else {
+            inputType = UNKNOWN_TYPE;
+            DriverStation.reportError("Incorrect Joystick format. Check Inputs.", false);
+        }
+
     }
 
-    public double getLeftJoystickXValue() {
-
-        if (!DriverStation.getInstance().isJoystickConnected(leftJoyIndex) || DriverStation.getInstance().getJoystickIsXbox(leftJoyIndex))
-            return 0.0;
-        return getFilteredValue (leftJoy.getX());
+    public double getLeftXValue() {
+        double value = 0;
+        if(inputType == XBOX_TYPE) {
+            value = xbox.getX(Hand.kLeft);
+        } else if(inputType == JOYSTICK_TYPE) {
+            value = leftJoy.getX();
+        }
+        
+        return getFilteredValue(value);
     }
 
-    public double getLeftJoystickYValue() {
-        if (!DriverStation.getInstance().isJoystickConnected(leftJoyIndex) || DriverStation.getInstance().getJoystickIsXbox(leftJoyIndex))
-            return 0.0;
-        return getFilteredValue (leftJoy.getY());
+    public double getLeftYValue() {
+        double value = 0;
+        if(inputType == XBOX_TYPE) {
+            value = xbox.getY(Hand.kLeft);
+        } else if(inputType == JOYSTICK_TYPE) {
+            value = leftJoy.getY();
+        }
+        
+        return getFilteredValue(value);
     }
 
-    public double getRightJoystickXValue() {
-        if (!DriverStation.getInstance().isJoystickConnected(rightJoyIndex) || DriverStation.getInstance().getJoystickIsXbox(rightJoyIndex))
-            return 0.0;
-        return getFilteredValue (rightJoy.getX());
+    public double getRightXValue() {
+        double value = 0;
+        if(inputType == XBOX_TYPE) {
+            value = xbox.getX(Hand.kRight);
+        } else if(inputType == JOYSTICK_TYPE) {
+            value = rightJoy.getX();
+        }
+        
+        return getFilteredValue(value);
     }
 
-    public double getRightJoystickYValue() {
-        if (!DriverStation.getInstance().isJoystickConnected(rightJoyIndex) || DriverStation.getInstance().getJoystickIsXbox(rightJoyIndex))
-            return 0.0;
-        return getFilteredValue (rightJoy.getY());
+    public double getRightYValue() {
+        double value = 0;
+        if(inputType == XBOX_TYPE) {
+            value = xbox.getY(Hand.kRight);
+        } else if(inputType == JOYSTICK_TYPE) {
+            value = rightJoy.getY();
+        }
+        
+        return getFilteredValue(value);
     }
-    public double getAuxJoystickXValue() {
-        if (!DriverStation.getInstance().isJoystickConnected(auxJoyIndex))
-            return 0.0;
-        return getFilteredValue (auxJoy.getX());
-    }
-    public double getAuxJoystickYValue() {
-        if (!DriverStation.getInstance().isJoystickConnected(auxJoyIndex))
-            return 0.0;
-        return getFilteredValue (auxJoy.getY());
-    }
-
-    public double getAuxJoystickZValue() {
-        if (!DriverStation.getInstance().isJoystickConnected(auxJoyIndex))
-            return 0.0;
-        return getFilteredValue(auxJoy.getZ());
-    }
-
-    public double getLeftXboxYValue(){
-        if (!DriverStation.getInstance().isJoystickConnected(xboxIndex))
-            return 0.0;
-        return getFilteredValue(xbox.getY(Hand.kLeft));
-    }
-    public double getLeftXboxXValue() {
-        if (!DriverStation.getInstance().isJoystickConnected(xboxIndex))
-            return 0.0;
-        return getFilteredValue(xbox.getX(Hand.kLeft));
-    }
-    public double getRightXboxYValue(){
-        if (!DriverStation.getInstance().isJoystickConnected(xboxIndex))
-            return 0.0;
-        return getFilteredValue(xbox.getY(Hand.kRight));
-    }
-    public double getRightXboxXValue() {
-        if (!DriverStation.getInstance().isJoystickConnected(xboxIndex))
-            return 0.0;
-        return getFilteredValue(xbox.getX(Hand.kRight));
+    
+    public XboxController getXbox() {
+        return xbox;
     }
     /**
      * this method binds a Command to a Joystick button for an action
@@ -254,7 +261,7 @@ public class OI {
             j = rightButtonBox;
             button -= 44;
         }
-        else if(button >= 56 && button <= 61) {
+        else if(button >= 56 && button <= 65) {
             j = xbox;
             button -= 55;
         }
@@ -298,7 +305,25 @@ public class OI {
         if (Math.abs(raw) < deadzone) {
             return 0; 
         } else {
-            return raw * (scaleFactor); // Set the output to a ceratin percent of of the input
+            return MathUtils.clamp(raw * (scaleFactor), -1, 1); // Set the output to a ceratin percent of of the input
         }
+    }
+    //Used for getting the actual assignment value of a button.
+    public static int getButton(int button) {
+        if (button >= 12 && button <= 22 ) {
+            button  -= 11;
+        } else if (button >= 23 && button <= 33) {
+            button -= 22;
+        }
+        else if(button >= 34 && button <= 44){
+            button -= 33;
+        } 
+        else if(button >= 45 && button <= 55){
+            button -= 44;
+        }
+        else if(button >= 56 && button <= 65) {
+            button -= 55;
+        }
+        return button;
     }
 }

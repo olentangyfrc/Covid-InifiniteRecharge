@@ -21,16 +21,16 @@ public class HolonomicDriveCommand extends CommandBase {
     @Override
     public void execute() {
         //These should be negated if not on Covid bot
-        double forward = - OI.getInstance().getLeftXboxYValue();
+        double forward = - OI.getInstance().getLeftYValue();
         
         // Square the forward stick
         forward = Math.copySign(Math.pow(forward, 2.0), forward);
 
-        double strafe = - OI.getInstance().getLeftXboxXValue();
+        double strafe = - OI.getInstance().getLeftXValue();
         // Square the strafe stick
         strafe = Math.copySign(Math.pow(strafe, 2.0), strafe);
 
-        double rotation = - OI.getInstance().getRightXboxXValue();
+        double rotation = - OI.getInstance().getRightXValue();
         // Square the rotation stick
         rotation = Math.copySign(Math.pow(rotation, 2.0), rotation);
 

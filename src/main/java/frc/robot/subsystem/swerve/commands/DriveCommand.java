@@ -16,15 +16,15 @@ public class DriveCommand extends CommandBase {
 
     @Override
     public void execute() {
-        double forward = - OI.getInstance().getLeftJoystickYValue();
+        double forward = - OI.getInstance().getLeftYValue();
         // Square the forward stick
         forward = Math.copySign(Math.pow(forward, 2.0), forward);
 
-        double strafe = - OI.getInstance().getLeftJoystickXValue();
+        double strafe = - OI.getInstance().getLeftXValue();
         // Square the strafe stick
         strafe = Math.copySign(Math.pow(strafe, 2.0), strafe);
 
-        double rotation = - OI.getInstance().getRightJoystickXValue();
+        double rotation = - OI.getInstance().getRightXValue();
         // Square the rotation stick
         rotation = Math.copySign(Math.pow(rotation, 2.0), rotation);
 
