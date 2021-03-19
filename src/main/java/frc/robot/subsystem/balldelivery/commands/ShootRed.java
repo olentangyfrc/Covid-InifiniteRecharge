@@ -7,6 +7,7 @@ import frc.robot.subsystem.balldelivery.BallDelivery;
 
 public class ShootRed extends SequentialCommandGroup {
     private BallDelivery ballDelivery;
+    private BallDelivery.ShootingZone zone = BallDelivery.ShootingZone.Red;
     private static Logger logger = Logger.getLogger(ShootRed.class.getName());
     
     public ShootRed(BallDelivery bd){
@@ -16,7 +17,7 @@ public class ShootRed extends SequentialCommandGroup {
 
         addCommands(
             //sets shooting zone
-            new SetShootingZone(ballDelivery, "Red");
+            new SetShootingZone(ballDelivery, zone),
             //start the shooter
             new ShootBall(ballDelivery),
             //start the eater

@@ -7,7 +7,7 @@ import frc.robot.subsystem.balldelivery.BallDelivery;
 
 public class DeliverBall extends SequentialCommandGroup {
     private BallDelivery ballDelivery;
-    private static Logger logger = Logger.getLogger(DeliverBalls.class.getName());
+    private static Logger logger = Logger.getLogger(DeliverBall.class.getName());
     
     public DeliverBall(BallDelivery bd){
         ballDelivery = bd;

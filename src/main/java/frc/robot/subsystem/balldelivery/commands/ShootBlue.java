@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 
 public class ShootBlue extends SequentialCommandGroup {
+    private BallDelivery.ShootingZone zone = BallDelivery.ShootingZone.Blue;
     private BallDelivery ballDelivery;
     private static Logger logger = Logger.getLogger(ShootBlue.class.getName());
     
@@ -16,7 +17,7 @@ public class ShootBlue extends SequentialCommandGroup {
 
         addCommands(
             //sets shooting zone
-            new SetShootingZone(ballDelivery, "Blue");
+            new SetShootingZone(ballDelivery, zone),
             //start the shooter
             new ShootBall(ballDelivery),
             //start the eater

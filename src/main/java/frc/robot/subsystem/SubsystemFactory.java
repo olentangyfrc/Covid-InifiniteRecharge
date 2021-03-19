@@ -26,6 +26,10 @@ import frc.robot.subsystem.balldelivery.commands.StopAngling;
 import frc.robot.subsystem.balldelivery.commands.DeliverBall;
 import frc.robot.subsystem.balldelivery.commands.StopDelivery;
 import frc.robot.subsystem.balldelivery.commands.StopCarousel;
+import frc.robot.subsystem.balldelivery.commands.ShootGreen;
+import frc.robot.subsystem.balldelivery.commands.ShootYellow;
+import frc.robot.subsystem.balldelivery.commands.ShootBlue;
+import frc.robot.subsystem.balldelivery.commands.ShootRed;
 import frc.robot.subsystem.climber.Climber;
 import frc.robot.subsystem.controlpanel.ControlPanel;
 import frc.robot.subsystem.controlpanel.commands.RotateToColor;
@@ -362,7 +366,7 @@ public class SubsystemFactory {
         telemetry.init(portMan);
         displayManager.addTelemetry(telemetry);
         
-        OI.getInstance().bind(new ToggleKeepSquare(driveTrain), OI.XboxA, OI.WhenPressed);
+        //OI.getInstance().bind(new ToggleKeepSquare(driveTrain), OI.XboxA, OI.WhenPressed);
 
         //SquareSelf ccc = new SquareSelf(telemetry, 2.34);
         //OI.getInstance().bind(ccc, OI.LeftJoyButton6, OI.WhenPressed);
@@ -422,6 +426,25 @@ public class SubsystemFactory {
         StopDelivery ccs = new StopDelivery(ballDelivery);
         OI.getInstance().bind(ccs, OI.LeftJoyButton7, OI.WhenPressed);
         */
+
+        //different ranges
+        ShootGreen ccv = new ShootGreen(ballDelivery);
+        OI.getInstance().bind(ccv, OI.RightJoyButton6, OI.WhenPressed);
+
+        ShootYellow ccw = new ShootYellow(ballDelivery);
+        OI.getInstance().bind(ccw, OI.RightJoyButton7, OI.WhenPressed);
+
+        ShootBlue ccx = new ShootBlue(ballDelivery);
+        OI.getInstance().bind(ccx, OI.RightJoyButton11, OI.WhenPressed);
+
+        ShootRed ccy = new ShootRed(ballDelivery);
+        OI.getInstance().bind(ccy, OI.RightJoyButton10, OI.WhenPressed);
+
+        DeliverBall cct = new DeliverBall(ballDelivery);
+        OI.getInstance().bind(cct, OI.LeftJoyButton7, OI.WhenPressed);
+
+        StopDelivery ccz = new StopDelivery(ballDelivery);
+        OI.getInstance().bind(ccz, OI.LeftJoyButton6, OI.WhenPressed);
     }
 
     private void initRIO99(PortMan portMan) throws Exception {
