@@ -276,6 +276,7 @@ public class SubsystemFactory {
         logger.info("Initializing RIO2");
         FootballPlayground footballPlayground = new FootballPlayground();
         footballPlayground.init(portMan);
+        displayManager.addFootballPlayground(footballPlayground);
     }
 
     private void initRIO3(PortMan portMan ) throws Exception {

@@ -7,6 +7,8 @@
 
 package frc.robot.subsystem;
 
+import frc.robot.subsystem.FootballPlayground.FootballPlayground;
+import frc.robot.subsystem.FootballPlayground.FootballPlaygroundSBTab;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 import frc.robot.subsystem.balldelivery.BallDeliverySBTab;
 import frc.robot.subsystem.climber.Climber;
@@ -39,6 +41,7 @@ public class DisplayManager {
     private PixyLineCamSBTab pixyDisplay;
     private OneWheelShooterSBTab oneWheelShooter;
     private IntakeSBTab intake;
+    private FootballPlaygroundSBTab footballPlayground;
 
     private static Logger logger = Logger.getLogger(DisplayManager.class.getName());
 
@@ -89,6 +92,11 @@ public class DisplayManager {
     public void addIntake(Intake i){
         intake = new IntakeSBTab(i);
         subsystemUpdateList.add(intake);
+    }
+
+    public void addFootballPlayground(FootballPlayground fp){
+        footballPlayground = new FootballPlaygroundSBTab(fp);
+        subsystemUpdateList.add(footballPlayground);
     }
 
 

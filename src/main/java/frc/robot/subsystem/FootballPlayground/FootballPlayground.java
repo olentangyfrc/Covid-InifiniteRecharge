@@ -24,16 +24,30 @@ public class FootballPlayground extends SubsystemBase{
         motor = new WPI_TalonSRX(portMan.acquirePort(PortMan.can_16_label, "Motor"));
         motor.setSelectedSensorPosition(0, 0, 0);
         motor.setSensorPhase(true);
-        motor.config_kP(0, 0.5, 0);
+        motor.config_kP(0, 0.2, 0);
         motor.config_kI(0, 0.0, 0);
         motor.config_kD(0, 0, 0);
         motor.config_kF(0, 0, 0);
-        motor.set(ControlMode.Position, 500);
+
+        //spin one rotation
+        //motor.set(ControlMode.Position, 4096);
+        //motor.set(ControlMode.Velocity, 500);
+        //rotateOnceWithBeamBraker();
     }
 
     @Override
     public void periodic(){
-        logger.info("" + motor.getSelectedSensorPosition());
+        //logger.info("" + motor.getSelectedSensorPosition());
+        //runUntilBroken();
+        //rotateOnceWithBeamBraker();
+        //xperiodic();
+        logBeamBraker();
+        if(count < 4){
+            rotateOnceWithBeamBraker();
+        }
+        else{
+            motor.set(ControlMode.PercentOutput, 0);
+        }
     }
     public void xperiodic() {
 
@@ -46,10 +60,78 @@ public class FootballPlayground extends SubsystemBase{
                 count++;
                 logger.info("" + count);
             }
-
             if(count % 4 == 0){
                 logger.info("stop");
             }
+        }
+    }
+
+    public void rotateOnce()
+    {
+        motor.set(ControlMode.Position, 4096);
+    }
+
+    public void rotateOnceWithBeamBraker()
+    {
+        boolean reading;
+        motor.set(ControlMode.Velocity, 500);
+        reading = beamBrakerReceiver.get();
+        if(lastReading != reading){
+            logger.info(" Receiver [" + reading + "] lastReading [" + lastReading +"]");
+            lastReading = reading;
+            if(lastReading == true)
+            {
+                count++;
+                logger.info("" + count);
+            }
+            if(count >= 4){
+                logger.info("stop");
+                motor.set(ControlMode.PercentOutput, 0);
+            }
+        }
+    }
+    
+    public void logBeamBraker()
+    {
+        boolean reading;
+        reading = beamBrakerReceiver.get();
+        if(lastReading != reading){
+            logger.info(" Receiver [" + reading + "] lastReading [" + lastReading +"]");
+            lastReading = reading;
+            if(lastReading == true)
+            {
+                count++;
+                logger.info("" + count);
+            }
+            if(count >= 4){
+                logger.info("stop");
+            }
+        }
+
+    }
+
+    public double getCurrentMotorPosition()
+    {
+        return motor.getSelectedSensorPosition();
+    }
+
+    public double getCurrentMotorVelocity()
+    {
+        return motor.getSelectedSensorVelocity();
+    }
+
+    public boolean getIsBeamBroken()
+    {
+        return !(beamBrakerReceiver.get());
+    }
+
+    public void runUntilBroken()
+    {
+        if(beamBrakerReceiver.get() == true){
+            motor.set(ControlMode.Velocity, 500);
+        }
+        else{
+            motor.set(ControlMode.PercentOutput, 0);
         }
     }
 }
