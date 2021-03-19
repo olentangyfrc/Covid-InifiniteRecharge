@@ -9,7 +9,7 @@ public class AngleHood extends CommandBase {
   private BallDelivery ballDelivery;
   private double targetHoodPosition;
   private boolean firstTime = true; 
-  double p = 0.4;
+  double p = 0.2;
   private boolean stop;
   private static Logger logger = Logger.getLogger(StopShooting.class.getName());
 
@@ -32,7 +32,7 @@ public class AngleHood extends CommandBase {
   @Override
   public void execute() {
     targetHoodPosition = ballDelivery.getTargetHoodPosition(); 
-    if (Math.abs(ballDelivery.getCurrentHoodPosition() - targetHoodPosition) > 10) {
+    if (Math.abs(ballDelivery.getCurrentHoodPosition() - targetHoodPosition) > 5) {
       ballDelivery.setHoodPercentOutput(
           (targetHoodPosition - ballDelivery.getCurrentHoodPosition() > 0 ) ? p :-p
           );   
