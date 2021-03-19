@@ -145,22 +145,25 @@ public class OI {
     private static final GenericHID.HIDType XBOX_TYPE = GenericHID.HIDType.kHIDGamepad;
     private static final GenericHID.HIDType JOYSTICK_TYPE = GenericHID.HIDType.kHIDJoystick;
     private static final GenericHID.HIDType UNKNOWN_TYPE = GenericHID.HIDType.kUnknown;
+    
+    private static final String XBOX_NAME = "Controller (Xbox One For Windows)";
+    private static final String JOYSTICK_NAME = "Logitech Attack 3";
 
     private GenericHID.HIDType inputType;
 
 
     public void init() {
         if(DriverStation.getInstance().isJoystickConnected(0)) {
-            if(GenericHID.HIDType.valueOf(DriverStation.getInstance().getJoystickName(0)) == XBOX_TYPE) {
+            if(DriverStation.getInstance().getJoystickName(0).equals(XBOX_NAME)) {
                 inputType = XBOX_TYPE;
                 xbox = new XboxController(0);
-            } else if(GenericHID.HIDType.valueOf(DriverStation.getInstance().getJoystickName(0)) == JOYSTICK_TYPE && GenericHID.HIDType.valueOf(DriverStation.getInstance().getJoystickName(1)) == JOYSTICK_TYPE) {
+            } else if(DriverStation.getInstance().getJoystickName(0).equals(JOYSTICK_NAME) && DriverStation.getInstance().getJoystickName(1).equals(JOYSTICK_NAME)) {
                 inputType = JOYSTICK_TYPE;
                 leftJoy = new Joystick(0);
                 rightJoy = new Joystick(1);
             } else {
                 inputType = UNKNOWN_TYPE;
-                DriverStation.reportError("Incorrect Joystick format. Check Inputs.", false);
+                DriverStation.reportError("Joystick \"" + DriverStation.getInstance().getJoystickName(0) + "\" not recognized.", false);
             }
         } else {
             inputType = UNKNOWN_TYPE;
