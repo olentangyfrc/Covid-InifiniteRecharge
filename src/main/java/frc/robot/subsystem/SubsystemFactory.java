@@ -277,7 +277,20 @@ public class SubsystemFactory {
         OI.getInstance().bind(ccs, OI.LeftJoyButton7, OI.WhenPressed);
 
         PutHoodDown ccu = new PutHoodDown(ballDelivery);
-        OI.getInstance().bind(ccu, OI.RightJoyButton8, OI.WhenPressed);
+        OI.getInstance().bind(ccu, OI.LeftJoyButton11, OI.WhenPressed);
+
+        //different ranges
+        ShootGreen ccv = new ShootGreen(ballDelivery);
+        OI.getInstance().bind(ccv, OI.RightJoyButton6, OI.WhenPressed);
+
+        ShootYellow ccw = new ShootYellow(ballDelivery);
+        OI.getInstance().bind(ccw, OI.RightJoyButton7, OI.WhenPressed);
+
+        ShootBlue ccx = new ShootBlue(ballDelivery);
+        OI.getInstance().bind(ccx, OI.RightJoyButton11, OI.WhenPressed);
+
+        ShootRed ccy = new ShootRed(ballDelivery);
+        OI.getInstance().bind(ccy, OI.RightJoyButton10, OI.WhenPressed);
         
 
     }

@@ -61,7 +61,8 @@ public class BallDelivery extends SubsystemBase{
     public static enum ShootingZone {
         Green,
         Yellow,
-        Blue
+        Blue,
+        Red
     };
     
     public void init(final PortMan portMan) throws Exception {
