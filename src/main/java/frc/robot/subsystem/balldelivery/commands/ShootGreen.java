@@ -19,11 +19,7 @@ public class ShootGreen extends SequentialCommandGroup {
             //sets shooting zone
             new SetShootingZone(ballDelivery, zone),
             //start the shooter
-            new ShootBall(ballDelivery),
-            //start the eater
-            new EatBalls(ballDelivery),
-            //spin the carousel
-            new SpinCarousel(ballDelivery)
+            new DeliverBall(ballDelivery)
         );
     }
 
