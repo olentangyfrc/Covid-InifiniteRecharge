@@ -56,7 +56,10 @@ public class BallDelivery extends SubsystemBase{
     public double eatingTol;
     public double shootingTol;
 
-    private DigitalInput carouselReceiverSwitch;
+    //private DigitalInput carouselReceiverSwitch;
+    private DigitalInput beamBreakerReceiver;
+    private boolean lastReading = true;
+    private int count = 1;
 
     private CommandBase angleHood;
 
@@ -75,11 +78,12 @@ public class BallDelivery extends SubsystemBase{
         hoodMotor = new WPI_TalonSRX(portMan.acquirePort(PortMan.can_27_label, "HoodMotor"));
 
         stopHoodMotor = new DigitalInput(0);
+        beamBreakerReceiver = new DigitalInput(portMan.acquirePort(PortMan.digital1_label, "Beam Braker Receiver"));
         
         shootingMotorRight.follow(shootingMotorLeft);
         shootingMotorLeft.setInverted(true);
 
-        carouselReceiverSwitch = new DigitalInput(portMan.acquirePort(PortMan.digital1_label, "CarouselSensor1"));
+        //carouselReceiverSwitch = new DigitalInput(portMan.acquirePort(PortMan.digital1_label, "CarouselSensor1"));
 
         //shootingMotorLeft.setInverted(false);
 
@@ -182,21 +186,42 @@ public class BallDelivery extends SubsystemBase{
         //logger.info("spin [" + targetCarouselVelocity + "]");
 
         //spin carousel
-        carouselMotor.set(ControlMode.Velocity, targetCarouselVelocity);
+        boolean reading;
+        carouselMotor.set(ControlMode.PercentOutput, 0.2);
+        reading = beamBreakerReceiver.get();
+        if(lastReading != reading){
+            logger.info(" Receiver [" + reading + "] lastReading [" + lastReading +"]");
+            lastReading = reading;
+            if(lastReading == true)
+            {
+                count++;
+                logger.info("" + count);
+            }
+            if(count % 4 == 0){
+                logger.info("stop");
+                carouselMotor.set(ControlMode.PercentOutput, 0);
+            }
+        }
     }
 
-    public void stopCarousel()
-    {
-        carouselMotor.set(ControlMode.PercentOutput, 0);
-    }
-
-    public boolean stopCarouselSwitch(){
-       if(carouselReceiverSwitch.get() == true)
-       {
-           stopCarousel();
-            return true;
-       }
-       return false;
+    //this is the same as spinCarousel() ??
+    public boolean stopCarousel(){
+        boolean reading;
+        reading = beamBreakerReceiver.get();
+        if (lastReading != reading) {
+            logger.info(" Receiver [" + reading + "] lastReading [" + lastReading +"]");
+            lastReading = reading;
+            if(lastReading == true){
+                count++;
+                logger.info("" + count);
+            }
+            if(count % 4 == 0){
+                logger.info("stop");
+                carouselMotor.set(ControlMode.PercentOutput, 0);
+                return true;
+            }
+        }
+        return false;
     }
 
     //angle the shooter
@@ -334,8 +359,8 @@ public class BallDelivery extends SubsystemBase{
         return shootingTol;
     }
 
-    public boolean getCarouselReceiverSwitch(){
-        return carouselReceiverSwitch.get();
+    public boolean isCarouselSwitchOn(){
+        return beamBreakerReceiver.get();
     }
 
     public void setPValue(double p){

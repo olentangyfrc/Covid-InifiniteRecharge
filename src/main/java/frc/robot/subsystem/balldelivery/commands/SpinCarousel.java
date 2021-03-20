@@ -25,19 +25,19 @@ public class SpinCarousel extends CommandBase {
   public void initialize() {
     logger.info("starts SpinCarousel");
     stop = false;
-    isFirstTime = false;
+    isFirstTime = true;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     logger.info("spinning carousel");
-    if(isFirstTime == false)
+    if(isFirstTime == true)
     {
       ballDelivery.spinCarousel();
-      isFirstTime = true;
+      isFirstTime = false;
     }
-    ballDelivery.stopCarouselSwitch();
+    ballDelivery.stopCarousel();  
   }
 
   // Called once the command ends or is interrupted.
@@ -49,7 +49,7 @@ public class SpinCarousel extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return ballDelivery.stopCarouselSwitch();
+    return stop;
   }
 }
 
