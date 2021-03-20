@@ -20,10 +20,10 @@ public class AutonomousTrajectories {
     //Insterstellar accuracy Trajectories
     private final Trajectory greenZonetoReIntroductionZone;
     private final Trajectory reIntroductionZoneToYellowZone;
-    private final Trajectory yellowZonetoReIntroductionZone;/*
+    private final Trajectory yellowZonetoReIntroductionZone;
     private final Trajectory reIntroductionZoneToBlueZone;
     private final Trajectory blueZonetoReIntroductionZone;
-    private final Trajectory reIntroductionZoneToRedZone;
+    private final Trajectory reIntroductionZoneToRedZone;/*
     private final Trajectory redZonetoReIntroductionZone;
     */
     
@@ -36,7 +36,38 @@ public class AutonomousTrajectories {
 */
     public AutonomousTrajectories(ITrajectoryConstraint... constraints) {
         // <editor-fold desc="Hab to Cargo Ship Side Near">
-        Path yellowZonetoReIntroductionZonePath = new Path(Rotation2.fromDegrees(26.6));
+        Path reIntroductionZoneToRedZonePath = new Path(Rotation2.ZERO);
+        reIntroductionZoneToRedZonePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(0, 0),
+                        new Vector2(55, 0)
+                ),
+                Rotation2.fromDegrees(9)
+        );
+        reIntroductionZoneToRedZonePath.subdivide(SUBDIVIDE_ITERATIONS);
+        reIntroductionZoneToRedZone = new Trajectory(reIntroductionZoneToRedZonePath, constraints);
+
+        Path blueZonetoReIntroductionZonePath = new Path(Rotation2.fromDegrees(9));
+        blueZonetoReIntroductionZonePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(0, 0),
+                        new Vector2(-98, 0)
+                ),
+                Rotation2.ZERO
+        );
+        blueZonetoReIntroductionZonePath.subdivide(SUBDIVIDE_ITERATIONS);
+        blueZonetoReIntroductionZone = new Trajectory(blueZonetoReIntroductionZonePath, constraints);
+        Path reIntroductionZoneToBlueZonePath = new Path(Rotation2.ZERO);
+        reIntroductionZoneToBlueZonePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(0, 0),
+                        new Vector2(98, 0)
+                ),
+                Rotation2.fromDegrees(9)
+        );
+        reIntroductionZoneToBlueZonePath.subdivide(SUBDIVIDE_ITERATIONS);
+        reIntroductionZoneToBlueZone = new Trajectory(reIntroductionZoneToBlueZonePath, constraints);
+        Path yellowZonetoReIntroductionZonePath = new Path(Rotation2.fromDegrees(15));
         yellowZonetoReIntroductionZonePath.addSegment(
                 new PathLineSegment(
                         new Vector2(0, 0),
@@ -50,7 +81,7 @@ public class AutonomousTrajectories {
         reIntroductionZoneToYellowZonePath.addSegment(
                 new PathLineSegment(
                         new Vector2(0, 0),
-                        new Vector2(156, 0)
+                        new Vector2(164, -4)
                 ),
                 Rotation2.fromDegrees(15)
         );
@@ -58,11 +89,11 @@ public class AutonomousTrajectories {
         reIntroductionZoneToYellowZone = new Trajectory(reIntroductionZoneToYellowZonePath, constraints);
 
 
-        Path greenZoneToReIntroductionZonePath = new Path(Rotation2.fromDegrees(26.6));
+        Path greenZoneToReIntroductionZonePath = new Path(Rotation2.fromDegrees(25.7));
         greenZoneToReIntroductionZonePath.addSegment(
                 new PathLineSegment(
                         new Vector2(0, 0),
-                        new Vector2(-221, 0)
+                        new Vector2(-215, 0)
                 ),
                 Rotation2.ZERO
         );
@@ -342,5 +373,14 @@ public class AutonomousTrajectories {
     }
     public Trajectory getYellowZoneToReIntroductionZone() {
         return yellowZonetoReIntroductionZone;
+    }
+    public Trajectory getReIntroductionZoneToBlueZone() {
+        return reIntroductionZoneToBlueZone;
+    }
+    public Trajectory getBlueZonetoReIntroductionZone() {
+        return blueZonetoReIntroductionZone;
+    }
+    public Trajectory getReIntroductionZoneToRedZone() {
+        return reIntroductionZoneToRedZone;
     }
 }

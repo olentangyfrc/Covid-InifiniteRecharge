@@ -7,22 +7,21 @@
 
 package frc.robot.subsystem.InterstellarAccuracyAuton;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandGroupBase;
+import java.util.logging.Logger;
+
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.subsystem.balldelivery.commands.*;
-import frc.robot.subsystem.balldelivery.commands.StopDelivery;
-import frc.robot.subsystem.balldelivery.BallDelivery;
-import frc.common.commands.FollowTrajectoryCommand;
-import frc.robot.subsystem.SubsystemFactory;
+
 import frc.common.auton.AutonomousTrajectories;
-import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
+
+import frc.common.commands.FollowTrajectoryCommand;
 import frc.robot.subsystem.InterstellarAccuracyAuton.commands.DelayCommand;
 import frc.robot.subsystem.InterstellarAccuracyAuton.commands.WaitForInputCommand;
-import frc.robot.OI;
+import frc.robot.subsystem.balldelivery.commands.DeliverBall;
+import frc.robot.subsystem.balldelivery.commands.StopDelivery;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import frc.robot.OI;
+import frc.robot.subsystem.balldelivery.BallDelivery;
+import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -51,7 +50,15 @@ public class InterstellarAccuracyAuton extends SequentialCommandGroup{
       new DeliverBall(ballDelivery),
       new DelayCommand(2),
       new StopDelivery(ballDelivery),
-      new FollowTrajectoryCommand(trajectories.getYellowZoneToReIntroductionZone())
+      new FollowTrajectoryCommand(trajectories.getYellowZoneToReIntroductionZone()),
+      new WaitForInputCommand(OI.getButton(OI.XboxX)),
+      new FollowTrajectoryCommand(trajectories.getReIntroductionZoneToBlueZone()),
+      new DeliverBall(ballDelivery),
+      new DelayCommand(2),
+      new StopDelivery(ballDelivery),
+      new FollowTrajectoryCommand(trajectories.getBlueZonetoReIntroductionZone()),
+      new WaitForInputCommand(OI.getButton(OI.XboxX)),
+      new FollowTrajectoryCommand(trajectories.getReIntroductionZoneToRedZone())
     );
   }
 }

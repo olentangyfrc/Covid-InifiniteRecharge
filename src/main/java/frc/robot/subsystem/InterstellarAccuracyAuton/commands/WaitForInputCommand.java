@@ -7,12 +7,16 @@
 
 package frc.robot.subsystem.InterstellarAccuracyAuton.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.OI;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import java.util.logging.Logger;
+
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.OI;
 
 public class WaitForInputCommand extends CommandBase {
+
+  static Logger logger = Logger.getLogger(WaitForInputCommand.class.getName());
 
   private boolean end = false;
   private int button;
