@@ -11,9 +11,22 @@ public class AutonomousTrajectories {
 
     private static final int SUBDIVIDE_ITERATIONS = 8;
 
+
+    //AutonNav Trajectories
     private final Trajectory boxyBounceTrajectory;
     private final Trajectory slalomTrajectory;
     private final Trajectory barrelRacingTrajectory;
+
+    //Insterstellar accuracy Trajectories
+    private final Trajectory greenZonetoReIntroductionZone;
+    private final Trajectory reIntroductionZoneToYellowZone;
+    private final Trajectory yellowZonetoReIntroductionZone;
+    private final Trajectory reIntroductionZoneToBlueZone;
+    private final Trajectory blueZonetoReIntroductionZone;
+    private final Trajectory reIntroductionZoneToRedZone;/*
+    private final Trajectory redZonetoReIntroductionZone;
+    */
+    
 /*
         y+: Left
         y-: Right
@@ -23,6 +36,70 @@ public class AutonomousTrajectories {
 */
     public AutonomousTrajectories(ITrajectoryConstraint... constraints) {
         // <editor-fold desc="Hab to Cargo Ship Side Near">
+        Path reIntroductionZoneToRedZonePath = new Path(Rotation2.ZERO);
+        reIntroductionZoneToRedZonePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(0, 0),
+                        new Vector2(55, 0)
+                ),
+                Rotation2.fromDegrees(9)
+        );
+        reIntroductionZoneToRedZonePath.subdivide(SUBDIVIDE_ITERATIONS);
+        reIntroductionZoneToRedZone = new Trajectory(reIntroductionZoneToRedZonePath, constraints);
+
+        Path blueZonetoReIntroductionZonePath = new Path(Rotation2.fromDegrees(9));
+        blueZonetoReIntroductionZonePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(0, 0),
+                        new Vector2(-98, 0)
+                ),
+                Rotation2.ZERO
+        );
+        blueZonetoReIntroductionZonePath.subdivide(SUBDIVIDE_ITERATIONS);
+        blueZonetoReIntroductionZone = new Trajectory(blueZonetoReIntroductionZonePath, constraints);
+        Path reIntroductionZoneToBlueZonePath = new Path(Rotation2.ZERO);
+        reIntroductionZoneToBlueZonePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(0, 0),
+                        new Vector2(98, 0)
+                ),
+                Rotation2.fromDegrees(9)
+        );
+        reIntroductionZoneToBlueZonePath.subdivide(SUBDIVIDE_ITERATIONS);
+        reIntroductionZoneToBlueZone = new Trajectory(reIntroductionZoneToBlueZonePath, constraints);
+        Path yellowZonetoReIntroductionZonePath = new Path(Rotation2.fromDegrees(15));
+        yellowZonetoReIntroductionZonePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(0, 0),
+                        new Vector2(-156, 0)
+                ),
+                Rotation2.ZERO
+        );
+        yellowZonetoReIntroductionZonePath.subdivide(SUBDIVIDE_ITERATIONS);
+        yellowZonetoReIntroductionZone = new Trajectory(yellowZonetoReIntroductionZonePath, constraints);
+        Path reIntroductionZoneToYellowZonePath = new Path(Rotation2.ZERO);
+        reIntroductionZoneToYellowZonePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(0, 0),
+                        new Vector2(164, -4)
+                ),
+                Rotation2.fromDegrees(15)
+        );
+        reIntroductionZoneToYellowZonePath.subdivide(SUBDIVIDE_ITERATIONS);
+        reIntroductionZoneToYellowZone = new Trajectory(reIntroductionZoneToYellowZonePath, constraints);
+
+
+        Path greenZoneToReIntroductionZonePath = new Path(Rotation2.fromDegrees(25.7));
+        greenZoneToReIntroductionZonePath.addSegment(
+                new PathLineSegment(
+                        new Vector2(0, 0),
+                        new Vector2(-215, 0)
+                ),
+                Rotation2.ZERO
+        );
+        greenZoneToReIntroductionZonePath.subdivide(SUBDIVIDE_ITERATIONS);
+        greenZonetoReIntroductionZone = new Trajectory(greenZoneToReIntroductionZonePath, constraints);
+
         Path barrelRacingPath = new Path(Rotation2.ZERO);
         barrelRacingPath.addSegment(
                 new PathLineSegment(
@@ -287,5 +364,23 @@ public class AutonomousTrajectories {
     }
     public Trajectory getBarrelRacingTrajectory() {
         return barrelRacingTrajectory;
+    }
+    public Trajectory getGreenZoneToReIntroductionZone() {
+        return greenZonetoReIntroductionZone;
+    }
+    public Trajectory getReIntroductionZoneToYellowZone() {
+        return reIntroductionZoneToYellowZone;
+    }
+    public Trajectory getYellowZoneToReIntroductionZone() {
+        return yellowZonetoReIntroductionZone;
+    }
+    public Trajectory getReIntroductionZoneToBlueZone() {
+        return reIntroductionZoneToBlueZone;
+    }
+    public Trajectory getBlueZonetoReIntroductionZone() {
+        return blueZonetoReIntroductionZone;
+    }
+    public Trajectory getReIntroductionZoneToRedZone() {
+        return reIntroductionZoneToRedZone;
     }
 }

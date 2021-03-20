@@ -49,15 +49,7 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
 
     static Logger logger = Logger.getLogger(DrivetrainSubsystem2910.class.getName());
 
-    private static final NetworkTableEntry snapPID =
-        Shuffleboard.getTab("PID")
-        .add("P", 1)
-        .withWidget("Number Slider")
-        .withPosition(1, 1)
-        .withSize(2, 1)
-        .getEntry();
-
-    private static final PidConstants SNAP_ROTATION_CONSTANTS = new PidConstants(snapPID.getDouble(1.0), 0.0, 0.0);
+    private static final PidConstants SNAP_ROTATION_CONSTANTS = new PidConstants(0.5, 0.0, 0.0);
     private PidController snapRotationController = new PidController(SNAP_ROTATION_CONSTANTS);
     private double snapRotation = Double.NaN;
 
@@ -79,7 +71,7 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
     );
 
     public static final ITrajectoryConstraint[] CONSTRAINTS = {
-            new MaxVelocityConstraint(MAX_VELOCITY),
+            new MaxVelocityConstraint(MAX_VELOCITY * 0.3),
             new MaxAccelerationConstraint(13.0 * 12.0),
             new CentripetalAccelerationConstraint(25.0 * 12.0)
     };
@@ -355,7 +347,6 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
         if(!keepSquare) {
             logger.info("KEEP SQUARE ON");
             setSnapRotation(gyro.getAngle().toRadians());
-            snapRotationController.setSetpoint(snapRotation);
             keepSquare = true;
         } else {
             logger.info("KEEP SQUARE OFF");

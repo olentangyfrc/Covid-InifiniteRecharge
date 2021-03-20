@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystem.SubsystemFactory;
+import frc.common.math.MathUtils;
 
 
 
@@ -118,7 +119,11 @@ public class OI {
     public static final int XboxX = 58;
     public static final int XboxY = 59;
     public static final int XboxLB = 60;
-	public static final int XboxRB = 61;
+    public static final int XboxRB = 61;
+    public static final int XboxView = 62;
+    public static final int XboxMenu = 63;
+    public static final int XboxLeftStick = 64;
+    public static final int XboxRightStick = 65;
 
     public static final int WhenPressed         = 1;
     public static final int WhenReleased        = 2;
@@ -212,6 +217,9 @@ public class OI {
             return 0.0;
         return getFilteredValue(xbox.getX(Hand.kRight));
     }
+    public XboxController getXbox() {
+        return xbox;
+    }
     /**
      * this method binds a Command to a Joystick button for an action
      * @param c - the Command
@@ -257,14 +265,13 @@ public class OI {
             j = rightButtonBox;
             button -= 44;
         }
-        else if(button >= 56 && button <= 61) {
+        else if(button >= 56 && button <= 65) {
             j = xbox;
             button -= 55;
         }
         else {
             throw new OzoneException ("Unrecognized joystick button [" + button + "]");
         }
-        logger.info("Input type: " + j.getType().toString());
 		String []parts	= c.getClass().getName().split("\\.");
         logger.info("binding [" + parts[parts.length-1] + "] to joy[" + j.getPort() + "] b[" + button + "]");
 
@@ -301,7 +308,25 @@ public class OI {
         if (Math.abs(raw) < deadzone) {
             return 0; 
         } else {
-            return raw * (scaleFactor); // Set the output to a ceratin percent of of the input
+            return MathUtils.clamp(raw * (scaleFactor), -1, 1); // Set the output to a ceratin percent of of the input
         }
+    }
+    //Used for getting the actual assignment value of a button.
+    public static int getButton(int button) {
+        if (button >= 12 && button <= 22 ) {
+            button  -= 11;
+        } else if (button >= 23 && button <= 33) {
+            button -= 22;
+        }
+        else if(button >= 34 && button <= 44){
+            button -= 33;
+        } 
+        else if(button >= 45 && button <= 55){
+            button -= 44;
+        }
+        else if(button >= 56 && button <= 65) {
+            button -= 55;
+        }
+        return button;
     }
 }
