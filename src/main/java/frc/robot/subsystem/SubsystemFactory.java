@@ -374,7 +374,7 @@ public class SubsystemFactory {
         telemetry.init(portMan);
         displayManager.addTelemetry(telemetry);
         
-        //OI.getInstance().bind(new ToggleKeepSquare(driveTrain), OI.XboxA, OI.WhenPressed);
+        OI.getInstance().bind(new ToggleKeepSquare(driveTrain), OI.XboxA, OI.WhenPressed);
 
         //SquareSelf ccc = new SquareSelf(telemetry, 2.34);
         //OI.getInstance().bind(ccc, OI.LeftJoyButton6, OI.WhenPressed);
