@@ -26,6 +26,10 @@ import frc.robot.subsystem.balldelivery.commands.StopAngling;
 import frc.robot.subsystem.balldelivery.commands.DeliverBall;
 import frc.robot.subsystem.balldelivery.commands.StopDelivery;
 import frc.robot.subsystem.balldelivery.commands.StopCarousel;
+import frc.robot.subsystem.balldelivery.commands.ShootGreen;
+import frc.robot.subsystem.balldelivery.commands.ShootYellow;
+import frc.robot.subsystem.balldelivery.commands.ShootBlue;
+import frc.robot.subsystem.balldelivery.commands.ShootRed;
 import frc.robot.subsystem.climber.Climber;
 import frc.robot.subsystem.controlpanel.ControlPanel;
 import frc.robot.subsystem.controlpanel.commands.RotateToColor;
@@ -225,6 +229,14 @@ public class SubsystemFactory {
         double blOff = -Math.toRadians(319);
         double brOff = -Math.toRadians(72.9);
 
+        //when calibrating wheels, try 
+        /*
+        double flOff = -Math.toRadians(0);
+        double frOff = -Math.toRadians(0);
+        double blOff = -Math.toRadians(0);
+        double brOff = -Math.toRadians(0);
+        */
+
         driveTrain = DrivetrainSubsystem2910.getInstance();
         driveTrain.init(portMan, canAssignments, flOff, blOff, frOff, brOff);
 
@@ -277,7 +289,20 @@ public class SubsystemFactory {
         OI.getInstance().bind(ccs, OI.LeftJoyButton7, OI.WhenPressed);
 
         PutHoodDown ccu = new PutHoodDown(ballDelivery);
-        OI.getInstance().bind(ccu, OI.RightJoyButton8, OI.WhenPressed);
+        OI.getInstance().bind(ccu, OI.LeftJoyButton11, OI.WhenPressed);
+
+        //different ranges
+        ShootGreen ccv = new ShootGreen(ballDelivery);
+        OI.getInstance().bind(ccv, OI.RightJoyButton6, OI.WhenPressed);
+
+        ShootYellow ccw = new ShootYellow(ballDelivery);
+        OI.getInstance().bind(ccw, OI.RightJoyButton7, OI.WhenPressed);
+
+        ShootBlue ccx = new ShootBlue(ballDelivery);
+        OI.getInstance().bind(ccx, OI.RightJoyButton11, OI.WhenPressed);
+
+        ShootRed ccy = new ShootRed(ballDelivery);
+        OI.getInstance().bind(ccy, OI.RightJoyButton10, OI.WhenPressed);
         
 
     }
@@ -410,6 +435,25 @@ public class SubsystemFactory {
         StopDelivery ccs = new StopDelivery(ballDelivery);
         OI.getInstance().bind(ccs, OI.LeftJoyButton7, OI.WhenPressed);
         */
+
+        //different ranges
+        ShootGreen ccv = new ShootGreen(ballDelivery);
+        OI.getInstance().bind(ccv, OI.RightJoyButton6, OI.WhenPressed);
+
+        ShootYellow ccw = new ShootYellow(ballDelivery);
+        OI.getInstance().bind(ccw, OI.RightJoyButton7, OI.WhenPressed);
+
+        ShootBlue ccx = new ShootBlue(ballDelivery);
+        OI.getInstance().bind(ccx, OI.RightJoyButton11, OI.WhenPressed);
+
+        ShootRed ccy = new ShootRed(ballDelivery);
+        OI.getInstance().bind(ccy, OI.RightJoyButton10, OI.WhenPressed);
+
+        DeliverBall cct = new DeliverBall(ballDelivery);
+        OI.getInstance().bind(cct, OI.LeftJoyButton7, OI.WhenPressed);
+
+        StopDelivery ccz = new StopDelivery(ballDelivery);
+        OI.getInstance().bind(ccz, OI.LeftJoyButton6, OI.WhenPressed);
     }
 
     private void initRIO99(PortMan portMan) throws Exception {

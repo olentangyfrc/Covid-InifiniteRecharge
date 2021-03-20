@@ -11,7 +11,7 @@ public class AngleHood extends CommandBase {
   private boolean firstTime = true; 
   double p = 0.2;
   private boolean stop;
-  private static Logger logger = Logger.getLogger(StopShooting.class.getName());
+  private static Logger logger = Logger.getLogger(AngleHood.class.getName());
 
   //private int direction = 0;
 
