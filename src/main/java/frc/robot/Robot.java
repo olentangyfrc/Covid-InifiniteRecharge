@@ -73,7 +73,7 @@ public class Robot extends TimedRobot {
 
     tab = Shuffleboard.getTab("Auton");
 
-    tab.add(modeChooser);
+    tab.add("Teleop Mode", modeChooser);
 
     OzoneLogger.getInstance().init(Level.ALL);
     logger.log(Level.INFO, "robot init");
