@@ -224,10 +224,10 @@ public class SubsystemFactory {
         canAssignments.put("BR.Swerve.angle", PortMan.can_31_label);
         canAssignments.put("BR.Swerve.drive", PortMan.can_30_label);
 
-        double flOff = -Math.toRadians(58.7);
-        double frOff = -Math.toRadians(143.5);
+        double flOff = -Math.toRadians(57.7);
+        double frOff = -Math.toRadians(142.7);
         double blOff = -Math.toRadians(319);
-        double brOff = -Math.toRadians(72.9);
+        double brOff = -Math.toRadians(73);
 
         //when calibrating wheels, try 
         /*
@@ -244,11 +244,10 @@ public class SubsystemFactory {
         ballDelivery.init(portMan);
         displayManager.addBallDelivery(ballDelivery);
 
-        //xbox buttons
-        /*
+        
         OI.getInstance().bind(new ToggleKeepSquare(driveTrain), OI.XboxA, OI.WhenPressed);
         OI.getInstance().bind(new ZeroGyro(navX), OI.XboxY, OI.WhenPressed);
-        */
+        
 
         //joystick buttons
         /*ShootBall cci = new ShootBall(ballDelivery);

@@ -82,6 +82,7 @@ public class Robot extends TimedRobot {
 
     modeChooser.addOption("Drive", TeleopType.DRIVE);
     modeChooser.addOption("Interstellar", TeleopType.INTERSTELLAR);
+    modeChooser.setDefaultOption("Drive", TeleopType.DRIVE);
 
 
     try {

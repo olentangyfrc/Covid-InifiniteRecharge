@@ -16,11 +16,17 @@ import frc.common.auton.AutonomousTrajectories;
 import frc.common.commands.FollowTrajectoryCommand;
 import frc.robot.subsystem.InterstellarAccuracyAuton.commands.DelayCommand;
 import frc.robot.subsystem.InterstellarAccuracyAuton.commands.WaitForInputCommand;
+import frc.robot.subsystem.balldelivery.commands.ShootBlue;
+import frc.robot.subsystem.balldelivery.commands.ShootGreen;
+import frc.robot.subsystem.balldelivery.commands.ShootRed;
+import frc.robot.subsystem.balldelivery.commands.ShootYellow;
 import frc.robot.subsystem.balldelivery.commands.DeliverBall;
+import frc.robot.subsystem.balldelivery.commands.SetShootingZone;
 import frc.robot.subsystem.balldelivery.commands.StopDelivery;
 
 import frc.robot.OI;
 import frc.robot.subsystem.balldelivery.BallDelivery;
+import frc.robot.subsystem.balldelivery.BallDelivery.ShootingZone;
 import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -33,6 +39,8 @@ public class InterstellarAccuracyAuton extends SequentialCommandGroup{
 
   private static Logger logger = Logger.getLogger(InterstellarAccuracyAuton.class.getName());
 
+  private static final double shootingDelayTime = 7;
+
   private BallDelivery ballDelivery;
   private AutonomousTrajectories trajectories = new AutonomousTrajectories(DrivetrainSubsystem2910.CONSTRAINTS);
 
@@ -41,24 +49,27 @@ public class InterstellarAccuracyAuton extends SequentialCommandGroup{
 
     this.ballDelivery = ballDelivery; 
     addCommands(
-      new DeliverBall(ballDelivery),
-      new DelayCommand(2),
+      new ShootGreen(ballDelivery),
+      new DelayCommand(shootingDelayTime),
       new StopDelivery(ballDelivery),
       new FollowTrajectoryCommand(trajectories.getGreenZoneToReIntroductionZone()),
       new WaitForInputCommand(OI.getButton(OI.XboxX)),
       new FollowTrajectoryCommand(trajectories.getReIntroductionZoneToYellowZone()),
-      new DeliverBall(ballDelivery),
-      new DelayCommand(2),
+      new ShootYellow(ballDelivery),
+      new DelayCommand(shootingDelayTime),
       new StopDelivery(ballDelivery),
       new FollowTrajectoryCommand(trajectories.getYellowZoneToReIntroductionZone()),
       new WaitForInputCommand(OI.getButton(OI.XboxX)),
       new FollowTrajectoryCommand(trajectories.getReIntroductionZoneToBlueZone()),
-      new DeliverBall(ballDelivery),
-      new DelayCommand(2),
+      new ShootBlue(ballDelivery),
+      new DelayCommand(shootingDelayTime),
       new StopDelivery(ballDelivery),
       new FollowTrajectoryCommand(trajectories.getBlueZonetoReIntroductionZone()),
       new WaitForInputCommand(OI.getButton(OI.XboxX)),
-      new FollowTrajectoryCommand(trajectories.getReIntroductionZoneToRedZone())
+      new FollowTrajectoryCommand(trajectories.getReIntroductionZoneToRedZone()),
+      new ShootRed(ballDelivery),
+      new DelayCommand(shootingDelayTime),
+      new StopDelivery(ballDelivery)
     );
   }
 }
