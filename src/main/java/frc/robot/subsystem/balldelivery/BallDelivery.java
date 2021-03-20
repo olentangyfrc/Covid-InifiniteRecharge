@@ -96,20 +96,20 @@ public class BallDelivery extends SubsystemBase{
         shootingMotorLeft.configFactoryDefault();
         shootingMotorLeft.configAllowableClosedloopError(0, 5);
         shootingMotorLeft.setSelectedSensorPosition(0, 0, 0);
-        shootingMotorLeft.config_kP(0, pValue, 0);
+        shootingMotorLeft.config_kP(0, 0.3, 0);
         shootingMotorLeft.config_kI(0, iValue, 0);
         shootingMotorLeft.config_kD(0, dValue, 0);
-        shootingMotorLeft.config_kF(0, fValue, 0);
+        shootingMotorLeft.config_kF(0, 0.045, 0);
         shootingMotorLeft.configClosedloopRamp(.9);
 
         shootingMotorRight.setNeutralMode(NeutralMode.Coast);
         shootingMotorRight.configFactoryDefault();
         shootingMotorRight.configAllowableClosedloopError(0, 5);
         shootingMotorRight.setSelectedSensorPosition(0, 0, 0);
-        shootingMotorRight.config_kP(0, pValue, 0);
+        shootingMotorRight.config_kP(0, 0.3, 0);
         shootingMotorRight.config_kI(0, iValue, 0);
         shootingMotorRight.config_kD(0, dValue, 0);
-        shootingMotorRight.config_kF(0, fValue, 0);
+        shootingMotorRight.config_kF(0, 0.045, 0);
         shootingMotorRight.configClosedloopRamp(.9);
 
         eatingMotor.setNeutralMode(NeutralMode.Coast);
@@ -160,13 +160,16 @@ public class BallDelivery extends SubsystemBase{
 
         switch (zone) {
             case Green:
-                targetHoodPosition  = 100;
+                targetHoodPosition  = 105;
                 break;
             case Yellow:
-                targetHoodPosition  = 300;
+                targetHoodPosition  = 260;
                 break;
             case Blue:
-                targetHoodPosition  = 500;
+                targetHoodPosition  = 318;
+                break;
+            case Red:
+                targetHoodPosition = 600;
                 break;
         }
     }
@@ -234,10 +237,6 @@ public class BallDelivery extends SubsystemBase{
     public void shootBall(){
         //logger.info("shoot ball");
         //logger.info("shoot ball [" + targetShootingVelocity + "]");
-        shootingMotorLeft.config_kP(0, pValue, 0);
-        shootingMotorLeft.config_kI(0, iValue, 0);
-        shootingMotorLeft.config_kD(0, dValue, 0);
-        shootingMotorLeft.config_kF(0, fValue, 0);
         shootingMotorLeft.set(ControlMode.Velocity, targetShootingVelocity);
         //logger.info("[" + targetShootingVelocity + "]" );
         
@@ -297,7 +296,7 @@ public class BallDelivery extends SubsystemBase{
         return targetHoodPosition;
     }
 
-    public double getPValue(){
+    /*public double getPValue(){
         return pValue;
     }
 
@@ -311,7 +310,7 @@ public class BallDelivery extends SubsystemBase{
     
     public double getFValue(){
         return fValue;
-    }
+    }*/
 
     public double getEatingTolerance(){
         return eatingTol;
@@ -321,7 +320,7 @@ public class BallDelivery extends SubsystemBase{
         return shootingTol;
     }
 
-    public void setPValue(double p){
+    /*public void setPValue(double p){
         pValue = p;
     }
 
@@ -335,7 +334,7 @@ public class BallDelivery extends SubsystemBase{
 
     public void setFValue(double f){
         fValue = f;
-    }
+    }*/
 
     public void setTargetCarouselVelocity(double vel){
         targetCarouselVelocity = vel;

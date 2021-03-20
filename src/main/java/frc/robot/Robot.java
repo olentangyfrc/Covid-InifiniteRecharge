@@ -9,37 +9,32 @@ package frc.robot;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
+
+import java.time.Duration;
+import java.time.Instant;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import frc.common.auton.AutonomousSelector;
+import frc.common.auton.AutonomousTrajectories;
+
 import frc.robot.subsystem.DisplayManager;
 import frc.robot.subsystem.PortMan;
 import frc.robot.subsystem.SubsystemFactory;
+import frc.robot.subsystem.InterstellarAccuracyAuton.InterstellarAccuracyAuton;
 import frc.robot.subsystem.controlpanel.ControlPanel;
-import frc.robot.util.OzoneLogger;
-
-//2910 auton stuff
-import frc.common.auton.AutonomousSelector;
-import frc.common.auton.AutonomousTrajectories;
-import frc.common.commands.FollowTrajectoryCommand;
 import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
-
-
-import frc.robot.subsystem.SBInterface;
-import frc.robot.subsystem.controlpanel.ControlPanelSBTab;
-
-import java.time.Instant;
-import java.time.Duration;
+import frc.robot.util.OzoneLogger;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -64,6 +59,7 @@ public class Robot extends TimedRobot {
   private AutonomousSelector autonomousSelector = new AutonomousSelector(autonomousTrajectories);
 
   private Command autonomousCommand = null;
+  private final SendableChooser<TeleopType> modeChooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be
@@ -72,16 +68,21 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     resetTime();
-    initTime = Instant.now();
 
     subsystemFactory = SubsystemFactory.getInstance();
 
     tab = Shuffleboard.getTab("Auton");
 
+    tab.add(modeChooser);
+
     OzoneLogger.getInstance().init(Level.ALL);
     logger.log(Level.INFO, "robot init");
 
     dManager = new DisplayManager();
+
+    modeChooser.addOption("Drive", TeleopType.DRIVE);
+    modeChooser.addOption("Interstellar", TeleopType.INTERSTELLAR);
+
 
     try {
       subsystemFactory.init(dManager, PortMan.getInstance());
@@ -104,39 +105,29 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-      CommandScheduler.getInstance().run();
-      dManager.update();
-      // need to double check if default Drive command is being called too.
-      // this looks realy weird.
-      currentTime = Instant.now();
-      double elapsedTime = Duration.between(initTime, currentTime).toMillis();
-      elapsedTime /= 1000;
-      
-      if (SubsystemFactory.getInstance().getDriveTrain() != null) {
-        SubsystemFactory.getInstance().getDriveTrain().updateKinematics(elapsedTime);
-      }
+    CommandScheduler.getInstance().run();
+    dManager.update();
+    // need to double check if default Drive command is being called too.
+    // this looks realy weird.
+    currentTime = Instant.now();
+    double elapsedTime = Duration.between(initTime, currentTime).toMillis();
+    elapsedTime /= 1000;
+    
+    if (SubsystemFactory.getInstance().getDriveTrain() != null) {
+      SubsystemFactory.getInstance().getDriveTrain().updateKinematics(elapsedTime);
+    }
        
   }
 
-  /**
-   * This autonomous (along with the chooser code above) shows how to select
-   * between different autonomous modes using the dashboard. The sendable
-   * chooser code works with the Java SmartDashboard. If you prefer the
-   * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-   * getString line to get the auto name from the text box below the Gyro
-   *
-   * <p>You can add additional auto modes by adding additional comparisons to
-   * the switch structure below with additional strings. If using the
-   * SendableChooser make sure to add them to the chooser code above as well.
-   */
   @Override
   public void autonomousInit() {
-    SubsystemFactory.getInstance().getDriveTrain().stopSnap();
+    if(SubsystemFactory.getInstance().getDriveTrain() != null) {
+      SubsystemFactory.getInstance().getDriveTrain().stopSnap();
+    }
     resetTime();
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
-
     autonomousCommand = autonomousSelector.getCommand();
     autonomousCommand.schedule();
   }
@@ -151,14 +142,21 @@ public class Robot extends TimedRobot {
   }
   @Override
   public void teleopInit() {
-    SubsystemFactory.getInstance().getDriveTrain().stopSnap();
+    if(SubsystemFactory.getInstance().getDriveTrain() != null) {
+      SubsystemFactory.getInstance().getDriveTrain().stopSnap();
+    }
     resetTime();
+    if(modeChooser.getSelected() == TeleopType.INTERSTELLAR && SubsystemFactory.getInstance().getBallDelivery() != null) {
+      InterstellarAccuracyAuton interstellarAuton = new InterstellarAccuracyAuton(SubsystemFactory.getInstance().getBallDelivery());
+      interstellarAuton.schedule();
+    }
   }
   /**
    * This function is called periodically during operator control.
    */
   @Override
   public void teleopPeriodic() {
+    CommandScheduler.getInstance().run();
   }
 
   @Override
@@ -174,5 +172,10 @@ public class Robot extends TimedRobot {
     initTime = Instant.now();
     currentTime = Instant.now();
 
+  }
+
+  private enum TeleopType {
+    DRIVE,
+    INTERSTELLAR
   }
 }

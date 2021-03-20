@@ -232,13 +232,17 @@ public class SubsystemFactory {
         ballDelivery.init(portMan);
         displayManager.addBallDelivery(ballDelivery);
 
+        //xbox buttons
+        /*
         OI.getInstance().bind(new ToggleKeepSquare(driveTrain), OI.XboxA, OI.WhenPressed);
         OI.getInstance().bind(new ZeroGyro(navX), OI.XboxY, OI.WhenPressed);
+        */
 
-        //ShootBall cci = new ShootBall(ballDelivery);
-        //OI.getInstance().bind(cci, OI.LeftJoyButton7, OI.WhenPressed);
+        //joystick buttons
+        /*ShootBall cci = new ShootBall(ballDelivery);
+        OI.getInstance().bind(cci, OI.LeftJoyButton7, OI.WhenPressed);
 
-        /*ReverseShooter ccj = new ReverseShooter(ballDelivery);
+        ReverseShooter ccj = new ReverseShooter(ballDelivery);
         OI.getInstance().bind(ccj, OI.LeftJoyButton10, OI.WhenPressed);
         
         StopShooting cck = new StopShooting(ballDelivery);
@@ -252,7 +256,7 @@ public class SubsystemFactory {
 
         SpitOutBalls ccn = new SpitOutBalls(ballDelivery);
         OI.getInstance().bind(ccn, OI.RightJoyButton3, OI.WhenPressed);
-
+        
         SpinCarousel cco = new SpinCarousel(ballDelivery);
         OI.getInstance().bind(cco, OI.RightJoyButton6, OI.WhenPressed);
 
@@ -262,18 +266,19 @@ public class SubsystemFactory {
         StopCarousel ccq = new StopCarousel(ballDelivery);
         OI.getInstance().bind(ccq, OI.RightJoyButton7, OI.WhenPressed);
 
+        StopAngling cct = new StopAngling(ballDelivery);
+        OI.getInstance().bind(cct, OI.RightJoyButton5, OI.WhenPressed);
+        */
+
         DeliverBall ccr = new DeliverBall(ballDelivery);
         OI.getInstance().bind(ccr, OI.LeftJoyButton6, OI.WhenPressed);
         
         StopDelivery ccs = new StopDelivery(ballDelivery);
         OI.getInstance().bind(ccs, OI.LeftJoyButton7, OI.WhenPressed);
 
-        StopAngling cct = new StopAngling(ballDelivery);
-        OI.getInstance().bind(cct, OI.RightJoyButton5, OI.WhenPressed);
-
         PutHoodDown ccu = new PutHoodDown(ballDelivery);
         OI.getInstance().bind(ccu, OI.RightJoyButton8, OI.WhenPressed);
-        */
+        
 
     }
 
@@ -442,6 +447,10 @@ public class SubsystemFactory {
         } else {
             return navX;
         }
+    }
+
+    public BallDelivery getBallDelivery() {
+        return ballDelivery;
     }
 
     private String getBotName() throws Exception {

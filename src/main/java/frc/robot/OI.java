@@ -219,6 +219,9 @@ public class OI {
     public XboxController getXbox() {
         return xbox;
     }
+    public XboxController getXbox() {
+        return xbox;
+    }
     /**
      * this method binds a Command to a Joystick button for an action
      * @param c - the Command
@@ -271,7 +274,6 @@ public class OI {
         else {
             throw new OzoneException ("Unrecognized joystick button [" + button + "]");
         }
-        logger.info("Input type: " + j.getType().toString());
 		String []parts	= c.getClass().getName().split("\\.");
         logger.info("binding [" + parts[parts.length-1] + "] to joy[" + j.getPort() + "] b[" + button + "]");
 
