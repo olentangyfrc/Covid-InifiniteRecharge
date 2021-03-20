@@ -219,9 +219,6 @@ public class OI {
     public XboxController getXbox() {
         return xbox;
     }
-    public XboxController getXbox() {
-        return xbox;
-    }
     /**
      * this method binds a Command to a Joystick button for an action
      * @param c - the Command

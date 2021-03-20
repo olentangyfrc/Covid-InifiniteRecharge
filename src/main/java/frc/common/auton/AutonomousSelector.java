@@ -26,7 +26,7 @@ public class AutonomousSelector {
         pathChooser.addOption("Slalom Path", AutonomousPath.SLALOM);
         pathChooser.addOption("Bounce Path", AutonomousPath.BOUNCE);
 
-        Shuffleboard.getTab("Auton").add(pathChooser);
+        Shuffleboard.getTab("Auton").add("Path", pathChooser);
     }
     public Command getCommand() {
         SequentialCommandGroup group = new SequentialCommandGroup();
