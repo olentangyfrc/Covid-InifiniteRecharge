@@ -8,7 +8,7 @@ import frc.robot.subsystem.balldelivery.BallDelivery;
 public class SpitOutBalls extends CommandBase {
   private BallDelivery ballDelivery;
   private boolean stop;
-  private static Logger logger = Logger.getLogger(StopShooting.class.getName());
+  private static Logger logger = Logger.getLogger(SpitOutBalls.class.getName());
 
   //private int direction = 0;
 

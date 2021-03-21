@@ -27,6 +27,10 @@ import frc.robot.subsystem.balldelivery.commands.StopAngling;
 import frc.robot.subsystem.balldelivery.commands.DeliverBall;
 import frc.robot.subsystem.balldelivery.commands.StopDelivery;
 import frc.robot.subsystem.balldelivery.commands.StopCarousel;
+import frc.robot.subsystem.balldelivery.commands.ShootGreen;
+import frc.robot.subsystem.balldelivery.commands.ShootYellow;
+import frc.robot.subsystem.balldelivery.commands.ShootBlue;
+import frc.robot.subsystem.balldelivery.commands.ShootRed;
 import frc.robot.subsystem.climber.Climber;
 import frc.robot.subsystem.controlpanel.ControlPanel;
 import frc.robot.subsystem.controlpanel.commands.RotateToColor;
@@ -79,10 +83,12 @@ import frc.robot.subsystem.transport.commands.*;
 import frc.robot.subsystem.transport.commands.TakeIn;
 import frc.robot.subsystem.transport.commands.StopTransport;
 import frc.robot.subsystem.swerve.DrivetrainSubsystem;
+import frc.robot.subsystem.telemetry.commands.ZeroGyro;
 import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
 import frc.common.drivers.Gyroscope;
 import frc.common.drivers.NavX;
 import edu.wpi.first.wpilibj.SPI;
+import frc.robot.subsystem.swerve.commands.ToggleKeepSquare;
 
 public class SubsystemFactory {
 
@@ -231,8 +237,15 @@ public class SubsystemFactory {
         ballDelivery.init(portMan);
         displayManager.addBallDelivery(ballDelivery);
 
-        //ShootBall cci = new ShootBall(ballDelivery);
-        //OI.getInstance().bind(cci, OI.LeftJoyButton7, OI.WhenPressed);
+        //xbox buttons
+        /*
+        OI.getInstance().bind(new ToggleKeepSquare(driveTrain), OI.XboxA, OI.WhenPressed);
+        OI.getInstance().bind(new ZeroGyro(navX), OI.XboxY, OI.WhenPressed);
+        */
+
+        //joystick buttons
+        /*ShootBall cci = new ShootBall(ballDelivery);
+        OI.getInstance().bind(cci, OI.LeftJoyButton7, OI.WhenPressed);
 
         ReverseShooter ccj = new ReverseShooter(ballDelivery);
         OI.getInstance().bind(ccj, OI.LeftJoyButton10, OI.WhenPressed);
@@ -248,7 +261,7 @@ public class SubsystemFactory {
 
         SpitOutBalls ccn = new SpitOutBalls(ballDelivery);
         OI.getInstance().bind(ccn, OI.RightJoyButton3, OI.WhenPressed);
-
+        
         SpinCarousel cco = new SpinCarousel(ballDelivery);
         OI.getInstance().bind(cco, OI.RightJoyButton6, OI.WhenPressed);
 
@@ -258,17 +271,32 @@ public class SubsystemFactory {
         StopCarousel ccq = new StopCarousel(ballDelivery);
         OI.getInstance().bind(ccq, OI.RightJoyButton7, OI.WhenPressed);
 
+        StopAngling cct = new StopAngling(ballDelivery);
+        OI.getInstance().bind(cct, OI.RightJoyButton5, OI.WhenPressed);
+        */
+
         DeliverBall ccr = new DeliverBall(ballDelivery);
         OI.getInstance().bind(ccr, OI.LeftJoyButton6, OI.WhenPressed);
         
         StopDelivery ccs = new StopDelivery(ballDelivery);
         OI.getInstance().bind(ccs, OI.LeftJoyButton7, OI.WhenPressed);
 
-        StopAngling cct = new StopAngling(ballDelivery);
-        OI.getInstance().bind(cct, OI.RightJoyButton5, OI.WhenPressed);
-
         PutHoodDown ccu = new PutHoodDown(ballDelivery);
-        OI.getInstance().bind(ccu, OI.RightJoyButton8, OI.WhenPressed);
+        OI.getInstance().bind(ccu, OI.LeftJoyButton11, OI.WhenPressed);
+
+        //different ranges
+        ShootGreen ccv = new ShootGreen(ballDelivery);
+        OI.getInstance().bind(ccv, OI.RightJoyButton6, OI.WhenPressed);
+
+        ShootYellow ccw = new ShootYellow(ballDelivery);
+        OI.getInstance().bind(ccw, OI.RightJoyButton7, OI.WhenPressed);
+
+        ShootBlue ccx = new ShootBlue(ballDelivery);
+        OI.getInstance().bind(ccx, OI.RightJoyButton11, OI.WhenPressed);
+
+        ShootRed ccy = new ShootRed(ballDelivery);
+        OI.getInstance().bind(ccy, OI.RightJoyButton10, OI.WhenPressed);
+        
 
     }
 
@@ -326,11 +354,11 @@ public class SubsystemFactory {
         canAssignments.put("BR.Swerve.angle", PortMan.can_59_label);
         canAssignments.put("BR.Swerve.drive", PortMan.can_60_label);
 
-        double flOff = -Math.toRadians(339);
-        double frOff = -Math.toRadians(266.5);
-        double blOff = -Math.toRadians(271.9);
-        double brOff = -Math.toRadians(125.5);
-
+        double flOff = -Math.toRadians(339.7);
+        double frOff = -Math.toRadians(266.8);
+        double blOff = -Math.toRadians(271.7);
+        double brOff = -Math.toRadians(122.9);
+      
         driveTrain  = DrivetrainSubsystem2910.getInstance();
         driveTrain.init(portMan, canAssignments, flOff, blOff, frOff, brOff);
 
@@ -341,6 +369,9 @@ public class SubsystemFactory {
         telemetry = new Telemetry();
         telemetry.init(portMan);
         displayManager.addTelemetry(telemetry);
+        
+        OI.getInstance().bind(new ToggleKeepSquare(driveTrain), OI.XboxA, OI.WhenPressed);
+        OI.getInstance().bind(new ZeroGyro(navX), OI.XboxY, OI.WhenPressed);
 
         //SquareSelf ccc = new SquareSelf(telemetry, 2.34);
         //OI.getInstance().bind(ccc, OI.LeftJoyButton6, OI.WhenPressed);
@@ -357,9 +388,9 @@ public class SubsystemFactory {
         //RotateTowardsBall ccg = new RotateTowardsBall(telemetry);
         //OI.getInstance().bind(ccg, OI.LeftJoyButton11, OI.WhileHeld);
 
-        ChaseBall cch = new ChaseBall(telemetry);
+        /*ChaseBall cch = new ChaseBall(telemetry);
         OI.getInstance().bind(cch, OI.RightJoyButton10, OI.WhileHeld);
-
+        */
         /**
         * shooter stuff goes here
         */
@@ -370,7 +401,7 @@ public class SubsystemFactory {
         //ShootBall cci = new ShootBall(ballDelivery);
         //OI.getInstance().bind(cci, OI.LeftJoyButton7, OI.WhenPressed);
 
-        ReverseShooter ccj = new ReverseShooter(ballDelivery);
+        /*ReverseShooter ccj = new ReverseShooter(ballDelivery);
         OI.getInstance().bind(ccj, OI.LeftJoyButton10, OI.WhenPressed);
         
         StopShooting cck = new StopShooting(ballDelivery);
@@ -399,6 +430,26 @@ public class SubsystemFactory {
         
         StopDelivery ccs = new StopDelivery(ballDelivery);
         OI.getInstance().bind(ccs, OI.LeftJoyButton7, OI.WhenPressed);
+        */
+
+        //different ranges
+        ShootGreen ccv = new ShootGreen(ballDelivery);
+        OI.getInstance().bind(ccv, OI.RightJoyButton6, OI.WhenPressed);
+
+        ShootYellow ccw = new ShootYellow(ballDelivery);
+        OI.getInstance().bind(ccw, OI.RightJoyButton7, OI.WhenPressed);
+
+        ShootBlue ccx = new ShootBlue(ballDelivery);
+        OI.getInstance().bind(ccx, OI.RightJoyButton11, OI.WhenPressed);
+
+        ShootRed ccy = new ShootRed(ballDelivery);
+        OI.getInstance().bind(ccy, OI.RightJoyButton10, OI.WhenPressed);
+
+        DeliverBall cct = new DeliverBall(ballDelivery);
+        OI.getInstance().bind(cct, OI.LeftJoyButton7, OI.WhenPressed);
+
+        StopDelivery ccz = new StopDelivery(ballDelivery);
+        OI.getInstance().bind(ccz, OI.LeftJoyButton6, OI.WhenPressed);
     }
 
     private void initRIO99(PortMan portMan) throws Exception {
@@ -437,6 +488,10 @@ public class SubsystemFactory {
         } else {
             return navX;
         }
+    }
+
+    public BallDelivery getBallDelivery() {
+        return ballDelivery;
     }
 
     private String getBotName() throws Exception {

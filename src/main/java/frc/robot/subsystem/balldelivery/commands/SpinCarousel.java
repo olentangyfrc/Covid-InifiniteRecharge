@@ -9,9 +9,7 @@ public class SpinCarousel extends CommandBase {
   private BallDelivery ballDelivery;
   private boolean stop;
   private boolean isFirstTime;
-  private static Logger logger = Logger.getLogger(ShootBall.class.getName());
-
-  //private int direction = 0;
+  private static Logger logger = Logger.getLogger(SpinCarousel.class.getName());
 
   public SpinCarousel(BallDelivery bd) {
     // Use addRequirements() here to declare subsystem dependencies.

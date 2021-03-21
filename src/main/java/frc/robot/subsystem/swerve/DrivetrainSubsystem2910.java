@@ -2,6 +2,8 @@ package frc.robot.subsystem.swerve;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,6 +28,9 @@ import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -36,6 +41,7 @@ import frc.robot.OzoneException;
 import frc.robot.subsystem.PortMan;
 
 public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
+
     private static final double TRACKWIDTH = 23.5;
     private static final double WHEELBASE = 23.5;
 
@@ -43,7 +49,7 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
 
     static Logger logger = Logger.getLogger(DrivetrainSubsystem2910.class.getName());
 
-    private static final PidConstants SNAP_ROTATION_CONSTANTS = new PidConstants(0.04, 0.0, 0.0);
+    private static final PidConstants SNAP_ROTATION_CONSTANTS = new PidConstants(0.5, 0.0, 0.0);
     private PidController snapRotationController = new PidController(SNAP_ROTATION_CONSTANTS);
     private double snapRotation = Double.NaN;
 
@@ -56,16 +62,16 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
 
     private PortMan pm;
 
-    private boolean isRotating = true;
+    private boolean keepSquare = false;
 
     private static final PidConstants FOLLOWER_TRANSLATION_CONSTANTS = new PidConstants(0.05, 0.01, 0.0);
-    private static final PidConstants FOLLOWER_ROTATION_CONSTANTS = new PidConstants(0.2, 0.01, 0.0);
+    private static final PidConstants FOLLOWER_ROTATION_CONSTANTS = new PidConstants(1, 0.01, 0.0);
     private static final HolonomicFeedforward FOLLOWER_FEEDFORWARD_CONSTANTS = new HolonomicFeedforward(
             new DrivetrainFeedforwardConstants(1.0 / (14.0 * 12.0), 0.0, 0.0)
     );
 
     public static final ITrajectoryConstraint[] CONSTRAINTS = {
-            new MaxVelocityConstraint(MAX_VELOCITY),
+            new MaxVelocityConstraint(MAX_VELOCITY * 0.3),
             new MaxAccelerationConstraint(13.0 * 12.0),
             new CentripetalAccelerationConstraint(25.0 * 12.0)
     };
@@ -163,16 +169,22 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
                 localSignal = this.signal;
             }
         }
-        if (Math.abs(localSignal.getRotation()) < 0.1 && Double.isFinite(localSnapRotation)) {
-            snapRotationController.setSetpoint(localSnapRotation);
-
-            localSignal = new HolonomicDriveSignal(localSignal.getTranslation(),
-                    snapRotationController.calculate(getGyroscope().getAngle().toRadians(), dt),
-                    localSignal.isFieldOriented());
-        } else {
-            synchronized (lock) {
-                snapRotation = Double.NaN;
+        if(!keepSquare) {
+            if (Math.abs(localSignal.getRotation()) < 0.1 && Double.isFinite(localSnapRotation)) {
+                snapRotationController.setSetpoint(localSnapRotation);
+    
+                localSignal = new HolonomicDriveSignal(localSignal.getTranslation(),
+                        snapRotationController.calculate(getGyroscope().getAngle().toRadians(), dt),
+                        localSignal.isFieldOriented());
+            } else {
+                synchronized (lock) {
+                    snapRotation = Double.NaN;
+                }
             }
+        } else {
+            localSignal = new HolonomicDriveSignal(localSignal.getTranslation(),
+                        snapRotationController.calculate(getGyroscope().getAngle().toRadians(), dt),
+                        localSignal.isFieldOriented());
         }
         //logger.log(Level.INFO, "Rotation point: [" + snapRotationController.getSetpoint() + "]");
         drive(new Translation2d(localSignal.getTranslation().x, localSignal.getTranslation().y), localSignal.getRotation(), localSignal.isFieldOriented());
@@ -195,6 +207,7 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
         SmartDashboard.putNumber("Drivetrain Follower Strafe", localSignal.getTranslation().y);
         SmartDashboard.putNumber("Drivetrain Follower Rotation", localSignal.getRotation());
         SmartDashboard.putBoolean("Drivetrain Follower Field Oriented", localSignal.isFieldOriented());
+        SmartDashboard.putNumber("Target Angle", Math.toDegrees(snapRotation));
 
         if (follower.getCurrentTrajectory().isPresent() && localSegment != null) {
             SmartDashboard.putNumber("Drivetrain Follower Target Angle", localSegment.rotation.toDegrees());
@@ -288,14 +301,7 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
         return swerveModules;
     }
     public void drive(Translation2d translation, double rotation, boolean fieldOriented) {
-        /*Checks if the isRotating boolean matches up with whether or not the bot is actually rotating, changes the boolean if they don't match.
-        This doesn't detect autonomous rotation.
-        */
-        if(Math.abs(rotation) < 0.1 && isRotating == true) {
-            isRotating = false;
-        } else if(Math.abs(rotation) > 0.1 && isRotating == false) {
-            isRotating = true;
-        }
+        
         rotation *= 2.0 / Math.hypot(WHEELBASE, TRACKWIDTH);
         ChassisSpeeds speeds;
         if (fieldOriented) {
@@ -336,5 +342,17 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
 
     public HolonomicMotionProfiledTrajectoryFollower getFollower() {
         return follower;
+    }
+    public void toggleKeepSquare() {
+        if(!keepSquare) {
+            logger.info("KEEP SQUARE ON");
+            setSnapRotation(gyro.getAngle().toRadians());
+            keepSquare = true;
+        } else {
+            logger.info("KEEP SQUARE OFF");
+            stopSnap();
+            keepSquare = false;
+        }
+        
     }
 }
