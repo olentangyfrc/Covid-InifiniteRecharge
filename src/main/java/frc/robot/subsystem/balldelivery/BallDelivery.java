@@ -153,8 +153,15 @@ public class BallDelivery extends SubsystemBase{
         hoodMotor.config_kD(0, 100, 0);
         hoodMotor.config_kF(0, 0, 0);
 
-        angleHood = new AngleHood(this);
-        setDefaultCommand(angleHood);
+    }
+    @Override
+    public void periodic() {
+        logger.info("Target Hood Position: " + targetHoodPosition + "Current Hood Position: " + getCurrentHoodPosition());
+        if (Math.abs(getCurrentHoodPosition() - targetHoodPosition) > 5) {
+            setHoodPercentOutput((targetHoodPosition - getCurrentHoodPosition() > 0 ) ? 0.2 :-0.2);   
+        } else {
+            setHoodPercentOutput(0.0);
+        }
     }
 
     public void setHoodPercentOutput(double output) {

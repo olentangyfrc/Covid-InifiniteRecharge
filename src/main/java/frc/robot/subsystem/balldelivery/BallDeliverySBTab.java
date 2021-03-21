@@ -55,6 +55,7 @@ public class BallDeliverySBTab implements SBInterface{
     public void update(){
         currentCarouselVelocity.setDouble(ballDelivery.getCurrentCarouselVelocity());
         currentEatingVelocity.setDouble(ballDelivery.getCurrentEatingVelocity());
+        targetHoodPosition.setDouble(ballDelivery.getTargetHoodPosition());
         //logger.info("Eating Vel: " + ballDelivery.getCurrentEatingVelocity());
         currentShootingVelocity.setDouble(ballDelivery.getCurrentShootingVelocity());
         currentHoodPosition.setDouble(ballDelivery.getCurrentHoodPosition());

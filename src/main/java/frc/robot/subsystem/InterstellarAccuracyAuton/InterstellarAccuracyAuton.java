@@ -23,7 +23,7 @@ import frc.robot.subsystem.balldelivery.commands.ShootYellow;
 import frc.robot.subsystem.balldelivery.commands.DeliverBall;
 import frc.robot.subsystem.balldelivery.commands.SetShootingZone;
 import frc.robot.subsystem.balldelivery.commands.StopDelivery;
-
+import frc.robot.subsystem.balldelivery.commands.StopEating;
 import frc.robot.OI;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 import frc.robot.subsystem.balldelivery.BallDelivery.ShootingZone;
@@ -50,25 +50,21 @@ public class InterstellarAccuracyAuton extends SequentialCommandGroup{
     this.ballDelivery = ballDelivery; 
     addCommands(
       new ShootGreen(ballDelivery),
-      new DelayCommand(shootingDelayTime),
-      new StopDelivery(ballDelivery),
+      new StopEating(ballDelivery),
       new FollowTrajectoryCommand(trajectories.getGreenZoneToReIntroductionZone()),
       new WaitForInputCommand(OI.getButton(OI.XboxX)),
       new FollowTrajectoryCommand(trajectories.getReIntroductionZoneToYellowZone()),
       new ShootYellow(ballDelivery),
-      new DelayCommand(shootingDelayTime),
-      new StopDelivery(ballDelivery),
+      new StopEating(ballDelivery),
       new FollowTrajectoryCommand(trajectories.getYellowZoneToReIntroductionZone()),
       new WaitForInputCommand(OI.getButton(OI.XboxX)),
       new FollowTrajectoryCommand(trajectories.getReIntroductionZoneToBlueZone()),
       new ShootBlue(ballDelivery),
-      new DelayCommand(shootingDelayTime),
-      new StopDelivery(ballDelivery),
+      new StopEating(ballDelivery),
       new FollowTrajectoryCommand(trajectories.getBlueZonetoReIntroductionZone()),
       new WaitForInputCommand(OI.getButton(OI.XboxX)),
       new FollowTrajectoryCommand(trajectories.getReIntroductionZoneToRedZone()),
       new ShootRed(ballDelivery),
-      new DelayCommand(shootingDelayTime),
       new StopDelivery(ballDelivery)
     );
   }

@@ -32,6 +32,7 @@ import frc.robot.subsystem.DisplayManager;
 import frc.robot.subsystem.PortMan;
 import frc.robot.subsystem.SubsystemFactory;
 import frc.robot.subsystem.InterstellarAccuracyAuton.InterstellarAccuracyAuton;
+import frc.robot.subsystem.balldelivery.commands.StopShooting;
 import frc.robot.subsystem.controlpanel.ControlPanel;
 import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
 import frc.robot.util.OzoneLogger;
@@ -143,6 +144,9 @@ public class Robot extends TimedRobot {
   }
   @Override
   public void teleopInit() {
+    if(SubsystemFactory.getInstance().getBallDelivery() != null) {
+      new StopShooting(SubsystemFactory.getInstance().getBallDelivery()).schedule();
+    }
 
     if(SubsystemFactory.getInstance().getDriveTrain() != null) {
       SubsystemFactory.getInstance().getDriveTrain().stopSnap();
