@@ -30,13 +30,13 @@ public class StopCarousel extends CommandBase {
   @Override
   public void execute() {
     logger.info("stopping carousel");
-    ballDelivery.stopCarousel();    
+    ballDelivery.stopCarousel(true);    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    stop = true;
+    stop = interrupted;
   }
 
   // Returns true when the command should end.

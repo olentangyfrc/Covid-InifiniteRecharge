@@ -56,6 +56,11 @@ public class BallDelivery extends SubsystemBase{
     public double eatingTol;
     public double shootingTol;
 
+    //private DigitalInput carouselReceiverSwitch;
+    private DigitalInput beamBreakerReceiver;
+    private boolean lastReading = false;
+    private int count = 0;
+
     private CommandBase angleHood;
 
     public static enum ShootingZone {
@@ -74,9 +79,12 @@ public class BallDelivery extends SubsystemBase{
         hoodMotor = new WPI_TalonSRX(portMan.acquirePort(PortMan.can_27_label, "HoodMotor"));
 
         stopHoodMotor = new DigitalInput(0);
+        beamBreakerReceiver = new DigitalInput(portMan.acquirePort(PortMan.digital2_label, "Beam Breaker Receiver"));
         
         shootingMotorRight.follow(shootingMotorLeft);
         shootingMotorLeft.setInverted(true);
+
+        //carouselReceiverSwitch = new DigitalInput(portMan.acquirePort(PortMan.digital1_label, "CarouselSensor1"));
 
         //shootingMotorLeft.setInverted(false);
 
@@ -123,7 +131,7 @@ public class BallDelivery extends SubsystemBase{
         eatingMotor.config_kF(0, 0, 0);
         eatingMotor.configClosedloopRamp(.9);
         
-        carouselMotor.setNeutralMode(NeutralMode.Coast);
+        carouselMotor.setNeutralMode(NeutralMode.Brake);
         carouselMotor.configFactoryDefault();
         carouselMotor.configAllowableClosedloopError(0, 5);
         carouselMotor.setSelectedSensorPosition(0, 0, 0);
@@ -178,17 +186,27 @@ public class BallDelivery extends SubsystemBase{
     
     //spin the carousel
     public void spinCarousel(){
-
-        //logger.info("spin carousel");
-        //logger.info("spin [" + targetCarouselVelocity + "]");
-
-        //spin carousel
-        carouselMotor.set(ControlMode.Velocity, targetCarouselVelocity);
+        carouselMotor.set(ControlMode.Velocity, 600);
     }
 
-    public void stopCarousel()
-    {
-        carouselMotor.set(ControlMode.PercentOutput, 0);
+    //this is the same as spinCarousel() ??
+    public boolean stopCarousel(boolean forceStop){
+        //false means beam is being broken ("switch" is on)
+        if(forceStop)
+            carouselMotor.set(ControlMode.PercentOutput, 0);
+
+        boolean reading;
+        reading = beamBreakerReceiver.get();
+        if(lastReading != reading){
+            lastReading = reading;
+            if(reading == false)
+            {
+                logger.info("stop");
+                carouselMotor.set(ControlMode.PercentOutput, 0);
+                return true;
+            }
+        }
+        return false;
     }
 
     //angle the shooter
@@ -322,6 +340,10 @@ public class BallDelivery extends SubsystemBase{
         return shootingTol;
     }
 
+    public boolean isCarouselSwitchOn(){
+        return beamBreakerReceiver.get();
+    }
+
     /*public void setPValue(double p){
         pValue = p;
     }
@@ -383,6 +405,7 @@ public class BallDelivery extends SubsystemBase{
             return false;
         }
     }
+
 
     /*public double getCurrent(){
         //return motor.getSupplyCurrent();
