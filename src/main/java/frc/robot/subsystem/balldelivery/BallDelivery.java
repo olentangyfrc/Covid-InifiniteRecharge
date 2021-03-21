@@ -52,9 +52,11 @@ public class BallDelivery extends SubsystemBase{
 
     private boolean atTargetEatingVel;
     private boolean atTargetShootingVel;
+    private boolean atTargetHoodPos;
 
     public double eatingTol;
     public double shootingTol;
+    public double hoodTol = 5;
 
     //private DigitalInput carouselReceiverSwitch;
     private DigitalInput beamBreakerReceiver;
@@ -404,6 +406,12 @@ public class BallDelivery extends SubsystemBase{
         else{
             return false;
         }
+    }
+
+    public boolean isAtHoodPosition(){
+        if(Math.abs(getCurrentHoodPosition() - targetHoodPosition) <= hoodTol)
+            atTargetHoodPos = true;
+        return atTargetHoodPos;
     }
 
 
