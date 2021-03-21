@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import frc.robot.OI;
 import frc.robot.OzoneException;
+import frc.robot.subsystem.FootballPlayground.FootballPlayground;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 import frc.robot.subsystem.balldelivery.commands.ReverseShooter;
 import frc.robot.subsystem.balldelivery.commands.ShootBall;
@@ -229,14 +230,6 @@ public class SubsystemFactory {
         double blOff = -Math.toRadians(319);
         double brOff = -Math.toRadians(72.9);
 
-        //when calibrating wheels, try 
-        /*
-        double flOff = -Math.toRadians(0);
-        double frOff = -Math.toRadians(0);
-        double blOff = -Math.toRadians(0);
-        double brOff = -Math.toRadians(0);
-        */
-
         driveTrain = DrivetrainSubsystem2910.getInstance();
         driveTrain.init(portMan, canAssignments, flOff, blOff, frOff, brOff);
 
@@ -309,6 +302,9 @@ public class SubsystemFactory {
 
     private void initRIO2(PortMan portMan) throws Exception {
         logger.info("Initializing RIO2");
+        FootballPlayground footballPlayground = new FootballPlayground();
+        footballPlayground.init(portMan);
+        displayManager.addFootballPlayground(footballPlayground);
     }
 
     private void initRIO3(PortMan portMan ) throws Exception {
@@ -458,7 +454,8 @@ public class SubsystemFactory {
 
     private void initRIO99(PortMan portMan) throws Exception {
         logger.info("Initializing RIO99");
-        
+        FootballPlayground footballPlayground = new FootballPlayground();
+        footballPlayground.init(portMan);
     }
 
 

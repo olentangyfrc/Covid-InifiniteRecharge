@@ -142,6 +142,7 @@ public class Robot extends TimedRobot {
   }
   @Override
   public void teleopInit() {
+
     if(SubsystemFactory.getInstance().getDriveTrain() != null) {
       SubsystemFactory.getInstance().getDriveTrain().stopSnap();
     }

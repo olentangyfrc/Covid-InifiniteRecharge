@@ -65,7 +65,7 @@ public class Telemetry extends SubsystemBase{
     public void init(PortMan portMan) throws Exception{
         logger.entering(Telemetry.class.getName(), "init()");
 
-        frontLidar = new LidarPWM(portMan.acquirePort(PortMan.digital1_label, "Telemetry.frontLidar"));
+        frontLidar = new LidarPWM(portMan.acquirePort(PortMan.digital10_label, "Telemetry.frontLidar"));
         rearLidar = new LidarPWM(portMan.acquirePort(PortMan.digital7_label, "Telemetry.rearLidar"));
         backLidar = new LidarPWM(portMan.acquirePort(PortMan.digital6_label, "Telemetry.backLidar"));
         filterFront = new MedianFilter(10);
