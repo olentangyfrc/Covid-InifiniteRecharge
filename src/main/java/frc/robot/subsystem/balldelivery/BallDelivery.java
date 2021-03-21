@@ -58,8 +58,8 @@ public class BallDelivery extends SubsystemBase{
 
     //private DigitalInput carouselReceiverSwitch;
     private DigitalInput beamBreakerReceiver;
-    private boolean lastReading = true;
-    private int count = 1;
+    private boolean lastReading = false;
+    private int count = 0;
 
     private CommandBase angleHood;
 
@@ -78,7 +78,7 @@ public class BallDelivery extends SubsystemBase{
         hoodMotor = new WPI_TalonSRX(portMan.acquirePort(PortMan.can_27_label, "HoodMotor"));
 
         stopHoodMotor = new DigitalInput(0);
-        beamBreakerReceiver = new DigitalInput(portMan.acquirePort(PortMan.digital1_label, "Beam Braker Receiver"));
+        beamBreakerReceiver = new DigitalInput(portMan.acquirePort(PortMan.digital2_label, "Beam Breaker Receiver"));
         
         shootingMotorRight.follow(shootingMotorLeft);
         shootingMotorLeft.setInverted(true);
@@ -130,7 +130,7 @@ public class BallDelivery extends SubsystemBase{
         eatingMotor.config_kF(0, 0, 0);
         eatingMotor.configClosedloopRamp(.9);
         
-        carouselMotor.setNeutralMode(NeutralMode.Coast);
+        carouselMotor.setNeutralMode(NeutralMode.Brake);
         carouselMotor.configFactoryDefault();
         carouselMotor.configAllowableClosedloopError(0, 5);
         carouselMotor.setSelectedSensorPosition(0, 0, 0);
@@ -181,41 +181,21 @@ public class BallDelivery extends SubsystemBase{
     
     //spin the carousel
     public void spinCarousel(){
-
-        //logger.info("spin carousel");
-        //logger.info("spin [" + targetCarouselVelocity + "]");
-
-        //spin carousel
-        boolean reading;
-        carouselMotor.set(ControlMode.PercentOutput, 0.2);
-        reading = beamBreakerReceiver.get();
-        if(lastReading != reading){
-            logger.info(" Receiver [" + reading + "] lastReading [" + lastReading +"]");
-            lastReading = reading;
-            if(lastReading == true)
-            {
-                count++;
-                logger.info("" + count);
-            }
-            if(count % 4 == 0){
-                logger.info("stop");
-                carouselMotor.set(ControlMode.PercentOutput, 0);
-            }
-        }
+        carouselMotor.set(ControlMode.Velocity, 600);
     }
 
     //this is the same as spinCarousel() ??
-    public boolean stopCarousel(){
+    public boolean stopCarousel(boolean forceStop){
+        //false means beam is being broken ("switch" is on)
+        if(forceStop)
+            carouselMotor.set(ControlMode.PercentOutput, 0);
+
         boolean reading;
         reading = beamBreakerReceiver.get();
-        if (lastReading != reading) {
-            logger.info(" Receiver [" + reading + "] lastReading [" + lastReading +"]");
+        if(lastReading != reading){
             lastReading = reading;
-            if(lastReading == true){
-                count++;
-                logger.info("" + count);
-            }
-            if(count % 4 == 0){
+            if(reading == false)
+            {
                 logger.info("stop");
                 carouselMotor.set(ControlMode.PercentOutput, 0);
                 return true;
