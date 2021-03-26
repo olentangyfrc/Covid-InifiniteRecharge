@@ -156,7 +156,6 @@ public class BallDelivery extends SubsystemBase{
     }
     @Override
     public void periodic() {
-        logger.info("Target Hood Position: " + targetHoodPosition + "Current Hood Position: " + getCurrentHoodPosition());
         if (Math.abs(getCurrentHoodPosition() - targetHoodPosition) > 5) {
             setHoodPercentOutput((targetHoodPosition - getCurrentHoodPosition() > 0 ) ? 0.2 :-0.2);   
         } else {
@@ -176,7 +175,7 @@ public class BallDelivery extends SubsystemBase{
 
         switch (zone) {
             case Green:
-                targetHoodPosition  = 105;
+                targetHoodPosition  = 90;
                 break;
             case Yellow:
                 targetHoodPosition  = 260;
@@ -185,7 +184,7 @@ public class BallDelivery extends SubsystemBase{
                 targetHoodPosition  = 318;
                 break;
             case Red:
-                targetHoodPosition = 330;
+                targetHoodPosition = 320;
 
                 break;
         }

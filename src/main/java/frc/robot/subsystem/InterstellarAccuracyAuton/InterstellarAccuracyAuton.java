@@ -65,6 +65,11 @@ public class InterstellarAccuracyAuton extends SequentialCommandGroup{
       new WaitForInputCommand(OI.getButton(OI.XboxX)),
       new FollowTrajectoryCommand(trajectories.getReIntroductionZoneToRedZone()),
       new ShootRed(ballDelivery),
+      new StopEating(ballDelivery),
+      new FollowTrajectoryCommand(trajectories.getRedZoneToReIntroductionZone()),
+      new WaitForInputCommand(OI.getButton(OI.XboxX)),
+      new FollowTrajectoryCommand(trajectories.getReIntroductionZoneToYellowZone()),
+      new ShootYellow(ballDelivery),
       new StopDelivery(ballDelivery)
     );
   }

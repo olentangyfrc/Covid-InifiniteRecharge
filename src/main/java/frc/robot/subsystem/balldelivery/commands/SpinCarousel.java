@@ -1,15 +1,19 @@
 package frc.robot.subsystem.balldelivery.commands;
 
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.balldelivery.BallDelivery;
+import java.time.Instant;
+import java.time.Duration;
 
 public class SpinCarousel extends CommandBase {
   private BallDelivery ballDelivery;
   private boolean stop;
   private boolean isFirstTime;
   private static Logger logger = Logger.getLogger(SpinCarousel.class.getName());
+  private Instant startTime;
 
   public SpinCarousel(BallDelivery bd) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -24,6 +28,7 @@ public class SpinCarousel extends CommandBase {
     logger.info("starts SpinCarousel");
     stop = false;
     isFirstTime = true;
+    startTime = Instant.now();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,7 +40,9 @@ public class SpinCarousel extends CommandBase {
       ballDelivery.spinCarousel();
       isFirstTime = false;
     }
-    stop = ballDelivery.stopCarousel(false);  
+    if(Duration.between(startTime, Instant.now()).toMillis() > 500) {
+      stop = ballDelivery.stopCarousel(false);  
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -47,6 +54,7 @@ public class SpinCarousel extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+
     return stop;  
   }
 }

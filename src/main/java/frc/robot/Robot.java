@@ -182,6 +182,6 @@ public class Robot extends TimedRobot {
 
   private enum TeleopType {
     DRIVE,
-    INTERSTELLAR
+    INTERSTELLAR,
   }
 }
