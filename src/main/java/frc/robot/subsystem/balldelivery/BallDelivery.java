@@ -184,7 +184,7 @@ public class BallDelivery extends SubsystemBase{
                 targetHoodPosition  = 300;
                 break;
             case Red:
-                targetHoodPosition = 300;
+                targetHoodPosition = 318;
 
                 break;
         }

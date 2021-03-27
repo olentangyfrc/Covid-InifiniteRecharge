@@ -27,10 +27,7 @@ import frc.robot.subsystem.balldelivery.commands.StopAngling;
 import frc.robot.subsystem.balldelivery.commands.DeliverBall;
 import frc.robot.subsystem.balldelivery.commands.StopDelivery;
 import frc.robot.subsystem.balldelivery.commands.StopCarousel;
-import frc.robot.subsystem.balldelivery.commands.ShootGreen;
-import frc.robot.subsystem.balldelivery.commands.ShootYellow;
-import frc.robot.subsystem.balldelivery.commands.ShootBlue;
-import frc.robot.subsystem.balldelivery.commands.ShootRed;
+import frc.robot.subsystem.balldelivery.commands.ShootZone;
 import frc.robot.subsystem.climber.Climber;
 import frc.robot.subsystem.controlpanel.ControlPanel;
 import frc.robot.subsystem.controlpanel.commands.RotateToColor;
@@ -284,16 +281,16 @@ public class SubsystemFactory {
         OI.getInstance().bind(ccu, OI.LeftJoyButton11, OI.WhenPressed);
 
         //different ranges
-        ShootGreen ccv = new ShootGreen(ballDelivery);
+        ShootZone ccv = new ShootZone(ballDelivery, BallDelivery.ShootingZone.Green);
         OI.getInstance().bind(ccv, OI.RightJoyButton6, OI.WhenPressed);
 
-        ShootYellow ccw = new ShootYellow(ballDelivery);
+        ShootZone ccw = new ShootZone(ballDelivery, BallDelivery.ShootingZone.Yellow);
         OI.getInstance().bind(ccw, OI.RightJoyButton7, OI.WhenPressed);
 
-        ShootBlue ccx = new ShootBlue(ballDelivery);
+        ShootZone ccx = new ShootZone(ballDelivery, BallDelivery.ShootingZone.Blue);
         OI.getInstance().bind(ccx, OI.RightJoyButton11, OI.WhenPressed);
 
-        ShootRed ccy = new ShootRed(ballDelivery);
+        ShootZone ccy = new ShootZone(ballDelivery, BallDelivery.ShootingZone.Red);
         OI.getInstance().bind(ccy, OI.RightJoyButton10, OI.WhenPressed);
         
 
@@ -432,16 +429,16 @@ public class SubsystemFactory {
         */
 
         //different ranges
-        ShootGreen ccv = new ShootGreen(ballDelivery);
+        ShootZone ccv = new ShootZone(ballDelivery, BallDelivery.ShootingZone.Green);
         OI.getInstance().bind(ccv, OI.RightJoyButton6, OI.WhenPressed);
 
-        ShootYellow ccw = new ShootYellow(ballDelivery);
+        ShootZone ccw = new ShootZone(ballDelivery, BallDelivery.ShootingZone.Yellow);
         OI.getInstance().bind(ccw, OI.RightJoyButton7, OI.WhenPressed);
 
-        ShootBlue ccx = new ShootBlue(ballDelivery);
+        ShootZone ccx = new ShootZone(ballDelivery, BallDelivery.ShootingZone.Blue);
         OI.getInstance().bind(ccx, OI.RightJoyButton11, OI.WhenPressed);
 
-        ShootRed ccy = new ShootRed(ballDelivery);
+        ShootZone ccy = new ShootZone(ballDelivery, BallDelivery.ShootingZone.Red);
         OI.getInstance().bind(ccy, OI.RightJoyButton10, OI.WhenPressed);
 
         DeliverBall cct = new DeliverBall(ballDelivery);
