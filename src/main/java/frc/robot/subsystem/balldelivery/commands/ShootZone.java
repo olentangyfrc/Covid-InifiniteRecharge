@@ -25,9 +25,9 @@ public class ShootZone extends SequentialCommandGroup {
             break;
             case Blue: hoodAdjustTime = 0;
             break;
-            case Yellow: hoodAdjustTime = 1000;
+            case Yellow: hoodAdjustTime = 1;
             break;
-            case Green: hoodAdjustTime = 500;
+            case Green: hoodAdjustTime = 0.5;
             break;
             default: hoodAdjustTime = 0;
             break;
