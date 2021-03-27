@@ -21,6 +21,7 @@ import frc.robot.subsystem.balldelivery.commands.EatBalls;
 import frc.robot.subsystem.balldelivery.commands.PutHoodDown;
 import frc.robot.subsystem.balldelivery.commands.SpinCarousel;
 import frc.robot.subsystem.balldelivery.commands.SpitOutBalls;
+import frc.robot.subsystem.balldelivery.commands.StartingPosition;
 import frc.robot.subsystem.balldelivery.commands.AngleHood;
 import frc.robot.subsystem.balldelivery.commands.SetShootingZone;
 import frc.robot.subsystem.balldelivery.commands.StopAngling;
@@ -295,6 +296,9 @@ public class SubsystemFactory {
 
         ShootRed ccy = new ShootRed(ballDelivery);
         OI.getInstance().bind(ccy, OI.RightJoyButton10, OI.WhenPressed);
+
+        StartingPosition ccz = new StartingPosition(ballDelivery);
+        OI.getInstance().bind(ccz, OI.XboxB, OI.WhenPressed);
         
 
     }

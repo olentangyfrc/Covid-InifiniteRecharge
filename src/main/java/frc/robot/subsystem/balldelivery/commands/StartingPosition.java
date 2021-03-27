@@ -5,22 +5,18 @@ import java.util.logging.Logger;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 
-public class DeliverBall extends SequentialCommandGroup {
+public class StartingPosition extends SequentialCommandGroup {
     private BallDelivery ballDelivery;
     private static Logger logger = Logger.getLogger(DeliverBall.class.getName());
-    
-    public DeliverBall(BallDelivery bd){
+
+    public StartingPosition(BallDelivery bd){
         ballDelivery = bd;
         addRequirements(bd);
-        logger.info("creates DeliverBall");
+        logger.info("creates StartingPosition");
 
         addCommands(
-            //start the shooter
-            new ShootBall(ballDelivery),
-            //start the eater
-            new EatBalls(ballDelivery),
-            //spin the carousel
-            new SpinCarousel(ballDelivery)
+            new HomeHood(ballDelivery),
+            new HomeCarousel(ballDelivery)
         );
     }
 }

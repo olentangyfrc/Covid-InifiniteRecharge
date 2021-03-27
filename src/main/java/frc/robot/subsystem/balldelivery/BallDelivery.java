@@ -56,6 +56,8 @@ public class BallDelivery extends SubsystemBase{
     public double eatingTol;
     public double shootingTol;
 
+    private int hoodTolerance;
+
     //private DigitalInput carouselReceiverSwitch;
     private DigitalInput beamBreakerReceiver;
     private boolean lastReading = false;
@@ -182,13 +184,48 @@ public class BallDelivery extends SubsystemBase{
                 targetHoodPosition  = 260;
                 break;
             case Blue:
-                targetHoodPosition  = 318;
+                targetHoodPosition  = 300;
                 break;
             case Red:
-                targetHoodPosition = 330;
+                targetHoodPosition = 318;
 
                 break;
         }
+    }
+
+    public boolean isHoodAtPosition(BallDelivery.ShootingZone zone){
+        switch (zone) {
+            case Green:
+                targetHoodPosition  = 105;
+                if(Math.abs(getCurrentHoodPosition() - 105) < hoodTolerance)
+                {
+                    return true;
+                }
+                break;
+            case Yellow:
+                targetHoodPosition  = 260;
+                if(Math.abs(getCurrentHoodPosition() - 260) < hoodTolerance)
+                {
+                    return true;
+                }
+                break;
+            case Blue:
+                targetHoodPosition  = 300;
+                if(Math.abs(getCurrentHoodPosition() - 300) < hoodTolerance)
+                {
+                    return true;
+                }
+                break;
+            case Red:
+                targetHoodPosition = 318;
+                if(Math.abs(getCurrentHoodPosition() - 318) < hoodTolerance)
+                {
+                    return true;
+                }
+
+                break;
+        }
+        return false;
     }
     
     //spin the carousel
@@ -222,6 +259,10 @@ public class BallDelivery extends SubsystemBase{
         logger.info("angle [" + pos + "]");
 
         hoodMotor.set(ControlMode.Position, pos);
+    }
+
+    public void homeHood(){
+        hoodMotor.set(ControlMode.PercentOutput, -0.2);
     }
 
     public void stopAngling(){

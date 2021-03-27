@@ -3,6 +3,7 @@ package frc.robot.subsystem.balldelivery.commands;
 import java.util.logging.Logger;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.subsystem.InterstellarAccuracyAuton.commands.DelayCommand;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 
 public class ShootGreen extends SequentialCommandGroup {
@@ -18,6 +19,7 @@ public class ShootGreen extends SequentialCommandGroup {
         addCommands(
             //sets shooting zone
             new SetShootingZone(ballDelivery, zone),
+            new DelayCommand(0.5),
             //start the shooter
             new DeliverBall(ballDelivery)
         );
