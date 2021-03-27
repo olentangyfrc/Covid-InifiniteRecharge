@@ -175,16 +175,16 @@ public class BallDelivery extends SubsystemBase{
 
         switch (zone) {
             case Green:
-                targetHoodPosition  = 90;
+                targetHoodPosition  = 103;
                 break;
             case Yellow:
-                targetHoodPosition  = 260;
+                targetHoodPosition  = 254;
                 break;
             case Blue:
-                targetHoodPosition  = 300;
+                targetHoodPosition  = 301;
                 break;
             case Red:
-                targetHoodPosition = 318;
+                targetHoodPosition = 310;
 
                 break;
         }

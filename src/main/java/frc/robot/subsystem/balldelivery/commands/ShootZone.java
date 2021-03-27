@@ -21,7 +21,7 @@ public class ShootZone extends SequentialCommandGroup {
         logger.info("creates ShootBlue");
 
         switch(zone) {
-            case Red: hoodAdjustTime = 0;
+            case Red: hoodAdjustTime = 0.3;
             break;
             case Blue: hoodAdjustTime = 0;
             break;

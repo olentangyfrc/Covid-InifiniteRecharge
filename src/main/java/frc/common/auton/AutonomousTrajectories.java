@@ -36,7 +36,7 @@ public class AutonomousTrajectories {
 */
     public AutonomousTrajectories(ITrajectoryConstraint... constraints) {
         // <editor-fold desc="Hab to Cargo Ship Side Near">
-        Path redZonetoReIntroductionZonePath = new Path(Rotation2.fromDegrees(11));
+        Path redZonetoReIntroductionZonePath = new Path(Rotation2.fromDegrees(10));
         redZonetoReIntroductionZonePath.addSegment(
                 new PathLineSegment(
                         new Vector2(0, 0),
@@ -53,12 +53,12 @@ public class AutonomousTrajectories {
                         new Vector2(0, 0),
                         new Vector2(55, 0)
                 ),
-                Rotation2.fromDegrees(11)
+                Rotation2.fromDegrees(10)
         );
         reIntroductionZoneToRedZonePath.subdivide(SUBDIVIDE_ITERATIONS);
         reIntroductionZoneToRedZone = new Trajectory(reIntroductionZoneToRedZonePath, constraints);
 
-        Path blueZonetoReIntroductionZonePath = new Path(Rotation2.fromDegrees(11));
+        Path blueZonetoReIntroductionZonePath = new Path(Rotation2.fromDegrees(12));
         blueZonetoReIntroductionZonePath.addSegment(
                 new PathLineSegment(
                         new Vector2(0, 0),
@@ -74,11 +74,11 @@ public class AutonomousTrajectories {
                         new Vector2(0, 0),
                         new Vector2(98, 0)
                 ),
-                Rotation2.fromDegrees(11)
+                Rotation2.fromDegrees(12)
         );
         reIntroductionZoneToBlueZonePath.subdivide(SUBDIVIDE_ITERATIONS);
         reIntroductionZoneToBlueZone = new Trajectory(reIntroductionZoneToBlueZonePath, constraints);
-        Path yellowZonetoReIntroductionZonePath = new Path(Rotation2.fromDegrees(16));
+        Path yellowZonetoReIntroductionZonePath = new Path(Rotation2.fromDegrees(18));
         yellowZonetoReIntroductionZonePath.addSegment(
                 new PathLineSegment(
                         new Vector2(0, 0),
@@ -94,13 +94,13 @@ public class AutonomousTrajectories {
                         new Vector2(0, 0),
                         new Vector2(164, -4)
                 ),
-                Rotation2.fromDegrees(20)
+                Rotation2.fromDegrees(18)
         );
         reIntroductionZoneToYellowZonePath.subdivide(SUBDIVIDE_ITERATIONS);
         reIntroductionZoneToYellowZone = new Trajectory(reIntroductionZoneToYellowZonePath, constraints);
 
 
-        Path greenZoneToReIntroductionZonePath = new Path(Rotation2.fromDegrees(26.7));
+        Path greenZoneToReIntroductionZonePath = new Path(Rotation2.fromDegrees(28.7));
         greenZoneToReIntroductionZonePath.addSegment(
                 new PathLineSegment(
                         new Vector2(0, 0),
