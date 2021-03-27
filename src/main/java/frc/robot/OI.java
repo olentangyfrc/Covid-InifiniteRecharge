@@ -159,17 +159,22 @@ public class OI {
 
         JOYSTICK_NAMES.add("Logitech Attack 3");
 
-        if(DriverStation.getInstance().isJoystickConnected(0)) {
-            if(getJoystickType(0) == XBOX_TYPE) {
-                inputType = XBOX_TYPE;
-                xbox = new XboxController(0);
-            } else if(getJoystickType(0) == JOYSTICK_TYPE && getJoystickType(1) == JOYSTICK_TYPE) {
+        if(DriverStation.getInstance().isJoystickConnected(leftJoyIndex) && DriverStation.getInstance().isJoystickConnected(rightJoyIndex)) {
+            if(getJoystickType(leftJoyIndex) == JOYSTICK_TYPE && getJoystickType(rightJoyIndex) == JOYSTICK_TYPE) {
                 inputType = JOYSTICK_TYPE;
                 leftJoy = new Joystick(0);
                 rightJoy = new Joystick(1);
             } else {
                 inputType = UNKNOWN_TYPE;
-                DriverStation.reportError("Joystick \"" + DriverStation.getInstance().getJoystickName(0) + "\" not recognized.", false);
+                DriverStation.reportError("Incorrect Joystick format. Check Inputs.", false);
+            }
+        } else if(DriverStation.getInstance().isJoystickConnected(xboxIndex)) {
+            if(getJoystickType(xboxIndex) == XBOX_TYPE) {
+                inputType = XBOX_TYPE;
+                xbox = new XboxController(0);
+            } else {
+                inputType = UNKNOWN_TYPE;
+                DriverStation.reportError("Incorrect Joystick format. Check Inputs.", false);
             }
         } else {
             inputType = UNKNOWN_TYPE;
