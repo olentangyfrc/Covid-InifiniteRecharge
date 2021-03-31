@@ -1,91 +1,38 @@
 package frc.robot.subsystem;
 
-import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import frc.robot.OI;
-import frc.robot.OzoneException;
-import frc.robot.subsystem.FootballPlayground.FootballPlayground;
-import frc.robot.subsystem.balldelivery.BallDelivery;
-import frc.robot.subsystem.balldelivery.commands.ReverseShooter;
-import frc.robot.subsystem.balldelivery.commands.ShootBall;
-import frc.robot.subsystem.balldelivery.commands.StopShooting;
-import frc.robot.subsystem.balldelivery.commands.StopEating;
-import frc.robot.subsystem.balldelivery.commands.EatBalls;
-import frc.robot.subsystem.balldelivery.commands.PutHoodDown;
-import frc.robot.subsystem.balldelivery.commands.SpinCarousel;
-import frc.robot.subsystem.balldelivery.commands.SpitOutBalls;
-import frc.robot.subsystem.balldelivery.commands.AngleHood;
-import frc.robot.subsystem.balldelivery.commands.SetShootingZone;
-import frc.robot.subsystem.balldelivery.commands.StopAngling;
-import frc.robot.subsystem.balldelivery.commands.DeliverBall;
-import frc.robot.subsystem.balldelivery.commands.StopDelivery;
-import frc.robot.subsystem.balldelivery.commands.StopCarousel;
-import frc.robot.subsystem.balldelivery.commands.ShootZone;
-import frc.robot.subsystem.climber.Climber;
-import frc.robot.subsystem.controlpanel.ControlPanel;
-import frc.robot.subsystem.controlpanel.commands.RotateToColor;
-import frc.robot.subsystem.controlpanel.commands.SpinManual;
-import frc.robot.subsystem.controlpanel.commands.SpinRotations;
-import frc.robot.subsystem.controlpanel.commands.SpinnerRetract;
-import frc.robot.subsystem.controlpanel.commands.SpinnerUp;
-import frc.robot.subsystem.controlpanel.commands.Stop;
-import frc.robot.subsystem.intake.Intake;
-import frc.robot.subsystem.intake.commands.IntakeDown;
-import frc.robot.subsystem.intake.commands.IntakeSpinBack;
-import frc.robot.subsystem.intake.commands.IntakeSpinForward;
-import frc.robot.subsystem.intake.commands.IntakeStop;
-import frc.robot.subsystem.intake.commands.IntakeUp;
-import frc.robot.subsystem.telemetry.Pigeon;
-import frc.robot.subsystem.telemetry.Telemetry;
-import frc.robot.subsystem.telemetry.commands.ChaseBall;
-import frc.robot.subsystem.telemetry.commands.DriveToBall;
-import frc.robot.subsystem.telemetry.commands.GoToHorizontalDistance;
-import frc.robot.subsystem.telemetry.commands.GoToVerticalDistance;
-import frc.robot.subsystem.telemetry.commands.RotateTowardsBall;
-import frc.robot.subsystem.telemetry.commands.SquareSelf;
-import frc.robot.subsystem.onewheelshooter.OneWheelShooter;
-import frc.robot.subsystem.winch.Winch;
-import frc.robot.subsystem.winch.commands.WinchUp;
-import frc.robot.subsystem.onewheelshooter.commands.OneWheelReverse;
-import frc.robot.subsystem.onewheelshooter.commands.OneWheelShoot;
-import frc.robot.subsystem.onewheelshooter.commands.OneWheelStop;
-import frc.robot.subsystem.pixylinecam.PixyLineCam;
-import frc.robot.subsystem.pixylinecam.commands.PollPixyLine;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.subsystem.climber.commands.Climb;
-import frc.robot.subsystem.climber.commands.ClimberControl;
-import frc.robot.subsystem.climber.commands.ClimberControlBack;
-import frc.robot.subsystem.climber.commands.ClimberRetract;
-import frc.robot.subsystem.commandgroups.CollectionMode;
-import frc.robot.subsystem.commandgroups.ControlPanelMode;
-//import frc.robot.subsystem.commandgroups.ControlPanelMode;
-import frc.robot.subsystem.commandgroups.MoveMode;
-import frc.robot.subsystem.commandgroups.ScoreLowMode;
-import frc.robot.subsystem.commandgroups.SpitBallsMode;
-import frc.robot.subsystem.commandgroups.ScoreHighMode;
-import frc.robot.subsystem.commandgroups.StartingConfiguration;
-//import frc.robot.subsystem.commandgroups.StartingConfiguration;
-import frc.robot.subsystem.transport.commands.ScoreLow;
-import frc.robot.subsystem.transport.Transport;
-import frc.robot.subsystem.transport.commands.*;
-import frc.robot.subsystem.transport.commands.TakeIn;
-import frc.robot.subsystem.transport.commands.StopTransport;
-import frc.robot.subsystem.swerve.DrivetrainSubsystem;
-import frc.robot.subsystem.telemetry.commands.ZeroGyro;
-import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
+import edu.wpi.first.wpilibj.SPI;
+
 import frc.common.drivers.Gyroscope;
 import frc.common.drivers.NavX;
-import edu.wpi.first.wpilibj.SPI;
+
+import frc.robot.OI;
+
+import frc.robot.subsystem.FootballPlayground.FootballPlayground;
+import frc.robot.subsystem.balldelivery.BallDelivery;
+import frc.robot.subsystem.balldelivery.commands.DeliverBall;
+import frc.robot.subsystem.balldelivery.commands.PutHoodDown;
+import frc.robot.subsystem.balldelivery.commands.ShootZone;
+import frc.robot.subsystem.balldelivery.commands.StopDelivery;
+import frc.robot.subsystem.climber.Climber;
+import frc.robot.subsystem.controlpanel.ControlPanel;
+import frc.robot.subsystem.intake.Intake;
+import frc.robot.subsystem.onewheelshooter.OneWheelShooter;
+import frc.robot.subsystem.pixylinecam.PixyLineCam;
+import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
 import frc.robot.subsystem.swerve.commands.ToggleKeepSquare;
+import frc.robot.subsystem.telemetry.Pigeon;
+import frc.robot.subsystem.telemetry.Telemetry;
+import frc.robot.subsystem.telemetry.commands.ZeroGyro;
+import frc.robot.subsystem.transport.Transport;
+import frc.robot.subsystem.winch.Winch;
 
 public class SubsystemFactory {
 
@@ -237,6 +184,7 @@ public class SubsystemFactory {
         
         OI.getInstance().bind(new ToggleKeepSquare(driveTrain), OI.XboxA, OI.WhenPressed);
         OI.getInstance().bind(new ZeroGyro(navX), OI.XboxY, OI.WhenPressed);
+        OI.getInstance().bind(new PutHoodDown(ballDelivery), OI.XboxB, OI.WhenPressed);
         
 
         //joystick buttons

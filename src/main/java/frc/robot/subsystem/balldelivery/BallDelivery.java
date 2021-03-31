@@ -299,6 +299,9 @@ public class BallDelivery extends SubsystemBase{
     public double getCurrentEatingVelocity(){
         return eatingMotor.getSelectedSensorVelocity();
     }
+    public void zeroHoodEncoder() {
+        hoodMotor.setSelectedSensorPosition(0);
+    }
 
     public double getCurrentShootingVelocity(){
         return shootingMotorLeft.getSelectedSensorVelocity();
