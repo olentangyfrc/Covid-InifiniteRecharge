@@ -21,13 +21,16 @@ public class SetShootingZone extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    ballDelivery.setShootingZone(zone);
     stop = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ballDelivery.setShootingZone(zone);
+    if(ballDelivery.isAtHoodPosition()) {
+      stop = true;
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -39,8 +42,6 @@ public class SetShootingZone extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(ballDelivery.isAtHoodPosition())
-      stop = true;
     return stop;  
   }
 }
