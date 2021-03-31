@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystem.InterstellarAccuracyAuton;
+package frc.robot.subsystem.Auton.InterstellarAccuracyAuton;
 
 import java.util.logging.Logger;
 
@@ -14,8 +14,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.common.auton.AutonomousTrajectories;
 
 import frc.common.commands.FollowTrajectoryCommand;
-import frc.robot.subsystem.InterstellarAccuracyAuton.commands.DelayCommand;
-import frc.robot.subsystem.InterstellarAccuracyAuton.commands.WaitForInputCommand;
+import frc.robot.subsystem.Auton.InterstellarAccuracyAuton.commands.WaitForInputCommand;
 import frc.robot.subsystem.balldelivery.commands.ShootZone;
 import frc.robot.subsystem.balldelivery.commands.DeliverBall;
 import frc.robot.subsystem.balldelivery.commands.PutHoodDown;

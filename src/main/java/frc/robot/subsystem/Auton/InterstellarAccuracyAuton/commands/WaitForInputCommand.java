@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystem.InterstellarAccuracyAuton.commands;
+package frc.robot.subsystem.Auton.InterstellarAccuracyAuton.commands;
 
 import java.util.logging.Logger;
 
