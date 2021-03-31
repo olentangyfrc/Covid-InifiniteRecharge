@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.controller.HolonomicDriveController;
 import frc.robot.subsystem.PortMan;
-import frc.robot.subsystem.balldelivery.commands.AngleHood;
 
 /**
  * Add your docs here.
@@ -55,6 +54,8 @@ public class BallDelivery extends SubsystemBase{
 
     public double eatingTol;
     public double shootingTol;
+
+    public static final double hoodTol = 5;
 
     //private DigitalInput carouselReceiverSwitch;
     private DigitalInput beamBreakerReceiver;
@@ -156,7 +157,7 @@ public class BallDelivery extends SubsystemBase{
     }
     @Override
     public void periodic() {
-        if (Math.abs(getCurrentHoodPosition() - targetHoodPosition) > 5) {
+        if (Math.abs(getCurrentHoodPosition() - targetHoodPosition) > hoodTol) {
             setHoodPercentOutput((targetHoodPosition - getCurrentHoodPosition() > 0 ) ? 0.2 :-0.2);   
         } else {
             setHoodPercentOutput(0.0);
@@ -217,8 +218,7 @@ public class BallDelivery extends SubsystemBase{
 
     //angle the shooter
     public void angleHood(double pos){
-        logger.info("angle hood");
-        logger.info("angle [" + pos + "]");
+        logger.info("angle hood [" + pos + "]");
 
         hoodMotor.set(ControlMode.Position, pos);
     }
@@ -394,6 +394,11 @@ public class BallDelivery extends SubsystemBase{
         if(Math.abs(getCurrentShootingVelocity() - targetShootingVelocity) <= shootingTol)
             atTargetShootingVel = true;
         return atTargetShootingVel;
+    }
+
+    //Returns true if the shooter hood is within tolerance of it's target position.
+    public boolean isAtHoodPosition() {
+        return Math.abs(getCurrentHoodPosition() - getTargetHoodPosition()) < hoodTol;
     }
 
     public boolean isAtEatingVelocity(){

@@ -10,8 +10,12 @@ import frc.robot.subsystem.balldelivery.BallDelivery;
 public class SetShootingZone extends CommandBase {
   private BallDelivery.ShootingZone zone;
   private BallDelivery  bd;
+  private boolean done;
+
   /** Creates a new AngleHoodToPosition. */
   public SetShootingZone(BallDelivery s, BallDelivery.ShootingZone z) {
+    done = false;
+
     addRequirements(s);
     bd  = s;
     zone  = z;
@@ -19,12 +23,14 @@ public class SetShootingZone extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    bd.setShootingZone(zone);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    bd.setShootingZone(zone);
+    done = bd.isAtHoodPosition();
   }
 
   // Called once the command ends or is interrupted.
@@ -35,6 +41,6 @@ public class SetShootingZone extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return done;
   }
 }
