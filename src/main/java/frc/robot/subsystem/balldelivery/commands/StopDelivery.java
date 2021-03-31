@@ -15,8 +15,6 @@ public class StopDelivery extends SequentialCommandGroup {
         logger.info("creates StopDelivery");
 
         addCommands(
-            //stop the carousel
-            new StopCarousel(ballDelivery),
             //stop the eater
             new StopEating(ballDelivery),
             //stop the shooter

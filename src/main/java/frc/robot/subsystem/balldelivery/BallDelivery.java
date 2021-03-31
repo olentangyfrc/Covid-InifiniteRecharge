@@ -155,8 +155,14 @@ public class BallDelivery extends SubsystemBase{
         hoodMotor.config_kD(0, 100, 0);
         hoodMotor.config_kF(0, 0, 0);
 
-        angleHood = new AngleHood(this);
-        setDefaultCommand(angleHood);
+    }
+    @Override
+    public void periodic() {
+        if (Math.abs(getCurrentHoodPosition() - targetHoodPosition) > 5) {
+            setHoodPercentOutput((targetHoodPosition - getCurrentHoodPosition() > 0 ) ? 0.2 :-0.2);   
+        } else {
+            setHoodPercentOutput(0.0);
+        }
     }
 
     public void setHoodPercentOutput(double output) {
@@ -171,16 +177,16 @@ public class BallDelivery extends SubsystemBase{
 
         switch (zone) {
             case Green:
-                targetHoodPosition  = 105;
+                targetHoodPosition  = 103;
                 break;
             case Yellow:
-                targetHoodPosition  = 260;
+                targetHoodPosition  = 254;
                 break;
             case Blue:
-                targetHoodPosition  = 318;
+                targetHoodPosition  = 301;
                 break;
             case Red:
-                targetHoodPosition = 330;
+                targetHoodPosition = 310;
 
                 break;
         }

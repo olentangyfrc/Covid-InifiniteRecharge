@@ -1,6 +1,7 @@
 package frc.robot;
 
 import java.sql.Driver;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
@@ -146,24 +147,34 @@ public class OI {
     private static final GenericHID.HIDType JOYSTICK_TYPE = GenericHID.HIDType.kHIDJoystick;
     private static final GenericHID.HIDType UNKNOWN_TYPE = GenericHID.HIDType.kUnknown;
     
-    private static final String XBOX_NAME = "Controller (Xbox One For Windows)";
-    private static final String JOYSTICK_NAME = "Logitech Attack 3";
+    private static final ArrayList<String> XBOX_NAMES = new ArrayList<String>();
+    private static final ArrayList<String> JOYSTICK_NAMES = new ArrayList<String>();
 
     private GenericHID.HIDType inputType;
 
-
     public void init() {
-        if(DriverStation.getInstance().isJoystickConnected(0)) {
-            if(DriverStation.getInstance().getJoystickName(0).equals(XBOX_NAME)) {
-                inputType = XBOX_TYPE;
-                xbox = new XboxController(0);
-            } else if(DriverStation.getInstance().getJoystickName(0).equals(JOYSTICK_NAME) && DriverStation.getInstance().getJoystickName(1).equals(JOYSTICK_NAME)) {
+
+        XBOX_NAMES.add("Controller (Xbox One For Windows)");
+        XBOX_NAMES.add("Bluetooth XINPUT compatible input device");
+
+        JOYSTICK_NAMES.add("Logitech Attack 3");
+
+        if(DriverStation.getInstance().isJoystickConnected(leftJoyIndex) && DriverStation.getInstance().isJoystickConnected(rightJoyIndex)) {
+            if(getJoystickType(leftJoyIndex) == JOYSTICK_TYPE && getJoystickType(rightJoyIndex) == JOYSTICK_TYPE) {
                 inputType = JOYSTICK_TYPE;
                 leftJoy = new Joystick(0);
                 rightJoy = new Joystick(1);
             } else {
                 inputType = UNKNOWN_TYPE;
-                DriverStation.reportError("Joystick \"" + DriverStation.getInstance().getJoystickName(0) + "\" not recognized.", false);
+                DriverStation.reportError("Incorrect Joystick format. Check Inputs.", false);
+            }
+        } else if(DriverStation.getInstance().isJoystickConnected(xboxIndex)) {
+            if(getJoystickType(xboxIndex) == XBOX_TYPE) {
+                inputType = XBOX_TYPE;
+                xbox = new XboxController(0);
+            } else {
+                inputType = UNKNOWN_TYPE;
+                DriverStation.reportError("Incorrect Joystick format. Check Inputs.", false);
             }
         } else {
             inputType = UNKNOWN_TYPE;
@@ -327,5 +338,14 @@ public class OI {
             button -= 55;
         }
         return button;
+    }
+    public static GenericHID.HIDType getJoystickType(int port) {
+        if(XBOX_NAMES.contains(DriverStation.getInstance().getJoystickName(port))) {
+            return GenericHID.HIDType.kHIDGamepad;
+        } else if(JOYSTICK_NAMES.contains(DriverStation.getInstance().getJoystickName(port))) {
+            return GenericHID.HIDType.kHIDJoystick;
+        } else {
+            return GenericHID.HIDType.kUnknown;
+        }
     }
 }
