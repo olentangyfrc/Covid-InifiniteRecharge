@@ -332,8 +332,8 @@ public class SubsystemFactory {
         telemetry.init(portMan);
         displayManager.addTelemetry(telemetry);
         
-        OI.getInstance().bind(new ToggleKeepSquare(driveTrain), OI.XboxA, OI.WhenPressed);
-        OI.getInstance().bind(new ZeroGyro(navX), OI.XboxY, OI.WhenPressed);
+        //OI.getInstance().bind(new ToggleKeepSquare(driveTrain), OI.XboxA, OI.WhenPressed);
+        //OI.getInstance().bind(new ZeroGyro(navX), OI.XboxY, OI.WhenPressed);
 
         //SquareSelf ccc = new SquareSelf(telemetry, 2.34);
         //OI.getInstance().bind(ccc, OI.LeftJoyButton6, OI.WhenPressed);
@@ -414,7 +414,7 @@ public class SubsystemFactory {
         OI.getInstance().bind(ccz, OI.LeftJoyButton6, OI.WhenPressed);
 
         StartingPosition cda = new StartingPosition(ballDelivery);
-        OI.getInstance().bind(cda, OI.XboxB, OI.WhenPressed);
+        OI.getInstance().bind(cda, OI.LeftJoyButton10, OI.WhenPressed);
     }
 
     private void initRIO99(PortMan portMan) throws Exception {

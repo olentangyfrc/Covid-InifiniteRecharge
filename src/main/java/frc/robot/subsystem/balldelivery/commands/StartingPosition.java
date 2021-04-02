@@ -15,8 +15,8 @@ public class StartingPosition extends SequentialCommandGroup {
         logger.info("creates StartingPosition");
 
         addCommands(
-            new HomeHood(ballDelivery),
-            new HomeCarousel(ballDelivery)
+            new HomeHood(ballDelivery)
+            //new HomeCarousel(ballDelivery)
         );
     }
 }

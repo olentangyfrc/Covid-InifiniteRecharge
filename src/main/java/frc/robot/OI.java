@@ -289,7 +289,7 @@ public class OI {
             throw new OzoneException ("Unrecognized joystick button [" + button + "]");
         }
 		String []parts	= c.getClass().getName().split("\\.");
-        logger.info("binding [" + parts[parts.length-1] + "] to joy[" + j.getPort() + "] b[" + button + "]");
+        //logger.info("binding [" + parts[parts.length-1] + "] to joy[" + j.getPort() + "] b[" + button + "]");
 
         JoystickButton b = new JoystickButton(j, button);
 
