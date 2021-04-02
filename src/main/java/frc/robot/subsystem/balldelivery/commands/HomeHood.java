@@ -23,7 +23,7 @@ public class HomeHood extends CommandBase {
     }
 
     public void execute(){
-        ballDelivery.homeHood();
+        ballDelivery.angleHood(-0.4);
     }
 
     @Override

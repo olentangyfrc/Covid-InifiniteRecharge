@@ -82,7 +82,7 @@ public class BallDelivery extends SubsystemBase{
         carouselMotor = new WPI_TalonSRX(portMan.acquirePort(PortMan.can_11_label, "CarouselMotor"));
         hoodMotor = new WPI_TalonSRX(portMan.acquirePort(PortMan.can_27_label, "HoodMotor"));
 
-        stopHoodMotor = new DigitalInput(0);
+        stopHoodMotor = new DigitalInput(portMan.acquirePort(PortMan.digital0_label, "Hood Limit Switch"));
         beamBreakerReceiver = new DigitalInput(portMan.acquirePort(PortMan.digital2_label, "Beam Breaker Receiver"));
         
         shootingMotorRight.follow(shootingMotorLeft);
@@ -254,15 +254,16 @@ public class BallDelivery extends SubsystemBase{
     }
 
     //angle the shooter
-    public void angleHood(double pos){
+    public void angleHood(double output){
         logger.info("angle hood");
-        logger.info("angle [" + pos + "]");
+        logger.info("angle [" + output + "]");
 
-        hoodMotor.set(ControlMode.Position, pos);
+        hoodMotor.set(ControlMode.PercentOutput, output);
     }
 
     public void homeHood(){
-        hoodMotor.set(ControlMode.PercentOutput, -0.2);
+        logger.info("lowering hood");
+        hoodMotor.set(ControlMode.PercentOutput, -0.4);
     }
 
     public void stopAngling(){
@@ -450,10 +451,11 @@ public class BallDelivery extends SubsystemBase{
     public boolean isHoodLimitSwitchHit(){
         if(stopHoodMotor.get() == true)
         {
-            return true;
+            return false;
         }
         else{
-            return false;
+            hoodMotor.setSelectedSensorPosition(0, 0, 0);
+            return true;
         }
     }
 
