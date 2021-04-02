@@ -16,10 +16,7 @@ import frc.common.auton.AutonomousTrajectories;
 import frc.common.commands.FollowTrajectoryCommand;
 import frc.robot.subsystem.InterstellarAccuracyAuton.commands.DelayCommand;
 import frc.robot.subsystem.InterstellarAccuracyAuton.commands.WaitForInputCommand;
-import frc.robot.subsystem.balldelivery.commands.ShootBlue;
-import frc.robot.subsystem.balldelivery.commands.ShootGreen;
-import frc.robot.subsystem.balldelivery.commands.ShootRed;
-import frc.robot.subsystem.balldelivery.commands.ShootYellow;
+import frc.robot.subsystem.balldelivery.commands.ShootZone;
 import frc.robot.subsystem.balldelivery.commands.DeliverBall;
 import frc.robot.subsystem.balldelivery.commands.SetShootingZone;
 import frc.robot.subsystem.balldelivery.commands.StopDelivery;
@@ -49,22 +46,27 @@ public class InterstellarAccuracyAuton extends SequentialCommandGroup{
 
     this.ballDelivery = ballDelivery; 
     addCommands(
-      new ShootGreen(ballDelivery),
+      new ShootZone(ballDelivery, ShootingZone.Green),
       new StopEating(ballDelivery),
       new FollowTrajectoryCommand(trajectories.getGreenZoneToReIntroductionZone()),
       new WaitForInputCommand(OI.getButton(OI.XboxX)),
       new FollowTrajectoryCommand(trajectories.getReIntroductionZoneToYellowZone()),
-      new ShootYellow(ballDelivery),
+      new ShootZone(ballDelivery, ShootingZone.Yellow),
       new StopEating(ballDelivery),
       new FollowTrajectoryCommand(trajectories.getYellowZoneToReIntroductionZone()),
       new WaitForInputCommand(OI.getButton(OI.XboxX)),
       new FollowTrajectoryCommand(trajectories.getReIntroductionZoneToBlueZone()),
-      new ShootBlue(ballDelivery),
+      new ShootZone(ballDelivery, ShootingZone.Blue),
       new StopEating(ballDelivery),
       new FollowTrajectoryCommand(trajectories.getBlueZonetoReIntroductionZone()),
       new WaitForInputCommand(OI.getButton(OI.XboxX)),
       new FollowTrajectoryCommand(trajectories.getReIntroductionZoneToRedZone()),
-      new ShootRed(ballDelivery),
+      new ShootZone(ballDelivery, ShootingZone.Red),
+      new StopEating(ballDelivery),
+      new FollowTrajectoryCommand(trajectories.getRedZoneToReIntroductionZone()),
+      new WaitForInputCommand(OI.getButton(OI.XboxX)),
+      new FollowTrajectoryCommand(trajectories.getReIntroductionZoneToBlueZone()),
+      new ShootZone(ballDelivery, ShootingZone.Blue),
       new StopDelivery(ballDelivery)
     );
   }
