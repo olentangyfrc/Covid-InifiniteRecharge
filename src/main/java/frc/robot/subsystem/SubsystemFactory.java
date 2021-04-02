@@ -411,6 +411,9 @@ public class SubsystemFactory {
 
         StopDelivery ccz = new StopDelivery(ballDelivery);
         OI.getInstance().bind(ccz, OI.LeftJoyButton6, OI.WhenPressed);
+
+        StartingPosition cda = new StartingPosition(ballDelivery);
+        OI.getInstance().bind(cda, OI.XboxB, OI.WhenPressed);
     }
 
     private void initRIO99(PortMan portMan) throws Exception {
