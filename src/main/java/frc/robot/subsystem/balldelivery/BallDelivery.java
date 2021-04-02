@@ -52,9 +52,11 @@ public class BallDelivery extends SubsystemBase{
 
     private boolean atTargetEatingVel;
     private boolean atTargetShootingVel;
+    private boolean atTargetHoodPos;
 
     public double eatingTol;
     public double shootingTol;
+    public double hoodTol = 5;
 
     private int hoodTolerance;
 
@@ -337,6 +339,9 @@ public class BallDelivery extends SubsystemBase{
     public double getCurrentEatingVelocity(){
         return eatingMotor.getSelectedSensorVelocity();
     }
+    public void zeroHoodEncoder() {
+        hoodMotor.setSelectedSensorPosition(0);
+    }
 
     public double getCurrentShootingVelocity(){
         return shootingMotorLeft.getSelectedSensorVelocity();
@@ -450,6 +455,12 @@ public class BallDelivery extends SubsystemBase{
         else{
             return false;
         }
+    }
+
+    public boolean isAtHoodPosition(){
+        if(Math.abs(getCurrentHoodPosition() - targetHoodPosition) <= hoodTol)
+            atTargetHoodPos = true;
+        return atTargetHoodPos;
     }
 
 

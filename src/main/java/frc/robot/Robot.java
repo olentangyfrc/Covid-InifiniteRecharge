@@ -144,6 +144,7 @@ public class Robot extends TimedRobot {
   }
   @Override
   public void teleopInit() {
+    resetTime();
     if(SubsystemFactory.getInstance().getBallDelivery() != null) {
       new StopShooting(SubsystemFactory.getInstance().getBallDelivery()).schedule();
     }
@@ -151,7 +152,6 @@ public class Robot extends TimedRobot {
     if(SubsystemFactory.getInstance().getDriveTrain() != null) {
       SubsystemFactory.getInstance().getDriveTrain().stopSnap();
     }
-    resetTime();
     if(modeChooser.getSelected() == TeleopType.INTERSTELLAR && SubsystemFactory.getInstance().getBallDelivery() != null) {
       InterstellarAccuracyAuton interstellarAuton = new InterstellarAccuracyAuton(SubsystemFactory.getInstance().getBallDelivery());
       interstellarAuton.schedule();

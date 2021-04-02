@@ -18,6 +18,7 @@ import frc.robot.subsystem.InterstellarAccuracyAuton.commands.DelayCommand;
 import frc.robot.subsystem.InterstellarAccuracyAuton.commands.WaitForInputCommand;
 import frc.robot.subsystem.balldelivery.commands.ShootZone;
 import frc.robot.subsystem.balldelivery.commands.DeliverBall;
+import frc.robot.subsystem.balldelivery.commands.PutHoodDown;
 import frc.robot.subsystem.balldelivery.commands.SetShootingZone;
 import frc.robot.subsystem.balldelivery.commands.StopDelivery;
 import frc.robot.subsystem.balldelivery.commands.StopEating;
@@ -46,6 +47,7 @@ public class InterstellarAccuracyAuton extends SequentialCommandGroup{
 
     this.ballDelivery = ballDelivery; 
     addCommands(
+      new PutHoodDown(ballDelivery),
       new ShootZone(ballDelivery, ShootingZone.Green),
       new StopEating(ballDelivery),
       new FollowTrajectoryCommand(trajectories.getGreenZoneToReIntroductionZone()),

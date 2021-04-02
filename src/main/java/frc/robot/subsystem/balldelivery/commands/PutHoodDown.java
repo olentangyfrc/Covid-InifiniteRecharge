@@ -24,30 +24,28 @@ public class PutHoodDown extends CommandBase {
   public void initialize() {
     logger.info("starts PutHoodDown");
     stop = false;
+
+    ballDelivery.putHoodDown(); 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    logger.info("putting hood down");
-    ballDelivery.putHoodDown();   
+    logger.info("putting hood down");  
+    if(ballDelivery.isHoodLimitSwitchHit()) {
+      stop = true;
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    stop = true;
+    ballDelivery.zeroHoodEncoder();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(ballDelivery.isHoodLimitSwitchHit())
-    {
-      return stop;
-    }
-    else{
-      return false;
-    }
+    return stop;
   }
 }
