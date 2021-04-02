@@ -164,6 +164,7 @@ public class OI {
                 inputType = JOYSTICK_TYPE;
                 leftJoy = new Joystick(0);
                 rightJoy = new Joystick(1);
+                auxJoy = new Joystick(2);
             } else {
                 inputType = UNKNOWN_TYPE;
                 DriverStation.reportError("Incorrect Joystick format. Check Inputs.", false);

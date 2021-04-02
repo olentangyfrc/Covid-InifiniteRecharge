@@ -9,6 +9,8 @@ package frc.robot.subsystem.balldelivery;
 
 import java.util.logging.Logger;
 
+import frc.robot.OI;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -57,6 +59,7 @@ public class BallDelivery extends SubsystemBase{
     public double eatingTol;
     public double shootingTol;
     public double hoodTol = 5;
+    public double percentOutput;
     public double direction;
     public double maxHoodPosition = 500;
 
@@ -454,6 +457,7 @@ public class BallDelivery extends SubsystemBase{
         }
         else{
             hoodMotor.setSelectedSensorPosition(0, 0, 0);
+            hoodMotor.set(ControlMode.PercentOutput, 0);
             return true;
         }
     }
