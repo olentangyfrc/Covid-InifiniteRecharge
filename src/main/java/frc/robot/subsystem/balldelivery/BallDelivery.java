@@ -57,6 +57,8 @@ public class BallDelivery extends SubsystemBase{
     public double eatingTol;
     public double shootingTol;
     public double hoodTol = 5;
+    public double direction;
+    public double maxHoodPosition = 500;
 
     private int hoodTolerance;
 
@@ -165,6 +167,17 @@ public class BallDelivery extends SubsystemBase{
         } else {
             setHoodPercentOutput(0.0);
         }
+
+        //angle hood with joystick
+        if(OI.getInstance().getAuxYValue() > 0)
+            direction = 1;
+        else if(OI.getInstance().getAuxYValue() < 0)
+            direction = -1;
+        else
+            direction = 0;
+
+        if(getCurrentHoodPosition() > 0 && getCurrentHoodPosition() < maxHoodPosition)
+            angleHoodWithJoystick(percentOutput * direction);
     }
 
     public void setHoodPercentOutput(double output) {
@@ -259,6 +272,12 @@ public class BallDelivery extends SubsystemBase{
         logger.info("angle [" + pos + "]");
 
         hoodMotor.set(ControlMode.Position, pos);
+    }
+
+    public void angleHoodWithJoystick(double po){
+        logger.info("angle hood with joystick");
+
+        hoodMotor.set(ControlMode.PercentOutput, po);
     }
 
     public void homeHood(){
@@ -395,22 +414,6 @@ public class BallDelivery extends SubsystemBase{
         return beamBreakerReceiver.get();
     }
 
-    /*public void setPValue(double p){
-        pValue = p;
-    }
-
-    public void setIValue(double i){
-        iValue = i;
-    }
-
-    public void setDValue(double d){
-        dValue = d;
-    }
-
-    public void setFValue(double f){
-        fValue = f;
-    }*/
-
     public void setTargetCarouselVelocity(double vel){
         targetCarouselVelocity = vel;
     }
@@ -430,10 +433,6 @@ public class BallDelivery extends SubsystemBase{
     public void setEatingTolerance(double tol){
         eatingTol = tol;
     }
-
-    /*public void setShootingTolerance(double tol){
-        shootingTol = tol;
-    }*/
 
     public boolean isAtShootingVelocity(){
         if(Math.abs(getCurrentShootingVelocity() - targetShootingVelocity) <= shootingTol)

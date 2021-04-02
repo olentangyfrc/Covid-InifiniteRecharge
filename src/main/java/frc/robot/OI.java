@@ -226,6 +226,12 @@ public class OI {
         
         return getFilteredValue(value);
     }
+
+    public double getAuxYValue() {
+        double value = 0;
+        value = auxJoy.getY();
+        return getFilteredValue(value);
+    }
     
     public XboxController getXbox() {
         return xbox;
