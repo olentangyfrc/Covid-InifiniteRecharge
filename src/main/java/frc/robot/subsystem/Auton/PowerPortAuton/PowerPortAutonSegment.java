@@ -13,6 +13,7 @@ import frc.common.commands.FollowTrajectoryCommand;
 import frc.robot.OI;
 import frc.robot.subsystem.Auton.InterstellarAccuracyAuton.commands.WaitForInputCommand;
 import frc.robot.subsystem.balldelivery.BallDelivery;
+import frc.robot.subsystem.balldelivery.commands.DeliverBall;
 import frc.robot.subsystem.balldelivery.commands.PutHoodDown;
 import frc.robot.subsystem.balldelivery.commands.ShootZone;
 import frc.robot.subsystem.balldelivery.commands.StopEating;
@@ -33,8 +34,7 @@ public class PowerPortAutonSegment extends SequentialCommandGroup {
     addRequirements(bd);
 
     addCommands(
-      new PutHoodDown(bd),
-      new ShootZone(bd, BallDelivery.ShootingZone.Blue),
+      new DeliverBall(bd),
       new StopEating(bd),
       new FollowTrajectoryCommand(trajectories.getBlueZonetoReIntroductionZone()),
       new WaitForInputCommand(OI.getButton(OI.XboxX)),

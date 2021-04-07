@@ -40,7 +40,6 @@ public class PutHoodDown extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    ballDelivery.zeroHoodEncoder();
   }
 
   // Returns true when the command should end.

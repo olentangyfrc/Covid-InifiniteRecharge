@@ -7,6 +7,7 @@
 
 package frc.robot.subsystem.Auton.PowerPortAuton;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystem.SubsystemFactory;
 import frc.robot.subsystem.balldelivery.BallDelivery;
@@ -25,15 +26,15 @@ public class PowerPortDirector extends SubsystemBase {
   }
 
   public void init() {
-    segment = new PowerPortAutonSegment(bd);
-    segment.schedule();
   }
 
   @Override
   public void periodic() {
     //if the robot isn't already shooting and the time isn't up... go again.
-    if(segment != null) {
-      if(!segment.isScheduled() && SubsystemFactory.getInstance().getTimer().get() <= 60) {
+    if(DriverStation.getInstance().isEnabled()) {
+      if(segment == null) {
+        segment = new PowerPortAutonSegment(bd);
+      } else if(!segment.isScheduled() && SubsystemFactory.getInstance().getTimer().get() <= 60) {
         segment.schedule();
       }
     }

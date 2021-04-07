@@ -58,23 +58,23 @@ public class AutonomousTrajectories {
         reIntroductionZoneToRedZonePath.subdivide(SUBDIVIDE_ITERATIONS);
         reIntroductionZoneToRedZone = new Trajectory(reIntroductionZoneToRedZonePath, constraints);
 
-        Path blueZonetoReIntroductionZonePath = new Path(Rotation2.fromDegrees(12));
+        Path blueZonetoReIntroductionZonePath = new Path(Rotation2.fromDegrees(13));
         blueZonetoReIntroductionZonePath.addSegment(
                 new PathLineSegment(
                         new Vector2(0, 0),
-                        new Vector2(-98, 0)
+                        new Vector2(-115, 0)
                 ),
-                Rotation2.ZERO
+                Rotation2.fromDegrees(13)
         );
         blueZonetoReIntroductionZonePath.subdivide(SUBDIVIDE_ITERATIONS);
         blueZonetoReIntroductionZone = new Trajectory(blueZonetoReIntroductionZonePath, constraints);
-        Path reIntroductionZoneToBlueZonePath = new Path(Rotation2.ZERO);
+        Path reIntroductionZoneToBlueZonePath = new Path(Rotation2.fromDegrees(13));
         reIntroductionZoneToBlueZonePath.addSegment(
                 new PathLineSegment(
                         new Vector2(0, 0),
-                        new Vector2(98, 0)
+                        new Vector2(115, 0)
                 ),
-                Rotation2.fromDegrees(12)
+                Rotation2.fromDegrees(13)
         );
         reIntroductionZoneToBlueZonePath.subdivide(SUBDIVIDE_ITERATIONS);
         reIntroductionZoneToBlueZone = new Trajectory(reIntroductionZoneToBlueZonePath, constraints);

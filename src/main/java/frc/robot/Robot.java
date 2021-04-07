@@ -143,9 +143,6 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     SubsystemFactory.getInstance().getTimer().reset();
     SubsystemFactory.getInstance().getTimer().start();
-    if(SubsystemFactory.getInstance().getBallDelivery() != null) {
-      new StopShooting(SubsystemFactory.getInstance().getBallDelivery()).schedule();
-    }
 
     if(SubsystemFactory.getInstance().getDriveTrain() != null) {
       SubsystemFactory.getInstance().getDriveTrain().stopSnap();

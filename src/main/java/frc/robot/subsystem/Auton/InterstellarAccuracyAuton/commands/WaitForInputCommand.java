@@ -18,7 +18,7 @@ public class WaitForInputCommand extends CommandBase {
 
   static Logger logger = Logger.getLogger(WaitForInputCommand.class.getName());
 
-  private boolean end = false;
+  private boolean end;
   private int button;
   private XboxController xbox;
   private JoystickButton btn;
@@ -27,6 +27,7 @@ public class WaitForInputCommand extends CommandBase {
     @Override
     public void run() {
       end = true;
+      logger.info("INPUT");
     }
   }
 
@@ -44,8 +45,9 @@ public class WaitForInputCommand extends CommandBase {
   @Override
   public void initialize() {
     xbox = OI.getInstance().getXbox();
+    end = false;
     btn = new JoystickButton(xbox, button);
-    btn.whenPressed( new RegisterInput());
+    btn.whenPressed(new RegisterInput());
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -46,7 +46,6 @@ public class InterstellarAccuracyAuton extends SequentialCommandGroup{
 
     this.ballDelivery = ballDelivery; 
     addCommands(
-      new PutHoodDown(ballDelivery),
       new ShootZone(ballDelivery, ShootingZone.Green),
       new StopEating(ballDelivery),
       new FollowTrajectoryCommand(trajectories.getGreenZoneToReIntroductionZone()),

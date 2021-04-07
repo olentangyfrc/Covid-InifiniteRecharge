@@ -7,10 +7,16 @@ package frc.robot.subsystem.balldelivery.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class SetShootingZone extends CommandBase {
   private BallDelivery.ShootingZone zone;
   private BallDelivery  ballDelivery;
   private boolean stop;
+
+  static Logger logger = Logger.getLogger(SetShootingZone.class.getName());
+
   /** Creates a new AngleHoodToPosition. */
   public SetShootingZone(BallDelivery s, BallDelivery.ShootingZone z) {
     addRequirements(s);
@@ -36,7 +42,6 @@ public class SetShootingZone extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    stop = true;
   }
 
   // Returns true when the command should end.

@@ -20,6 +20,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.controller.HolonomicDriveController;
 import frc.robot.subsystem.PortMan;
 import frc.robot.subsystem.balldelivery.commands.AngleHood;
@@ -96,10 +97,9 @@ public class BallDelivery extends SubsystemBase{
         iValue = 0;
         dValue = 0.2;
         fValue = 0;
-        targetCarouselVelocity = 100; 
-        targetEatingVelocity = 100;
+        targetEatingVelocity = 200;
         targetShootingVelocity = 100;
-        targetHoodPosition = 0.0;
+        targetHoodPosition = 310.0;
 
         shootingTol = 100;
 
@@ -107,7 +107,7 @@ public class BallDelivery extends SubsystemBase{
         shootingMotorLeft.configFactoryDefault();
         shootingMotorLeft.configAllowableClosedloopError(0, 5);
         shootingMotorLeft.setSelectedSensorPosition(0, 0, 0);
-        shootingMotorLeft.config_kP(0, 0.3, 0);
+        shootingMotorLeft.config_kP(0, 0.9, 0);
         shootingMotorLeft.config_kI(0, iValue, 0);
         shootingMotorLeft.config_kD(0, dValue, 0);
         shootingMotorLeft.config_kF(0, 0.045, 0);
@@ -117,7 +117,7 @@ public class BallDelivery extends SubsystemBase{
         shootingMotorRight.configFactoryDefault();
         shootingMotorRight.configAllowableClosedloopError(0, 5);
         shootingMotorRight.setSelectedSensorPosition(0, 0, 0);
-        shootingMotorRight.config_kP(0, 0.3, 0);
+        shootingMotorRight.config_kP(0, 0.9, 0);
         shootingMotorRight.config_kI(0, iValue, 0);
         shootingMotorRight.config_kD(0, dValue, 0);
         shootingMotorRight.config_kF(0, 0.045, 0);
@@ -127,7 +127,7 @@ public class BallDelivery extends SubsystemBase{
         eatingMotor.configFactoryDefault();
         eatingMotor.configAllowableClosedloopError(0, 5);
         eatingMotor.setSelectedSensorPosition(0, 0, 0);
-        eatingMotor.config_kP(0, pValue, 0);
+        eatingMotor.config_kP(0, 0.5, 0);
         eatingMotor.config_kI(0, iValue, 0);
         eatingMotor.config_kD(0, dValue, 0);
         eatingMotor.config_kF(0, 0, 0);
@@ -137,7 +137,7 @@ public class BallDelivery extends SubsystemBase{
         carouselMotor.configFactoryDefault();
         carouselMotor.configAllowableClosedloopError(0, 5);
         carouselMotor.setSelectedSensorPosition(0, 0, 0);
-        carouselMotor.config_kP(0, pValue, 0);
+        carouselMotor.config_kP(0, 1, 0);
         carouselMotor.config_kI(0, iValue, 0);
         carouselMotor.config_kD(0, dValue, 0);
         carouselMotor.config_kF(0, 0, 0);
@@ -158,10 +158,12 @@ public class BallDelivery extends SubsystemBase{
     }
     @Override
     public void periodic() {
-        if (Math.abs(getCurrentHoodPosition() - targetHoodPosition) > 5) {
-            setHoodPercentOutput((targetHoodPosition - getCurrentHoodPosition() > 0 ) ? 0.2 :-0.2);   
-        } else {
-            setHoodPercentOutput(0.0);
+        if(DriverStation.getInstance().isEnabled()) {
+            if (Math.abs(getCurrentHoodPosition() - targetHoodPosition) > 5) {
+                setHoodPercentOutput((targetHoodPosition - getCurrentHoodPosition() > 0 ) ? 0.2 :-0.2);   
+            } else {
+                setHoodPercentOutput(0.0);
+            }
         }
     }
 
@@ -183,7 +185,7 @@ public class BallDelivery extends SubsystemBase{
                 targetHoodPosition  = 254;
                 break;
             case Blue:
-                targetHoodPosition  = 301;
+                targetHoodPosition  = 314;
                 break;
             case Red:
                 targetHoodPosition = 310;
@@ -418,11 +420,11 @@ public class BallDelivery extends SubsystemBase{
     }
 
     public boolean isAtHoodPosition(){
-        if(Math.abs(getCurrentHoodPosition() - targetHoodPosition) <= hoodTol)
+        if(Math.abs(getCurrentHoodPosition() - targetHoodPosition) <= 5)
             atTargetHoodPos = true;
+        logger.info(atTargetHoodPos + "");
         return atTargetHoodPos;
     }
-
 
     /*public double getCurrent(){
         //return motor.getSupplyCurrent();

@@ -187,7 +187,6 @@ public class SubsystemFactory {
         
         OI.getInstance().bind(new ToggleKeepSquare(driveTrain), OI.XboxA, OI.WhenPressed);
         OI.getInstance().bind(new ZeroGyro(navX), OI.XboxY, OI.WhenPressed);
-        OI.getInstance().bind(new PutHoodDown(ballDelivery), OI.XboxB, OI.WhenPressed);
         
 
         //joystick buttons
@@ -222,7 +221,7 @@ public class SubsystemFactory {
         OI.getInstance().bind(cct, OI.RightJoyButton5, OI.WhenPressed);
         */
 
-        DeliverBall ccr = new DeliverBall(ballDelivery);
+       /* DeliverBall ccr = new DeliverBall(ballDelivery);
         OI.getInstance().bind(ccr, OI.LeftJoyButton6, OI.WhenPressed);
         
         StopDelivery ccs = new StopDelivery(ballDelivery);
@@ -242,7 +241,7 @@ public class SubsystemFactory {
         OI.getInstance().bind(ccx, OI.RightJoyButton11, OI.WhenPressed);
 
         ShootZone ccy = new ShootZone(ballDelivery, BallDelivery.ShootingZone.Red);
-        OI.getInstance().bind(ccy, OI.RightJoyButton10, OI.WhenPressed);
+        OI.getInstance().bind(ccy, OI.RightJoyButton10, OI.WhenPressed);*/
         
 
     }
