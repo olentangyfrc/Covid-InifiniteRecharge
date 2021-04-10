@@ -5,12 +5,14 @@ import java.util.logging.Logger;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 
+/**
+ * reverses shooter by running reverseShooter() in BallDelivery
+ */
+
 public class ReverseShooter extends CommandBase {
   private BallDelivery ballDelivery;
   private boolean stop;
   private static Logger logger = Logger.getLogger(ReverseShooter.class.getName());
-
-  //private int direction = 0;
 
   public ReverseShooter(BallDelivery bd) {
     // Use addRequirements() here to declare subsystem dependencies.

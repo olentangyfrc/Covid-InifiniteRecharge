@@ -7,11 +7,16 @@ package frc.robot.subsystem.balldelivery.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 
+/** 
+ * changes shooting zone, which in turn changes all values associated with shooting zone
+ * view setShootingZone() in BallDelivery
+ */
+
 public class SetShootingZone extends CommandBase {
   private BallDelivery.ShootingZone zone;
   private BallDelivery  ballDelivery;
   private boolean stop;
-  /** Creates a new AngleHoodToPosition. */
+
   public SetShootingZone(BallDelivery s, BallDelivery.ShootingZone z) {
     addRequirements(s);
     ballDelivery  = s;

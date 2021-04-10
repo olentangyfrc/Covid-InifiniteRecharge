@@ -5,12 +5,14 @@ import java.util.logging.Logger;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 
+/**
+ * stops moving hood by running stopAngling() in BallDelivery
+ */
+
 public class StopAngling extends CommandBase {
   private BallDelivery ballDelivery;
   private boolean stop;
   private static Logger logger = Logger.getLogger(StopAngling.class.getName());
-
-  //private int direction = 0;
 
   public StopAngling(BallDelivery bd) {
     // Use addRequirements() here to declare subsystem dependencies.

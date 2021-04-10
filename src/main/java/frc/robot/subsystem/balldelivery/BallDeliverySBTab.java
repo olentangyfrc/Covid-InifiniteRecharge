@@ -43,10 +43,6 @@ public class BallDeliverySBTab implements SBInterface{
         targetShootingVelocity = tab.add("Target Shooting Velocity", 13000.0).getEntry();
         targetEatingVelocity = tab.add("Target Eating Velocity", 1000.0).getEntry();
         targetHoodPosition = tab.add("Target Hood Position", 0.0).getEntry();
-        //pValue = tab.add("p Value", 0.3).getEntry();
-        //iValue = tab.add("i Value", 0.0).getEntry();
-        //dValue = tab.add("d Value", 0.0).getEntry();
-        //fValue = tab.add("f Value", 0.045).getEntry();
         eatingTolerance = tab.add("Eating Tolerance", 0.0).getEntry();
         isCarouselSwitchOn = tab.add("Is Switch On", false).getEntry();
 
@@ -56,18 +52,11 @@ public class BallDeliverySBTab implements SBInterface{
         currentCarouselVelocity.setDouble(ballDelivery.getCurrentCarouselVelocity());
         currentEatingVelocity.setDouble(ballDelivery.getCurrentEatingVelocity());
         targetHoodPosition.setDouble(ballDelivery.getTargetHoodPosition());
-        //logger.info("Eating Vel: " + ballDelivery.getCurrentEatingVelocity());
         currentShootingVelocity.setDouble(ballDelivery.getCurrentShootingVelocity());
         currentHoodPosition.setDouble(ballDelivery.getCurrentHoodPosition());
-        //logger.info("Shooting Vel: " + ballDelivery.getCurrentShootingVelocity());
         ballDelivery.setTargetCarouselVelocity(targetCarouselVelocity.getDouble(600.0));
         ballDelivery.setTargetShootingVelocity(targetShootingVelocity.getDouble(100.0));
         ballDelivery.setTargetEatingVelocity(targetEatingVelocity.getDouble(600.0));
-        //ballDelivery.setTargetHoodPosition(targetHoodPosition.getDouble(0.0));
-        //ballDelivery.setPValue(pValue.getDouble(0.3));
-        //ballDelivery.setIValue(iValue.getDouble(0.0));
-        //ballDelivery.setDValue(dValue.getDouble(0.0));
-        //ballDelivery.setFValue(fValue.getDouble(0.045));
         ballDelivery.setEatingTolerance(eatingTolerance.getDouble(0.0));
         isCarouselSwitchOn.setBoolean(ballDelivery.isCarouselSwitchOn());
     }

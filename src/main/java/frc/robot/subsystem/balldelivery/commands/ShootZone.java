@@ -8,6 +8,10 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
+/**
+ * sets shooting zone, then delivers ball
+ */
+
 public class ShootZone extends SequentialCommandGroup {
     private BallDelivery.ShootingZone zone;
     private BallDelivery ballDelivery;

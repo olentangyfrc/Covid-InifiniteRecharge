@@ -5,12 +5,14 @@ import java.util.logging.Logger;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 
+/**
+ * stops the eating wheels by running stopEating() in BallDelivery
+ */
+
 public class StopEating extends CommandBase {
   private BallDelivery ballDelivery;
   private boolean stop;
   private static Logger logger = Logger.getLogger(StopEating.class.getName());
-
-  //private int direction = 0;
 
   public StopEating(BallDelivery bd) {
     // Use addRequirements() here to declare subsystem dependencies.

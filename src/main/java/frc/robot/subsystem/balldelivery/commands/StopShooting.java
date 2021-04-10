@@ -5,12 +5,14 @@ import java.util.logging.Logger;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 
+/**
+ * stops shooter by running stopShooting() in BallDelivery
+ */
+
 public class StopShooting extends CommandBase {
   private BallDelivery ballDelivery;
   private boolean stop;
   private static Logger logger = Logger.getLogger(StopShooting.class.getName());
-
-  //private int direction = 0;
 
   public StopShooting(BallDelivery bd) {
     // Use addRequirements() here to declare subsystem dependencies.
