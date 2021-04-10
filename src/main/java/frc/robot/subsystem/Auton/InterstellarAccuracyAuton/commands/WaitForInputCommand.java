@@ -31,12 +31,11 @@ public class WaitForInputCommand extends CommandBase {
   }
 
   /**
-   * Creates a new WaitForInputCommand.
+   * 
    * This command is to be used in command groups to make the group wait for a controller input to continue with the next command.
    * @param button use OI.getButton(OI.[whichever button you want])
    */
   public WaitForInputCommand(int button) {
-    // Use addRequirements() here to declare subsystem dependencies.
     this.button = button;
   }
 

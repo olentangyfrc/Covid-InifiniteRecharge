@@ -11,9 +11,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystem.SubsystemFactory;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 
-// This subsystem determines when to schedule the robot to go and shoot during the PowerPort challenge.
-
-
+/**
+ * This subsystem repetedly runs the PowerPortAutonSegment command until the time for the challenge has run out.
+ */
 public class PowerPortDirector extends SubsystemBase {
   private PowerPortAutonSegment segment;
   private BallDelivery bd;

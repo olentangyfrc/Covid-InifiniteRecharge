@@ -10,6 +10,10 @@ package frc.robot.subsystem.swerve.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
 
+/**
+ * This command stops the robot from rotating away from 0.
+ * It is intended to make driving the robot easier.
+ */
 public class ToggleKeepSquare extends CommandBase {
   /**
    * Creates a new ToggleKeepSquare.

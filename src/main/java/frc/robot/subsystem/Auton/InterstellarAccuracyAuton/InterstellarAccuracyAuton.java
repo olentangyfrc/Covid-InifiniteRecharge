@@ -26,17 +26,16 @@ import frc.robot.subsystem.balldelivery.BallDelivery;
 import frc.robot.subsystem.balldelivery.BallDelivery.ShootingZone;
 import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+/** This command group runs for the interstellar accuracy challenge. It goes to each zone starting in the green zone and shoots balls.
+ * In between each zone it will go to the ReIntroduction zone to get refilled with balls. It will continue to the next zone
+ * after the button 'X' is pressed on the xbox controller.
+ */
 public class InterstellarAccuracyAuton extends SequentialCommandGroup{
   /**
    * Creates a new InterstellarAccuracyAuton.
    */
 
   private static Logger logger = Logger.getLogger(InterstellarAccuracyAuton.class.getName());
-
-  private static final double shootingDelayTime = 7;
 
   private BallDelivery ballDelivery;
   private AutonomousTrajectories trajectories = new AutonomousTrajectories(DrivetrainSubsystem2910.CONSTRAINTS);
@@ -46,7 +45,6 @@ public class InterstellarAccuracyAuton extends SequentialCommandGroup{
 
     this.ballDelivery = ballDelivery; 
     addCommands(
-      new PutHoodDown(ballDelivery),
       new ShootZone(ballDelivery, ShootingZone.Green),
       new StopEating(ballDelivery),
       new FollowTrajectoryCommand(trajectories.getGreenZoneToReIntroductionZone()),

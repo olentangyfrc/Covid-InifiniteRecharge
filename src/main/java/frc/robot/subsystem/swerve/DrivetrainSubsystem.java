@@ -26,6 +26,11 @@ import frc.common.drivers.Gyroscope;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
+/**
+ * Old drivetrain
+ * 
+ * @deprecated use DrivetrainSubsystem2910 instead.
+ */
 public class DrivetrainSubsystem extends SubsystemBase {
     private static final double TRACKWIDTH = 23.5;
     private static final double WHEELBASE = 23.5;

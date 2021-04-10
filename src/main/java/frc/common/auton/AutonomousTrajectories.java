@@ -7,6 +7,12 @@ import frc.common.control.Trajectory;
 import frc.common.math.Rotation2;
 import frc.common.math.Vector2;
 
+/** This is where all of the trajectories for auton are constructed. Each trajectory is constructed from a path which is built with multiple
+ * Segments and a starting orientation. A segment is constructed with a starting coordinate(refer to guid above), an ending coordinate, and
+ * and an ending rotation.
+ * <p>
+ * To get a Trajectory to follow, use the getter methods ex: getSlalomTrajectory()
+ */
 public class AutonomousTrajectories {
 
     private static final int SUBDIVIDE_ITERATIONS = 8;
@@ -34,8 +40,12 @@ public class AutonomousTrajectories {
         x-: Backwards
         Unit: inches
 */
+
+/**
+ * 
+ * @param constraints use static variable drivetrain.CONSTRAINTS
+ */
     public AutonomousTrajectories(ITrajectoryConstraint... constraints) {
-        // <editor-fold desc="Hab to Cargo Ship Side Near">
         Path redZonetoReIntroductionZonePath = new Path(Rotation2.fromDegrees(10));
         redZonetoReIntroductionZonePath.addSegment(
                 new PathLineSegment(

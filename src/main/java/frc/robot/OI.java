@@ -1,24 +1,19 @@
 package frc.robot;
 
-import java.sql.Driver;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 
-import com.ctre.phoenix.CANifier.GeneralPin;
-
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.GenericHID.HIDType;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-//import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.subsystem.SubsystemFactory;
 import frc.common.math.MathUtils;
+import frc.robot.subsystem.SubsystemFactory;
 
 
 
@@ -147,17 +142,17 @@ public class OI {
     private static final GenericHID.HIDType JOYSTICK_TYPE = GenericHID.HIDType.kHIDJoystick;
     private static final GenericHID.HIDType UNKNOWN_TYPE = GenericHID.HIDType.kUnknown;
     
-    private static final ArrayList<String> XBOX_NAMES = new ArrayList<String>();
-    private static final ArrayList<String> JOYSTICK_NAMES = new ArrayList<String>();
+    private static final List<String> XBOX_NAMES = Arrays.asList(
+        "Controller (Xbox One For Windows)",
+        "Bluetooth XINPUT compatible input device"
+    );
+    private static final List<String> JOYSTICK_NAMES = Arrays.asList(
+        "Logitech Attack 3"
+    );
 
     private GenericHID.HIDType inputType;
 
     public void init() {
-
-        XBOX_NAMES.add("Controller (Xbox One For Windows)");
-        XBOX_NAMES.add("Bluetooth XINPUT compatible input device");
-
-        JOYSTICK_NAMES.add("Logitech Attack 3");
 
         if(DriverStation.getInstance().isJoystickConnected(leftJoyIndex) && DriverStation.getInstance().isJoystickConnected(rightJoyIndex)) {
             if(getJoystickType(leftJoyIndex) == JOYSTICK_TYPE && getJoystickType(rightJoyIndex) == JOYSTICK_TYPE) {
@@ -225,6 +220,21 @@ public class OI {
         }
         
         return getFilteredValue(value);
+    }
+
+    public double getRightTriggerValue() {
+        if(inputType == XBOX_TYPE) {
+            return xbox.getTriggerAxis(Hand.kRight);
+        } else {
+            return 0;
+        }
+    }
+    public double getLeftTriggerValue() {
+        if(inputType == XBOX_TYPE) {
+            return xbox.getTriggerAxis(Hand.kLeft);
+        } else {
+            return 0;
+        }
     }
     
     public XboxController getXbox() {

@@ -1,34 +1,29 @@
 package frc.common.commands;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystem.SubsystemFactory;
-import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
-import frc.common.control.Trajectory;
-import frc.common.math.Vector2;
-import frc.common.util.HolonomicDriveSignal;
-import frc.common.math.RigidTransform2;
-import frc.common.math.Rotation2;
-import frc.common.drivers.Gyroscope;
-
 import java.util.function.Supplier;
-import java.util.Optional;
-
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.common.control.Trajectory;
+import frc.common.math.Vector2;
+import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
+
+/**
+ * This command is what actually causes the robot to follow a supplied trajectory.
+ */
 public class FollowTrajectoryCommand extends CommandBase {
     private final Supplier<Trajectory> trajectorySupplier;
     private DrivetrainSubsystem2910 driveTrain;
-    private Gyroscope gyro;
 
     private Trajectory trajectory;
 
-    private double previousUpdate;
 
     static Logger logger = Logger.getLogger(FollowTrajectoryCommand.class.getName());
 
+    /**
+     * @param trajectory Use a trajectory from the autonomousTrajectories class. This is not a wpi trajectory!
+    */
     public FollowTrajectoryCommand(Trajectory trajectory) {
         this(() -> trajectory);
     }
@@ -57,7 +52,6 @@ public class FollowTrajectoryCommand extends CommandBase {
         if (interupted) {
             DrivetrainSubsystem2910.getInstance().getFollower().cancel();
         }
-        //logger.log(Level.INFO, "End Rotation:[" + trajectory.calculateSegment(trajectory.getDuration()).rotation.toDegrees() + "]");
         DrivetrainSubsystem2910.getInstance().setSnapRotation(trajectory.calculateSegment(trajectory.getDuration()).rotation.toRadians());
     }
 

@@ -10,10 +10,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.common.commands.FollowTrajectoryCommand;
 
+/** This is what chooses which autonomous path to run based off of the chooser in shuffleboard.
+ */
 public class AutonomousSelector {
     private final AutonomousTrajectories trajectories;
-
-    private Queue<Command> hybridCommandQueue = new LinkedList<>();
 
     private final SendableChooser<AutonomousPath> pathChooser = new SendableChooser<>();
 
@@ -22,6 +22,7 @@ public class AutonomousSelector {
     public AutonomousSelector(AutonomousTrajectories trajectories) {
         this.trajectories = trajectories;
 
+        //Add all of the choices to the shuffleboard chooser
         pathChooser.addOption("Barrel Racing Path", AutonomousPath.BARREL_RACING);
         pathChooser.addOption("Slalom Path", AutonomousPath.SLALOM);
         pathChooser.addOption("Bounce Path", AutonomousPath.BOUNCE);
@@ -47,14 +48,7 @@ public class AutonomousSelector {
                 ));
             break;
         }
-        group.addCommands(new FollowTrajectoryCommand(
-            trajectories.getGreenZoneToReIntroductionZone()
-        ));
         return group;
-    }
-
-    public Queue<Command> getHybridQueue() {
-        return hybridCommandQueue;
     }
 
     private enum AutonomousPath {

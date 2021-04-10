@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.telemetry.Telemetry;
+import frc.common.math.Vector2;
 import frc.robot.subsystem.SubsystemFactory;
 
 import edu.wpi.first.wpilibj.geometry.Translation2d;
@@ -42,7 +43,7 @@ public class GoToVerticalDistance extends CommandBase {
   @Override
   public void execute() {
     directionGoToVerticalDistance = telemetry.verticalDirectionToGo();
-    SubsystemFactory.getInstance().getDriveTrain().drive(new Translation2d(telemetry.getTranslationalSpeed() * directionGoToVerticalDistance, 0), 0, true);
+    SubsystemFactory.getInstance().getDriveTrain().holonomicDrive(new Vector2(telemetry.getTranslationalSpeed() * directionGoToVerticalDistance, 0), 0, true);
     logger.info("moving vertical");
     if(telemetry.verticalDirectionToGo() == 0)
       stop = true;

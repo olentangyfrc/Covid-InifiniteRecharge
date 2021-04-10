@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.telemetry.Telemetry;
+import frc.common.math.Vector2;
 import frc.robot.subsystem.SubsystemFactory;
 
 import edu.wpi.first.wpilibj.geometry.Translation2d;
@@ -50,7 +51,7 @@ public class GoToHorizontalDistance extends CommandBase {
     stop = false;*/
     
     directionGoToHorizontalDistance = telemetry.directionToGo();
-    SubsystemFactory.getInstance().getDriveTrain().drive(new Translation2d(0, telemetry.getTranslationalSpeed() * directionGoToHorizontalDistance), 0, true);
+    SubsystemFactory.getInstance().getDriveTrain().holonomicDrive(new Vector2(0, telemetry.getTranslationalSpeed() * directionGoToHorizontalDistance), 0, true);
     if(telemetry.directionToGo() == 0)
       stop = true;
   }

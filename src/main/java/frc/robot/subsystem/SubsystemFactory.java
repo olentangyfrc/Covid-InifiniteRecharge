@@ -18,6 +18,7 @@ import frc.robot.OI;
 
 import frc.robot.subsystem.FootballPlayground.FootballPlayground;
 import frc.robot.subsystem.balldelivery.BallDelivery;
+import frc.robot.subsystem.balldelivery.TeleopShooter;
 import frc.robot.subsystem.balldelivery.commands.DeliverBall;
 import frc.robot.subsystem.balldelivery.commands.PutHoodDown;
 import frc.robot.subsystem.balldelivery.commands.ShootZone;
@@ -62,6 +63,7 @@ public class SubsystemFactory {
     private BallDelivery ballDelivery;
     private PixyLineCam pixyLineCam;
     private DrivetrainSubsystem2910 driveTrain;
+    private TeleopShooter teleopShooter;
     private Intake intake;
     private Winch winch;
     private Pigeon pigeon;
@@ -182,7 +184,12 @@ public class SubsystemFactory {
 
         ballDelivery = new BallDelivery();
         ballDelivery.init(portMan);
+
+        teleopShooter = new TeleopShooter(ballDelivery);
+        teleopShooter.init();
+
         displayManager.addBallDelivery(ballDelivery);
+        
 
         
         OI.getInstance().bind(new ToggleKeepSquare(driveTrain), OI.XboxA, OI.WhenPressed);
@@ -222,7 +229,7 @@ public class SubsystemFactory {
         OI.getInstance().bind(cct, OI.RightJoyButton5, OI.WhenPressed);
         */
 
-        DeliverBall ccr = new DeliverBall(ballDelivery);
+        /*DeliverBall ccr = new DeliverBall(ballDelivery);
         OI.getInstance().bind(ccr, OI.LeftJoyButton6, OI.WhenPressed);
         
         StopDelivery ccs = new StopDelivery(ballDelivery);
@@ -242,7 +249,7 @@ public class SubsystemFactory {
         OI.getInstance().bind(ccx, OI.RightJoyButton11, OI.WhenPressed);
 
         ShootZone ccy = new ShootZone(ballDelivery, BallDelivery.ShootingZone.Red);
-        OI.getInstance().bind(ccy, OI.RightJoyButton10, OI.WhenPressed);
+        OI.getInstance().bind(ccy, OI.RightJoyButton10, OI.WhenPressed);*/
         
 
     }

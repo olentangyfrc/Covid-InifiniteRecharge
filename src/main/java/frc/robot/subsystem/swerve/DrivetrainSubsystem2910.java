@@ -40,15 +40,21 @@ import java.util.logging.Logger;
 import frc.robot.OzoneException;
 import frc.robot.subsystem.PortMan;
 
+/**
+ * The drivetrain of the robot.
+ */
 public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
 
+    //This is different for every bot.
     private static final double TRACKWIDTH = 23.5;
     private static final double WHEELBASE = 23.5;
 
+    //Can be scaled to adjust auton speed.
     private static final double MAX_VELOCITY = 12.0 * 12.0;
 
     static Logger logger = Logger.getLogger(DrivetrainSubsystem2910.class.getName());
 
+    //Snap rotation controller keeps the robot from rotating when there is no rotational input. helps to prevent drift.
     private static final PidConstants SNAP_ROTATION_CONSTANTS = new PidConstants(0.5, 0.0, 0.0);
     private PidController snapRotationController = new PidController(SNAP_ROTATION_CONSTANTS);
     private double snapRotation = Double.NaN;
@@ -64,6 +70,7 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
 
     private boolean keepSquare = false;
 
+    //Used for Autonomous Trajectories.
     private static final PidConstants FOLLOWER_TRANSLATION_CONSTANTS = new PidConstants(0.05, 0.01, 0.0);
     private static final PidConstants FOLLOWER_ROTATION_CONSTANTS = new PidConstants(1, 0.01, 0.0);
     private static final HolonomicFeedforward FOLLOWER_FEEDFORWARD_CONSTANTS = new HolonomicFeedforward(
@@ -75,18 +82,19 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
             new MaxAccelerationConstraint(13.0 * 12.0),
             new CentripetalAccelerationConstraint(25.0 * 12.0)
     };
+    //Used to calculate the robot's position using the encoders.
     private final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
             new Translation2d(TRACKWIDTH / 2.0, WHEELBASE / 2.0),
             new Translation2d(TRACKWIDTH / 2.0, -WHEELBASE / 2.0),
             new Translation2d(-TRACKWIDTH / 2.0, WHEELBASE / 2.0),
             new Translation2d(-TRACKWIDTH / 2.0, -WHEELBASE / 2.0)
     );
-    //Old bot offsets
-    /*
-    private static final double FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(1.1);
-    private static final double FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(311.24);
-    private static final double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(119.6);
-    private static final double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(262.9);
+    
+    /* These angle offsets are used to tell the robot's wheels which way is forwards.
+        To calculate these, set them to zero,
+        manually move all the robot's wheels so that they are facing forwards.
+        the gears must be facing towards the right of the robot.
+        Finally set these to the encoder readings.
     */
     private double FRONT_LEFT_ANGLE_OFFSET ;
     private double FRONT_RIGHT_ANGLE_OFFSET;
@@ -106,6 +114,8 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
     private double lastTimestamp = 0;
 
     private final Object lock = new Object();
+
+    //Instead of manually driving the robot to control it, the signal is manipulated and the subsystem drives according to the signal.
     private HolonomicDriveSignal signal = new HolonomicDriveSignal(Vector2.ZERO, 0.0, false);
     private Trajectory.Segment segment = null;
 
@@ -113,6 +123,9 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
         pm = PortMan.getInstance();
     }
 
+    /**
+     * @param snapRotation rotation in degrees
+     */
     public void setSnapRotation(double snapRotation) {
         synchronized (lock) {
             this.snapRotation = snapRotation;
@@ -125,6 +138,12 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
         }
     }
 
+    /** Use this command to drive the robot. Not drive!
+     * 
+     * @param translation percent output (forward, strafe) should be between -1 and 1
+     * @param rotation rotation percent output. should be between -1 and 1.
+     * @param fieldOriented true if you want orientation based on the field, false if you want bot oriented.
+     */
     @Override
     public void holonomicDrive(Vector2 translation, double rotation, boolean fieldOriented) {
         synchronized (lock) {
@@ -137,6 +156,11 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
         }
     }
 
+    /**
+     * Call this method repetedly or things will not work.
+     * 
+     * @param timestamp time in seconds
+     */
     @Override
     public synchronized void updateKinematics(double timestamp) {
         super.updateKinematics(timestamp);
@@ -300,7 +324,13 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
     public SwerveModule[] getSwerveModules() {
         return swerveModules;
     }
-    public void drive(Translation2d translation, double rotation, boolean fieldOriented) {
+    /**
+     *  Do not use this method, use holonomicDrive instead!
+     * @param translation
+     * @param rotation
+     * @param fieldOriented
+     */
+    private void drive(Translation2d translation, double rotation, boolean fieldOriented) {
 
         rotation *= 2.0 / Math.hypot(WHEELBASE, TRACKWIDTH);
         ChassisSpeeds speeds;

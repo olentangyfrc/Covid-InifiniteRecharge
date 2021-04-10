@@ -5,6 +5,11 @@ import frc.robot.subsystem.swerve.DrivetrainSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 
+/** Old drive command.
+ * 
+ * @deprecated use HolonomicDriveCommand instead.
+ * 
+ */
 public class DriveCommand extends CommandBase {
 
     private DrivetrainSubsystem driveTrain;

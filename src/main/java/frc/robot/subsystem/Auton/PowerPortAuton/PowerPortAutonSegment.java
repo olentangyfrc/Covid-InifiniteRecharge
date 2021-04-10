@@ -18,14 +18,17 @@ import frc.robot.subsystem.balldelivery.commands.ShootZone;
 import frc.robot.subsystem.balldelivery.commands.StopEating;
 import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
 
-
+/**
+ * This is a command group used by the PowerPortDirector class to shoot, go to the ReIntroduction zone, wait for x button press,
+ * and finally return to the shooting zone.
+ */
 public class PowerPortAutonSegment extends SequentialCommandGroup {
   
   private AutonomousTrajectories trajectories = new AutonomousTrajectories(DrivetrainSubsystem2910.CONSTRAINTS);
   private BallDelivery bd;
 
   /**
-   * Creates a new PowerPortAuton.
+   * Creates a new PowerPortAutonSegment.
    */
   public PowerPortAutonSegment(BallDelivery bd) {
     this.bd = bd;
