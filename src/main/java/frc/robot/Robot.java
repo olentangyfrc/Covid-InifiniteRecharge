@@ -31,7 +31,8 @@ import frc.common.auton.AutonomousTrajectories;
 import frc.robot.subsystem.DisplayManager;
 import frc.robot.subsystem.PortMan;
 import frc.robot.subsystem.SubsystemFactory;
-import frc.robot.subsystem.InterstellarAccuracyAuton.InterstellarAccuracyAuton;
+import frc.robot.subsystem.Auton.InterstellarAccuracyAuton.InterstellarAccuracyAuton;
+import frc.robot.subsystem.Auton.PowerPortAuton.PowerPortDirector;
 import frc.robot.subsystem.balldelivery.commands.StopShooting;
 import frc.robot.subsystem.controlpanel.ControlPanel;
 import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
@@ -51,7 +52,6 @@ public class Robot extends TimedRobot {
   private static SubsystemFactory subsystemFactory;
 
   private static Instant initTime;
-  private static Instant currentTime;
 
   private DisplayManager dManager;
   private ShuffleboardTab tab;
@@ -68,7 +68,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    resetTime();
+    SubsystemFactory.getInstance().getTimer().reset();
+    SubsystemFactory.getInstance().getTimer().start();
 
     subsystemFactory = SubsystemFactory.getInstance();
 
@@ -81,7 +82,7 @@ public class Robot extends TimedRobot {
 
     dManager = new DisplayManager();
 
-    modeChooser.addOption("Drive", TeleopType.DRIVE);
+    modeChooser.addOption("Power Port", TeleopType.POWER_PORT);
     modeChooser.addOption("Interstellar", TeleopType.INTERSTELLAR);
     modeChooser.setDefaultOption("Drive", TeleopType.DRIVE);
 
@@ -109,24 +110,20 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
     dManager.update();
-    // need to double check if default Drive command is being called too.
-    // this looks realy weird.
-    currentTime = Instant.now();
-    double elapsedTime = Duration.between(initTime, currentTime).toMillis();
-    elapsedTime /= 1000;
     
     if (SubsystemFactory.getInstance().getDriveTrain() != null) {
-      SubsystemFactory.getInstance().getDriveTrain().updateKinematics(elapsedTime);
+      SubsystemFactory.getInstance().getDriveTrain().updateKinematics(SubsystemFactory.getInstance().getTimer().get());
     }
        
   }
 
   @Override
   public void autonomousInit() {
+    SubsystemFactory.getInstance().getTimer().reset();
+    SubsystemFactory.getInstance().getTimer().start();
     if(SubsystemFactory.getInstance().getDriveTrain() != null) {
       SubsystemFactory.getInstance().getDriveTrain().stopSnap();
     }
-    resetTime();
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
@@ -144,7 +141,8 @@ public class Robot extends TimedRobot {
   }
   @Override
   public void teleopInit() {
-    resetTime();
+    SubsystemFactory.getInstance().getTimer().reset();
+    SubsystemFactory.getInstance().getTimer().start();
     if(SubsystemFactory.getInstance().getBallDelivery() != null) {
       new StopShooting(SubsystemFactory.getInstance().getBallDelivery()).schedule();
     }
@@ -152,9 +150,14 @@ public class Robot extends TimedRobot {
     if(SubsystemFactory.getInstance().getDriveTrain() != null) {
       SubsystemFactory.getInstance().getDriveTrain().stopSnap();
     }
-    if(modeChooser.getSelected() == TeleopType.INTERSTELLAR && SubsystemFactory.getInstance().getBallDelivery() != null) {
-      InterstellarAccuracyAuton interstellarAuton = new InterstellarAccuracyAuton(SubsystemFactory.getInstance().getBallDelivery());
-      interstellarAuton.schedule();
+    if(SubsystemFactory.getInstance().getBallDelivery() != null) {
+      if(modeChooser.getSelected() == TeleopType.INTERSTELLAR) {
+        InterstellarAccuracyAuton interstellarAuton = new InterstellarAccuracyAuton(SubsystemFactory.getInstance().getBallDelivery());
+        interstellarAuton.schedule();
+      } else if(modeChooser.getSelected() == TeleopType.POWER_PORT) {
+        PowerPortDirector ppt = new PowerPortDirector(SubsystemFactory.getInstance().getBallDelivery());
+        ppt.init();
+      }
     }
   }
   /**
@@ -174,14 +177,10 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
   }
-  public static void resetTime() {
-    initTime = Instant.now();
-    currentTime = Instant.now();
-
-  }
 
   private enum TeleopType {
     DRIVE,
     INTERSTELLAR,
+    POWER_PORT
   }
 }

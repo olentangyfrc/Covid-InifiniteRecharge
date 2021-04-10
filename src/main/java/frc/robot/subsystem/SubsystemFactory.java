@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 
 import frc.common.drivers.Gyroscope;
 import frc.common.drivers.NavX;
@@ -46,6 +47,8 @@ public class SubsystemFactory {
     private static DisplayManager displayManager;
 
     private PowerDistributionPanel pdp;
+
+    private Timer timer = new Timer();
 
     /**
      * keep all available subsystem declarations here.
@@ -436,6 +439,10 @@ public class SubsystemFactory {
 
     public BallDelivery getBallDelivery() {
         return ballDelivery;
+    }
+
+    public Timer getTimer() {
+        return timer;
     }
 
     private String getBotName() throws Exception {
