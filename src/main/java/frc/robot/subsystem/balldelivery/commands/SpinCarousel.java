@@ -8,6 +8,10 @@ import frc.robot.subsystem.balldelivery.BallDelivery;
 import java.time.Instant;
 import java.time.Duration;
 
+/**
+ * spins carousel one time (?)
+ */
+
 public class SpinCarousel extends CommandBase {
   private BallDelivery ballDelivery;
   private boolean stop;

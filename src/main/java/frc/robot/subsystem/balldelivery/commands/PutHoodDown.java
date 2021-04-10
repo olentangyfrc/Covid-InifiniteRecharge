@@ -5,12 +5,14 @@ import java.util.logging.Logger;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 
+/**
+ * keeps moving hood down until limit switch is hit, sets that position to be the new "zero"
+ */
+
 public class PutHoodDown extends CommandBase {
   private BallDelivery ballDelivery;
   private boolean stop;
   private static Logger logger = Logger.getLogger(PutHoodDown.class.getName());
-
-  //private int direction = 0;
 
   public PutHoodDown(BallDelivery bd) {
     // Use addRequirements() here to declare subsystem dependencies.

@@ -25,13 +25,20 @@ import frc.robot.subsystem.PortMan;
 import frc.robot.subsystem.balldelivery.commands.AngleHood;
 
 /**
- * Add your docs here.
+ * BallDelivery contains everything required to shoot the ball, including the 
+ * carousel, the hood, the "eating wheels", and the "shooting wheels."
+ * 
+ * Carousel (carouselMotor): can transport three balls at a time, rotates to direct balls to eating wheels
+ * Hood (hoodMotor): rotates to change angle of launch
+ * Eating Wheels (eatingMotor): spin to direct balls to shooting wheels
+ * Shooting Wheels (controlled by shootingMotorLeft): spin to shoot ball
+ * 
  */
 public class BallDelivery extends SubsystemBase{
 
     private static Logger logger = Logger.getLogger(BallDelivery.class.getName());
-    private WPI_TalonFX shootingMotorLeft; //master
-    private WPI_TalonFX shootingMotorRight; //follower
+    private WPI_TalonFX shootingMotorLeft; //master --> tell this motor what to do
+    private WPI_TalonFX shootingMotorRight; //follower --> will copy shootingMotorLeft
     private WPI_TalonSRX eatingMotor;
     private WPI_TalonSRX carouselMotor;
     private TalonSRX hoodMotor;
@@ -58,7 +65,6 @@ public class BallDelivery extends SubsystemBase{
     public double shootingTol;
     public double hoodTol = 5;
 
-    //private DigitalInput carouselReceiverSwitch;
     private DigitalInput beamBreakerReceiver;
     private boolean lastReading = false;
     private int count = 0;
@@ -83,26 +89,24 @@ public class BallDelivery extends SubsystemBase{
         stopHoodMotor = new DigitalInput(0);
         beamBreakerReceiver = new DigitalInput(portMan.acquirePort(PortMan.digital2_label, "Beam Breaker Receiver"));
         
+        //shootingMotorRight copies shootingMotorLeft, but inverted so that the motors don't fight each other (look at placement)
         shootingMotorRight.follow(shootingMotorLeft);
         shootingMotorLeft.setInverted(true);
 
-        //carouselReceiverSwitch = new DigitalInput(portMan.acquirePort(PortMan.digital1_label, "CarouselSensor1"));
-
-        //shootingMotorLeft.setInverted(false);
-
-        //add p value variables for each motor? 
-
+        //default pid values
         pValue = 0.4;
         iValue = 0;
         dValue = 0.2;
         fValue = 0;
+
+        //default target values
         targetCarouselVelocity = 100; 
         targetEatingVelocity = 100;
         targetShootingVelocity = 100;
         targetHoodPosition = 0.0;
-
         shootingTol = 100;
 
+        //motor configurations
         shootingMotorLeft.setNeutralMode(NeutralMode.Coast);
         shootingMotorLeft.configFactoryDefault();
         shootingMotorLeft.configAllowableClosedloopError(0, 5);
@@ -148,16 +152,16 @@ public class BallDelivery extends SubsystemBase{
         hoodMotor.setSensorPhase(true);
         hoodMotor.setNeutralMode(NeutralMode.Brake);
         hoodMotor.setInverted(true);
-        //hoodMotor.configAllowableClosedloopError(0, 0);
         hoodMotor.setSelectedSensorPosition(0, 0, 0);
         hoodMotor.config_kP(0, 1.0, 0);
         hoodMotor.config_kI(0, 0, 0);
         hoodMotor.config_kD(0, 100, 0);
         hoodMotor.config_kF(0, 0, 0);
-
     }
+
     @Override
     public void periodic() {
+        //maintain the target hood position at all times
         if (Math.abs(getCurrentHoodPosition() - targetHoodPosition) > 5) {
             setHoodPercentOutput((targetHoodPosition - getCurrentHoodPosition() > 0 ) ? 0.2 :-0.2);   
         } else {
@@ -170,11 +174,11 @@ public class BallDelivery extends SubsystemBase{
     }
 
     /**
-     * this should all parameters related to a zone. hood position, shooter velocity, etc
+     * this should include all parameters related to a zone. hood position, shooter velocity, etc
      * @param zone
+     * @return nothing
      */
     public void setShootingZone(BallDelivery.ShootingZone zone) {
-
         switch (zone) {
             case Green:
                 targetHoodPosition  = 103;
@@ -192,12 +196,21 @@ public class BallDelivery extends SubsystemBase{
         }
     }
     
-    //spin the carousel
+    /*
+     * spin the carousel
+     * @return nothing
+     */
     public void spinCarousel(){
         carouselMotor.set(ControlMode.Velocity, 600);
     }
 
-    //this is the same as spinCarousel() ??
+    /*
+     * stop the carousel
+     * a.) if forced to stop, or
+     * b.) if the beam breaker is triggered and the carousel has completed one full rotation
+     * @param forceStop This is true if driver manually tells carousel to stop, in which case
+     *                  the carousel will stop where it is
+     */
     public boolean stopCarousel(boolean forceStop){
         //false means beam is being broken ("switch" is on)
         if(forceStop)
@@ -217,7 +230,10 @@ public class BallDelivery extends SubsystemBase{
         return false;
     }
 
-    //angle the shooter
+    /*
+     * angle the hood using position control
+     * @return nothing
+     */
     public void angleHood(double pos){
         logger.info("angle hood");
         logger.info("angle [" + pos + "]");
@@ -225,12 +241,20 @@ public class BallDelivery extends SubsystemBase{
         hoodMotor.set(ControlMode.Position, pos);
     }
 
+    /*
+     * stop moving the hood, set motors to 0% output
+     * @return nothing
+     */
     public void stopAngling(){
         logger.info("stop angling hood");
 
         hoodMotor.set(ControlMode.PercentOutput, 0);
     }
-
+    
+    /*
+     * move hood down until limit switch is hit
+     * @return nothing
+     */
     public void putHoodDown(){
         logger.info("putting hood down");
 
@@ -241,45 +265,51 @@ public class BallDelivery extends SubsystemBase{
         hoodMotor.set(ControlMode.PercentOutput, 0);
     }   
 
-
+    /*
+     * spin eating wheels
+     * @return nothing
+     */
     public void eatBall(){
-        //logger.info("eat ball");
-        //logger.info("spin green wheels [" + targetEatingVelocity + "]");
         eatingMotor.set(ControlMode.Velocity, targetEatingVelocity);
-        //logger.info("[" + targetEatingVelocity + "]");
     }
 
+    /*
+     * reverse eating wheels
+     * @return nothing
+     */
     public void spitOut(){
-        //logger.info("spit out ball");
-        //logger.info("spin green wheels [" + - targetEatingVelocity + "]");
         eatingMotor.set(ControlMode.Velocity, - targetEatingVelocity);
-        //logger.info("[" + - targetEatingVelocity + "]");
     }
 
+    /*
+     * stop eating wheels
+     * @return nothing
+     */
     public void stopEating(){
-        //stop eating
-        //logger.info("stop eating");
         eatingMotor.set(ControlMode.PercentOutput, 0);
     }
 
+    /*
+     * spin shooting wheels
+     * @return nothing
+     */
     public void shootBall(){
-        //logger.info("shoot ball");
-        //logger.info("shoot ball [" + targetShootingVelocity + "]");
         shootingMotorLeft.set(ControlMode.Velocity, targetShootingVelocity);
-        //logger.info("[" + targetShootingVelocity + "]" );
-        
     }
 
+    /*
+     * reverse shooting wheels
+     * @return nothing
+     */
     public void reverseShooter(){
-        //logger.info("reverse shooter");
-        //logger.info("reverse shooter [" + - targetShootingVelocity + "]");
         shootingMotorLeft.set(ControlMode.Velocity, - targetShootingVelocity);
-        //logger.info("[" + - targetShootingVelocity + "]"); 
     }
 
+    /*
+     * stop shooting wheels
+     * @return nothing
+     */
     public void stopShooting(){
-        //stop the shooter
-        //logger.info("stop shooting");
         shootingMotorLeft.set(ControlMode.PercentOutput, 0);
     }
 
@@ -292,15 +322,16 @@ public class BallDelivery extends SubsystemBase{
             dValue = d;
     }
 
+    
+    /*
+     * return current values
+     */
     public double getCurrentCarouselVelocity(){
         return carouselMotor.getSelectedSensorVelocity();
     }
 
     public double getCurrentEatingVelocity(){
         return eatingMotor.getSelectedSensorVelocity();
-    }
-    public void zeroHoodEncoder() {
-        hoodMotor.setSelectedSensorPosition(0);
     }
 
     public double getCurrentShootingVelocity(){
@@ -327,22 +358,6 @@ public class BallDelivery extends SubsystemBase{
         return targetHoodPosition;
     }
 
-    /*public double getPValue(){
-        return pValue;
-    }
-
-    public double getIValue(){
-        return iValue;
-    }
-
-    public double getDValue(){
-        return dValue;
-    }
-    
-    public double getFValue(){
-        return fValue;
-    }*/
-
     public double getEatingTolerance(){
         return eatingTol;
     }
@@ -351,26 +366,19 @@ public class BallDelivery extends SubsystemBase{
         return shootingTol;
     }
 
+    public boolean isHoodLimitSwitchHit(){
+        return stopHoodMotor.get();
+    }
+
     public boolean isCarouselSwitchOn(){
         return beamBreakerReceiver.get();
     }
 
-    /*public void setPValue(double p){
-        pValue = p;
-    }
 
-    public void setIValue(double i){
-        iValue = i;
-    }
-
-    public void setDValue(double d){
-        dValue = d;
-    }
-
-    public void setFValue(double f){
-        fValue = f;
-    }*/
-
+    /*
+     * set target values
+     * @return nothing
+     */
     public void setTargetCarouselVelocity(double vel){
         targetCarouselVelocity = vel;
     }
@@ -391,9 +399,20 @@ public class BallDelivery extends SubsystemBase{
         eatingTol = tol;
     }
 
-    /*public void setShootingTolerance(double tol){
-        shootingTol = tol;
-    }*/
+    //recalibrate hood so that current position is the new zero
+    public void zeroHoodEncoder() {
+        hoodMotor.setSelectedSensorPosition(0);
+    }
+
+
+    /*
+     * compare current vs target values and return whether they're equal
+     */
+    public boolean isAtHoodPosition(){
+        if(Math.abs(getCurrentHoodPosition() - targetHoodPosition) <= hoodTol)
+            atTargetHoodPos = true;
+        return atTargetHoodPos;
+    }
 
     public boolean isAtShootingVelocity(){
         if(Math.abs(getCurrentShootingVelocity() - targetShootingVelocity) <= shootingTol)
@@ -407,24 +426,4 @@ public class BallDelivery extends SubsystemBase{
         return atTargetEatingVel;
     }
 
-    public boolean isHoodLimitSwitchHit(){
-        if(stopHoodMotor.get() == true)
-        {
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    public boolean isAtHoodPosition(){
-        if(Math.abs(getCurrentHoodPosition() - targetHoodPosition) <= hoodTol)
-            atTargetHoodPos = true;
-        return atTargetHoodPos;
-    }
-
-
-    /*public double getCurrent(){
-        //return motor.getSupplyCurrent();
-    }*/
 }

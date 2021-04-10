@@ -5,12 +5,14 @@ import java.util.logging.Logger;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 
+/**
+ * stops rotating carousel by running stopCarousel() in BallDelivery
+ */
+
 public class StopCarousel extends CommandBase {
   private BallDelivery ballDelivery;
   private boolean stop;
   private static Logger logger = Logger.getLogger(StopCarousel.class.getName());
-
-  //private int direction = 0;
 
   public StopCarousel(BallDelivery bd) {
     // Use addRequirements() here to declare subsystem dependencies.

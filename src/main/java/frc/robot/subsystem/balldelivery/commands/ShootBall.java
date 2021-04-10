@@ -5,12 +5,14 @@ import java.util.logging.Logger;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 
+/**
+ * spins the shooting wheels by running shootBall() in BallDelivery
+ */
+
 public class ShootBall extends CommandBase {
   private BallDelivery ballDelivery;
   private boolean stop;
   private static Logger logger = Logger.getLogger(ShootBall.class.getName());
-
-  //private int direction = 0;
 
   public ShootBall(BallDelivery bd) {
     // Use addRequirements() here to declare subsystem dependencies.

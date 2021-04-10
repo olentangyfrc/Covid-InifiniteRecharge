@@ -5,12 +5,14 @@ import java.util.logging.Logger;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 
+/**
+ * reverses eating wheels by running spitOut() in BallDelivery
+ */
+
 public class SpitOutBalls extends CommandBase {
   private BallDelivery ballDelivery;
   private boolean stop;
   private static Logger logger = Logger.getLogger(SpitOutBalls.class.getName());
-
-  //private int direction = 0;
 
   public SpitOutBalls(BallDelivery bd) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -29,7 +31,7 @@ public class SpitOutBalls extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    logger.info("shooting ball");
+    logger.info("spitting out ball");
     ballDelivery.spitOut();    
   }
 

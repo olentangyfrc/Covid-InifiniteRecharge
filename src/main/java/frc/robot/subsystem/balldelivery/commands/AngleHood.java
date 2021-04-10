@@ -5,6 +5,10 @@ import java.util.logging.Logger;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 
+/**
+ * controls hoodMotor using position control, moving it to the target hood position
+ */
+
 public class AngleHood extends CommandBase {
   private BallDelivery ballDelivery;
   private double targetHoodPosition;
@@ -12,8 +16,6 @@ public class AngleHood extends CommandBase {
   double p = 0.2;
   private boolean stop;
   private static Logger logger = Logger.getLogger(AngleHood.class.getName());
-
-  //private int direction = 0;
 
   public AngleHood(BallDelivery bd) {
     // Use addRequirements() here to declare subsystem dependencies.

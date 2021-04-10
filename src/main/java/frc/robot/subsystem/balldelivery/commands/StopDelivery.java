@@ -5,6 +5,10 @@ import java.util.logging.Logger;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 
+/**
+ * stops the shooting process
+ */
+
 public class StopDelivery extends SequentialCommandGroup {
     private BallDelivery ballDelivery;
     private static Logger logger = Logger.getLogger(StopDelivery.class.getName());
