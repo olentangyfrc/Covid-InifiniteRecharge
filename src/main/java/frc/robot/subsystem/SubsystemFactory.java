@@ -18,7 +18,6 @@ import frc.robot.OI;
 
 import frc.robot.subsystem.FootballPlayground.FootballPlayground;
 import frc.robot.subsystem.balldelivery.BallDelivery;
-import frc.robot.subsystem.balldelivery.TeleopShooter;
 import frc.robot.subsystem.balldelivery.commands.DeliverBall;
 import frc.robot.subsystem.balldelivery.commands.PutHoodDown;
 import frc.robot.subsystem.balldelivery.commands.ShootZone;
@@ -63,7 +62,6 @@ public class SubsystemFactory {
     private BallDelivery ballDelivery;
     private PixyLineCam pixyLineCam;
     private DrivetrainSubsystem2910 driveTrain;
-    private TeleopShooter teleopShooter;
     private Intake intake;
     private Winch winch;
     private Pigeon pigeon;
@@ -185,16 +183,13 @@ public class SubsystemFactory {
         ballDelivery = new BallDelivery();
         ballDelivery.init(portMan);
 
-        teleopShooter = new TeleopShooter(ballDelivery);
-        teleopShooter.init();
-
         displayManager.addBallDelivery(ballDelivery);
         
-
+        OI.getInstance().bind(new DeliverBall(ballDelivery), OI.XboxMenu, OI.WhenPressed);
+        OI.getInstance().bind(new StopDelivery(ballDelivery), OI.XboxMenu, OI.WhenReleased);
         
         OI.getInstance().bind(new ToggleKeepSquare(driveTrain), OI.XboxA, OI.WhenPressed);
         OI.getInstance().bind(new ZeroGyro(navX), OI.XboxY, OI.WhenPressed);
-        OI.getInstance().bind(new PutHoodDown(ballDelivery), OI.XboxB, OI.WhenPressed);
         
 
         //joystick buttons

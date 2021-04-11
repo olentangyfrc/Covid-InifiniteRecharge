@@ -201,7 +201,20 @@ public class BallDelivery extends SubsystemBase{
             } else {
                 //This moves the hood based upon the input from the controller.
                 isHoodMoving = true;
-                setHoodPercentOutput(0.2 * movement);
+                if(movement < 0) {
+                    if(!isHoodLimitSwitchHit()) {
+                        setHoodPercentOutput(-0.2);
+                    } else {
+                        setHoodPercentOutput(0);
+                    }
+                }
+                if(movement > 0) {
+                    if(getCurrentHoodPosition() < 651) {
+                        setHoodPercentOutput(-0.2);
+                    } else {
+                        setHoodPercentOutput(0);
+                    }
+                }
             }
         }
     }
