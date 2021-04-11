@@ -77,6 +77,10 @@ public class BallDelivery extends SubsystemBase{
         Blue,
         Red
     }
+    /**
+     * TELEOP: Shooter is controlled by the controller
+     * AUTO: Shooter is controlled by code.
+     */
     public static enum ShooterMode {
         TELEOP,
         AUTO
