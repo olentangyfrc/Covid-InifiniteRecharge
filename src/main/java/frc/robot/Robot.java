@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
   private AutonomousSelector autonomousSelector = new AutonomousSelector(autonomousTrajectories);
 
   private Command autonomousCommand = null;
-  private final SendableChooser<TeleopType> modeChooser = new SendableChooser<>();
+  private final SendableChooser<TeleopType> modeChooser = new SendableChooser<TeleopType>();
 
   /**
    * This function is run when the robot is first started up and should be
@@ -75,18 +75,16 @@ public class Robot extends TimedRobot {
 
     tab = Shuffleboard.getTab("Auton");
 
-    tab.add("Teleop Mode", modeChooser);
-
     OzoneLogger.getInstance().init(Level.ALL);
     logger.log(Level.INFO, "robot init");
 
     dManager = new DisplayManager();
 
+    modeChooser.setDefaultOption("Drive", TeleopType.DRIVE);
     modeChooser.addOption("Power Port", TeleopType.POWER_PORT);
     modeChooser.addOption("Interstellar", TeleopType.INTERSTELLAR);
-    modeChooser.setDefaultOption("Drive", TeleopType.DRIVE);
 
-
+    tab.add("Teleop Mode", modeChooser);
     try {
       subsystemFactory.init(dManager, PortMan.getInstance());
     } catch (Exception e) {

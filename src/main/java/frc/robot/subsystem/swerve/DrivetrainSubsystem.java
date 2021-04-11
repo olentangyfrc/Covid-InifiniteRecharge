@@ -31,6 +31,7 @@ import java.util.logging.Level;
  * 
  * @deprecated use DrivetrainSubsystem2910 instead.
  */
+@Deprecated
 public class DrivetrainSubsystem extends SubsystemBase {
     private static final double TRACKWIDTH = 23.5;
     private static final double WHEELBASE = 23.5;

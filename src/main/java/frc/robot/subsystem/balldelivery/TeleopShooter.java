@@ -14,11 +14,16 @@ import frc.robot.OI;
 import frc.robot.OzoneException;
 import frc.robot.subsystem.balldelivery.commands.DeliverBall;
 import frc.robot.subsystem.balldelivery.commands.StopDelivery;
+import frc.common.math.MathUtils;
+import java.time.Instant;
+import java.util.logging.Logger;
 
 public class TeleopShooter extends SubsystemBase {
 
   private BallDelivery bd;
-  private final double hoodMovementSpeedMultiplier = 2;
+  private final double hoodMovementSpeedMultiplier = 5;
+
+  static Logger logger = Logger.getLogger(TeleopShooter.class.getName());
 
   /**
    * This subsystem is used to allow a human driver to start and stop the shooter and adjust the hood.
@@ -44,8 +49,9 @@ public class TeleopShooter extends SubsystemBase {
   public void periodic() {
     if(DriverStation.getInstance().isEnabled()) {
       //Adjust the hood position based on the state of the right and left triggers and the variable hoodMovementSpeedMultiplier.
-      bd.setTargetHoodPosition(bd.getTargetHoodPosition() + hoodMovementSpeedMultiplier * OI.getInstance().getRightTriggerValue());
+      bd.setTargetHoodPosition(MathUtils.clamp(bd.getTargetHoodPosition() + hoodMovementSpeedMultiplier * OI.getInstance().getRightTriggerValue(), 0, 651));
       bd.setTargetHoodPosition(bd.getTargetHoodPosition() - hoodMovementSpeedMultiplier * OI.getInstance().getLeftTriggerValue());
+      logger.info(Instant.now().toString());
     }
   }
 }

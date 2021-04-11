@@ -352,6 +352,9 @@ public class SubsystemFactory {
         ballDelivery.init(portMan);
         displayManager.addBallDelivery(ballDelivery);
 
+        OI.getInstance().bind(new DeliverBall(ballDelivery), OI.XboxMenu, OI.WhenPressed);
+        OI.getInstance().bind(new StopDelivery(ballDelivery), OI.XboxMenu, OI.WhenReleased);
+
         //ShootBall cci = new ShootBall(ballDelivery);
         //OI.getInstance().bind(cci, OI.LeftJoyButton7, OI.WhenPressed);
 
@@ -387,7 +390,7 @@ public class SubsystemFactory {
         */
 
         //different ranges
-        ShootZone ccv = new ShootZone(ballDelivery, BallDelivery.ShootingZone.Green);
+        /*ShootZone ccv = new ShootZone(ballDelivery, BallDelivery.ShootingZone.Green);
         OI.getInstance().bind(ccv, OI.RightJoyButton6, OI.WhenPressed);
 
         ShootZone ccw = new ShootZone(ballDelivery, BallDelivery.ShootingZone.Yellow);
@@ -403,7 +406,7 @@ public class SubsystemFactory {
         OI.getInstance().bind(cct, OI.LeftJoyButton7, OI.WhenPressed);
 
         StopDelivery ccz = new StopDelivery(ballDelivery);
-        OI.getInstance().bind(ccz, OI.LeftJoyButton6, OI.WhenPressed);
+        OI.getInstance().bind(ccz, OI.LeftJoyButton6, OI.WhenPressed);*/
     }
 
     private void initRIO99(PortMan portMan) throws Exception {

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
  * @deprecated use HolonomicDriveCommand instead.
  * 
  */
+@Deprecated
 public class DriveCommand extends CommandBase {
 
     private DrivetrainSubsystem driveTrain;

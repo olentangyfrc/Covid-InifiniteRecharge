@@ -346,9 +346,6 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
         frontRightModule.setTargetVelocity(states[1].speedMetersPerSecond, states[1].angle.getRadians());
         backLeftModule.setTargetVelocity(states[2].speedMetersPerSecond, states[2].angle.getRadians());
         backRightModule.setTargetVelocity(states[3].speedMetersPerSecond, states[3].angle.getRadians());
-        if(frontRightModule.getCurrentVelocity() != 0) {
-            logger.info("FR Velocity: " + frontRightModule.getCurrentVelocity());
-        }
     }
     @Override
     public Gyroscope getGyroscope() {

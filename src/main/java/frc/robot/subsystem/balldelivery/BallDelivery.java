@@ -21,6 +21,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.controller.HolonomicDriveController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.robot.OI;
 import frc.robot.subsystem.PortMan;
 import frc.robot.subsystem.balldelivery.commands.AngleHood;
 
@@ -28,6 +31,9 @@ import frc.robot.subsystem.balldelivery.commands.AngleHood;
  * Add your docs here.
  */
 public class BallDelivery extends SubsystemBase{
+
+    private final SendableChooser<ShooterMode> shooterMode = new SendableChooser<ShooterMode>();
+    private boolean isHoodMoving = false;
 
     private static Logger logger = Logger.getLogger(BallDelivery.class.getName());
     private WPI_TalonFX shootingMotorLeft; //master
@@ -70,10 +76,20 @@ public class BallDelivery extends SubsystemBase{
         Yellow,
         Blue,
         Red
-    };
+    }
+    public static enum ShooterMode {
+        TELEOP,
+        AUTO
+    }
     
     public void init(final PortMan portMan) throws Exception {
         logger.info("init");
+
+        shooterMode.addOption("AUTO", ShooterMode.AUTO);
+        shooterMode.addOption("TELEOP", ShooterMode.TELEOP);
+
+        Shuffleboard.getTab("Easy Drive").add(shooterMode);
+
         shootingMotorLeft = new WPI_TalonFX(portMan.acquirePort(PortMan.can_43_label, "ShootingMotorLeft"));
         shootingMotorRight = new WPI_TalonFX(portMan.acquirePort(PortMan.can_42_label, "ShootingMotorRight"));
         eatingMotor = new WPI_TalonSRX(portMan.acquirePort(PortMan.can_12_label, "EatingMotor"));
@@ -158,10 +174,35 @@ public class BallDelivery extends SubsystemBase{
     }
     @Override
     public void periodic() {
-        if (Math.abs(getCurrentHoodPosition() - targetHoodPosition) > 5) {
-            setHoodPercentOutput((targetHoodPosition - getCurrentHoodPosition() > 0 ) ? 0.2 :-0.2);   
+        if(shooterMode.getSelected() == ShooterMode.AUTO) {
+            //This moves the hood into it's target position and keeps it there.
+            if (Math.abs(getCurrentHoodPosition() - targetHoodPosition) > 5) {
+                setHoodPercentOutput((targetHoodPosition - getCurrentHoodPosition() > 0 ) ? 0.2 :-0.2);   
+            } else {
+                setHoodPercentOutput(0.0);
+            }
         } else {
-            setHoodPercentOutput(0.0);
+            //Hood movement, positive means to go forwards, negative means backwards, 0 means none.
+            int movement = 0;
+            if(OI.getInstance().getRightTriggerValue() > 0) movement++;
+            if(OI.getInstance().getLeftTriggerValue() > 0) movement--;
+            if(movement == 0) {
+                if(isHoodMoving) {
+                    //Runs when the hood changes from moving to not moving, locks hood onto position
+                    setTargetHoodPosition(getCurrentHoodPosition());
+                    isHoodMoving = false;
+                }
+                //This keeps the hood in it's position
+                if (Math.abs(getCurrentHoodPosition() - targetHoodPosition) > 5) {
+                    setHoodPercentOutput((targetHoodPosition - getCurrentHoodPosition() > 0 ) ? 0.2 :-0.2);   
+                } else {
+                    setHoodPercentOutput(0.0);
+                }
+            } else {
+                //This moves the hood based upon the input from the controller.
+                isHoodMoving = true;
+                setHoodPercentOutput(0.2 * movement);
+            }
         }
     }
 

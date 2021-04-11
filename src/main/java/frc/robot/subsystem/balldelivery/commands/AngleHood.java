@@ -31,7 +31,6 @@ public class AngleHood extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    logger.info("Angle Hood");
     targetHoodPosition = ballDelivery.getTargetHoodPosition(); 
     if (Math.abs(ballDelivery.getCurrentHoodPosition() - targetHoodPosition) > 5) {
       ballDelivery.setHoodPercentOutput(

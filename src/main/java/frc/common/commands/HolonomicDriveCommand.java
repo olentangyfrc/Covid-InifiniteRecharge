@@ -26,12 +26,12 @@ public class HolonomicDriveCommand extends CommandBase {
      * 
      */
     public HolonomicDriveCommand() {
-        this.percentSpeed = MathUtils.clamp(speedMultiplier.getDouble(1), 0, 1);
         addRequirements(DrivetrainSubsystem2910.getInstance());
     }
 
     @Override
     public void execute() {
+        percentSpeed = MathUtils.clamp(speedMultiplier.getDouble(1), 0, 1);
         /*
             Each value is first recieved from the OI class.
             Then, the values are squared. This causes the speed to increase more gradually rather then at a constant rate.
