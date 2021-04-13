@@ -14,8 +14,10 @@ Connect your computer to the roborio and open visual studio code. Click top righ
 
 Autonomous:
 Paths are created in the AutonomousTrajectories file with the field as a coordinate grid and the starting point as the origin (0,0). Each new segment specifies the starting coordinates and ending coordinates of that specific segment. For each segment a degree of rotation can be added as well.
+
+```
 Path basicPath = new Path(Rotation2.fromDegrees(___));
-      
+ 
        basicPath.addSegment(
                new PathLineSegment(
   #Starting Point      new Vector2(0, 0), this should always be 0,0
@@ -38,20 +40,22 @@ Path basicPath = new Path(Rotation2.fromDegrees(___));
                Rotation2.fromDegrees(0)
        );
  
-
+```
 End Path by:
+```
       basicPath.subdivide(SUBDIVIDE_ITERATIONS);
       basicTrajectory = new Trajectory(basicPath, constraints);
-      
+```
 Make sure to add a getter method for the trajectory add the bottom of the file.
+```
    public Trajectory getBasicTrajectory() {
        return basicTrajectory;
    }
- 
+```
  
 
 Call on Path by:
-           trajectories.getBoxyBounceTrajectory()
+           `trajectories.getBasicTrajectory()`
 
 
 LiDar:
@@ -93,7 +97,7 @@ Raspberry Pi:
 
 Setting up the Network Tables:
 
-
+```
 from networktables import NetworkTables
 
 
@@ -105,7 +109,7 @@ sd = NetworkTables.getTable('Vision')
 
 
 time.sleep(3)
-
+```
 
 
 
@@ -115,7 +119,7 @@ time.sleep(3)
 
 Formatting the Video Stream:
 
-
+```
 def gstreamer_pipeline(
 
 
@@ -196,10 +200,10 @@ def gstreamer_pipeline(
 
 
 
-
+```
 Pushing Data to Network Tables
 
-
+```
 def SendtoNT(____visible, distance, direction):
 
 
@@ -244,9 +248,9 @@ Every Color but White
 0, 42, 0
 
 
-
+```
 Getting Camera Input:
-
+```
 
 cap = cv2.VideoCapture(0)
 
@@ -328,16 +332,16 @@ while 1:
 
 
 
-
+```
 
 Imutils Filter:
 
-
+```
 cnts =imutils.grab_contours(cnts)
 
 
 center = None
-
+```
 
 
 
@@ -346,7 +350,7 @@ Looks for contours and returns a value that can be operated on
 
 Analyzing Footage:
 
-
+```
 If len(cnts) > 0:
 
 
@@ -450,24 +454,24 @@ If len(cnts) > 0:
 
 
 
-
+```
 
 Find Distance:
 
 # approximate distance by measuring radius. The bigger the radius, the closer it is.
 
 
-
+```
 
 distance = round(380/radius, 2)
 
-
+```
 
 Prints to Console:
-
+```
 # print to console what it sees
 print("I can see a ball! It is approximately " + str(distance) + " feet away and to the " + direction)
-
+```
 
 
 Pushes Data to Network Tables:
@@ -478,7 +482,7 @@ Pushes Data to Network Tables:
 
            # send to ShuffleBoard whether we see the object we're looking for, how far it is and which direction
 
-
+```
            SendtoNT(True, distance, direction)
 
 
@@ -508,7 +512,7 @@ else:
 
 
 
-
+```
 
 
 
@@ -519,12 +523,12 @@ else:
 
 Shows Camera Input:
 
-
+```
 #input a different filter name to show what the filter is doing
 cv2.imshow('img', ____)
 k = cv2.waitKey(1)
 
-
+```
 
 
 
@@ -534,7 +538,7 @@ k = cv2.waitKey(1)
 
 Roborio:
 
-
+```
 public class ChaseBall extends CommandBase {
 
 
@@ -603,7 +607,7 @@ public class ChaseBall extends CommandBase {
    }
  }
 }
-
+```
 
 
 
