@@ -3,37 +3,34 @@ OZone Robotics - FRC 4611 InfiniteRecharge
 
 *work in progess*
 
-This repository contains code that is shared between applications and robots that are created by FRC Team 4611, Angus. The repository itself is currently split into two parts: common and robot. The common library contains code that does not depend on FIRST's WPILib, meaning it can run as a part of desktop applications. The robot library contains code that depends on WPILib and should only be run on robots. The robot library includes the subsystems, command groups, etc.
+This repository contains code that is shared between applications and robots that are created by FRC Team 4611, Agnes. The repository itself is currently split into two parts: common and robot. The common library contains code that contains useful functions and classes that we use throughout our code. The robot library contains the code for the actual bot. This includes the subsystems, commands, OI, and more.
 
 Installation:
 
-In order to clone this project, visual studio code is needed with WPILib plugin installed. Git and Java must be installed on device. Open terminal, Change the current working directory to the location where you want the cloned directory and type git clone, and then paste: https://github.com/olentangyfrc/Covid-InifiniteRecharge.git
+In order to clone this project, visual studio code is needed with WPILib plugin installed. Git and Java must be installed on device. Open terminal, Change the current working directory to the location where you want the cloned directory and type git clone, and then paste: https://github.com/olentangyfrc/Covid-InifiniteRecharge.git (In the Git terminal, [ctrl] + [v] doesnt work, use the [insert] key)
 
-Usage:
-Connect your computer to the roborio and open visual studio code. Click top right WPILib logo and search deploy code.
-
-
-Add in Merge and Pull Requests
+Deploy to the Robot:
+Connect your computer to the roborio and open visual studio code. Click top right WPILib logo and search deploy robot code.
 
 Autonomous:
-Paths are created with the field as coordinate grid and the starting point as the origin. Each new segment specifies the starting point and ending of the specific segment. For each segment a degree of rotation can be added as well.
-Path ____ = new Path(Rotation2.fromDegrees(0));
+Paths are created in the AutonomousTrajectories file with the field as a coordinate grid and the starting point as the origin (0,0). Each new segment specifies the starting coordinates and ending coordinates of that specific segment. For each segment a degree of rotation can be added as well.
+Path basicPath = new Path(Rotation2.fromDegrees(___));
       
-       _______.addSegment(
+       basicPath.addSegment(
                new PathLineSegment(
-  #Starting Point      new Vector2(0, 0),
+  #Starting Point      new Vector2(0, 0), this should always be 0,0
   #Ending Point        new Vector2(33, 0)
                ),
                Rotation2.fromDegrees(0)
        );
-       _______.addSegment(
+       basicPath.addSegment(
                new PathLineSegment(
                        new Vector2(33, 0),
                        new Vector2(33, 50)
                ),
                Rotation2.fromDegrees(0)
        );
-       _______.addSegment(
+       basicPath.addSegment(
                new PathLineSegment(
                        new Vector2(33, 50),
                        new Vector2(25, 10)
@@ -43,10 +40,12 @@ Path ____ = new Path(Rotation2.fromDegrees(0));
  
 
 End Path by:
-      boxyBouncePath.subdivide(SUBDIVIDE_ITERATIONS);
-       boxyBounceTrajectory = new Trajectory(boxyBouncePath, constraints);
-   public Trajectory getBoxyBounceTrajectory() {
-       return boxyBounceTrajectory;
+      basicPath.subdivide(SUBDIVIDE_ITERATIONS);
+      basicTrajectory = new Trajectory(basicPath, constraints);
+      
+Make sure to add a getter method for the trajectory add the bottom of the file.
+   public Trajectory getBasicTrajectory() {
+       return basicTrajectory;
    }
  
  
