@@ -253,6 +253,9 @@ public class SubsystemFactory {
         logger.info("Initializing RIO2");
         FootballPlayground footballPlayground = new FootballPlayground();
         footballPlayground.init(portMan);
+
+        LEDStrip ledStrip = new LEDStrip(portMan);
+        ledStrip.init();
         displayManager.addFootballPlayground(footballPlayground);
     }
 

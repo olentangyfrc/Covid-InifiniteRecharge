@@ -29,6 +29,7 @@ public class BallDeliverySBTab implements SBInterface{
     public NetworkTableEntry fValue;
     public NetworkTableEntry eatingTolerance;
     public NetworkTableEntry isCarouselSwitchOn;
+    public NetworkTableEntry hoodSwitch;
 
     public BallDeliverySBTab(BallDelivery bd){
         ballDelivery = bd;
@@ -49,6 +50,7 @@ public class BallDeliverySBTab implements SBInterface{
         //fValue = tab.add("f Value", 0.045).getEntry();
         eatingTolerance = tab.add("Eating Tolerance", 0.0).getEntry();
         isCarouselSwitchOn = tab.add("Is Switch On", false).getEntry();
+        hoodSwitch = tab.add("Hood Switch", false).getEntry();
 
     }
 
@@ -70,6 +72,7 @@ public class BallDeliverySBTab implements SBInterface{
         //ballDelivery.setFValue(fValue.getDouble(0.045));
         ballDelivery.setEatingTolerance(eatingTolerance.getDouble(0.0));
         isCarouselSwitchOn.setBoolean(ballDelivery.isCarouselSwitchOn());
+        hoodSwitch.setBoolean(ballDelivery.isHoodLimitSwitchHit());
     }
 
 }

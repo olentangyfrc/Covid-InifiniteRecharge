@@ -100,7 +100,7 @@ public class BallDelivery extends SubsystemBase{
         carouselMotor = new WPI_TalonSRX(portMan.acquirePort(PortMan.can_11_label, "CarouselMotor"));
         hoodMotor = new WPI_TalonSRX(portMan.acquirePort(PortMan.can_27_label, "HoodMotor"));
 
-        stopHoodMotor = new DigitalInput(0);
+        stopHoodMotor = new DigitalInput(portMan.acquirePort(PortMan.digital0_label, "stopHoodMotor"));
         beamBreakerReceiver = new DigitalInput(portMan.acquirePort(PortMan.digital2_label, "Beam Breaker Receiver"));
         
         shootingMotorRight.follow(shootingMotorLeft);
@@ -214,7 +214,7 @@ public class BallDelivery extends SubsystemBase{
                 }
                 if(movement > 0) {
                     if(getCurrentHoodPosition() < 651) {
-                        setHoodPercentOutput(-0.2);
+                        setHoodPercentOutput(0.3);
                     } else {
                         setHoodPercentOutput(0);
                     }
@@ -258,11 +258,10 @@ public class BallDelivery extends SubsystemBase{
     //this is the same as spinCarousel() ??
     public boolean stopCarousel(boolean forceStop){
         //false means beam is being broken ("switch" is on)
-        if(forceStop)
+        if(forceStop) {
             carouselMotor.set(ControlMode.PercentOutput, 0);
-
-        boolean reading;
-        reading = beamBreakerReceiver.get();
+        }
+        boolean reading = beamBreakerReceiver.get();
         if(lastReading != reading){
             lastReading = reading;
             if(reading == false)
@@ -466,13 +465,7 @@ public class BallDelivery extends SubsystemBase{
     }
 
     public boolean isHoodLimitSwitchHit(){
-        if(stopHoodMotor.get() == true)
-        {
-            return true;
-        }
-        else{
-            return false;
-        }
+        return !stopHoodMotor.get();
     }
 
     public boolean isAtHoodPosition(){
