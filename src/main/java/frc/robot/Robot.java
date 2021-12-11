@@ -93,6 +93,8 @@ public class Robot extends TimedRobot {
       logger.severe(writer.toString());
     }
 
+    System.out.println("Hello World!");
+
   }
 
   /**
