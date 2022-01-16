@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.telemetry.Telemetry;
 import frc.robot.subsystem.SubsystemFactory;
 
-import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 
 public class GoToHorizontalDistance extends CommandBase {
     

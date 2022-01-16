@@ -5,11 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import com.ctre.phoenix.CANifier.GeneralPin;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.HIDType;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -159,7 +156,9 @@ public class OI {
 
         JOYSTICK_NAMES.add("Logitech Attack 3");
 
-        if(DriverStation.getInstance().isJoystickConnected(leftJoyIndex) && DriverStation.getInstance().isJoystickConnected(rightJoyIndex)) {
+        DriverStation station = DriverStation.getInstance();
+
+        if(station.isJoystickConnected(leftJoyIndex) && station.isJoystickConnected(rightJoyIndex)) {
             if(getJoystickType(leftJoyIndex) == JOYSTICK_TYPE && getJoystickType(rightJoyIndex) == JOYSTICK_TYPE) {
                 inputType = JOYSTICK_TYPE;
                 leftJoy = new Joystick(0);
@@ -168,7 +167,7 @@ public class OI {
                 inputType = UNKNOWN_TYPE;
                 DriverStation.reportError("Incorrect Joystick format. Check Inputs.", false);
             }
-        } else if(DriverStation.getInstance().isJoystickConnected(xboxIndex)) {
+        } else if(DriverStation.isJoystickConnected(xboxIndex)) {
             if(getJoystickType(xboxIndex) == XBOX_TYPE) {
                 inputType = XBOX_TYPE;
                 xbox = new XboxController(0);
@@ -186,7 +185,7 @@ public class OI {
     public double getLeftXValue() {
         double value = 0;
         if(inputType == XBOX_TYPE) {
-            value = xbox.getX(Hand.kLeft);
+            value = xbox.getLeftX();
         } else if(inputType == JOYSTICK_TYPE) {
             value = leftJoy.getX();
         }
@@ -197,7 +196,7 @@ public class OI {
     public double getLeftYValue() {
         double value = 0;
         if(inputType == XBOX_TYPE) {
-            value = xbox.getY(Hand.kLeft);
+            value = xbox.getLeftY();
         } else if(inputType == JOYSTICK_TYPE) {
             value = leftJoy.getY();
         }
@@ -208,7 +207,7 @@ public class OI {
     public double getRightXValue() {
         double value = 0;
         if(inputType == XBOX_TYPE) {
-            value = xbox.getX(Hand.kRight);
+            value = xbox.getRightX();
         } else if(inputType == JOYSTICK_TYPE) {
             value = rightJoy.getX();
         }
@@ -219,7 +218,7 @@ public class OI {
     public double getRightYValue() {
         double value = 0;
         if(inputType == XBOX_TYPE) {
-            value = xbox.getY(Hand.kRight);
+            value = xbox.getRightY();
         } else if(inputType == JOYSTICK_TYPE) {
             value = rightJoy.getY();
         }
@@ -340,9 +339,9 @@ public class OI {
         return button;
     }
     public static GenericHID.HIDType getJoystickType(int port) {
-        if(XBOX_NAMES.contains(DriverStation.getInstance().getJoystickName(port))) {
+        if(XBOX_NAMES.contains(DriverStation.getJoystickName(port))) {
             return GenericHID.HIDType.kHIDGamepad;
-        } else if(JOYSTICK_NAMES.contains(DriverStation.getInstance().getJoystickName(port))) {
+        } else if(JOYSTICK_NAMES.contains(DriverStation.getJoystickName(port))) {
             return GenericHID.HIDType.kHIDJoystick;
         } else {
             return GenericHID.HIDType.kUnknown;

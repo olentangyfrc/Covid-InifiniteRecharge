@@ -7,7 +7,7 @@ import frc.robot.subsystem.telemetry.Telemetry;
 import frc.common.math.Vector2;
 import frc.robot.subsystem.SubsystemFactory;
 
-import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 
 public class DriveToBall extends CommandBase {
   private Telemetry telemetry;

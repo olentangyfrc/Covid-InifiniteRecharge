@@ -11,7 +11,7 @@ package frc.robot.subsystem.telemetry;
 
 
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.MedianFilter;
+import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystem.PortMan;
 import java.util.logging.Logger;
@@ -72,8 +72,8 @@ public class Telemetry extends SubsystemBase{
         filterRear = new MedianFilter(10);
         filterBack = new MedianFilter(10);
 
-        CameraServer.getInstance().startAutomaticCapture();
-        //CameraServer.getInstance().startAutomaticCapture();
+        CameraServer.startAutomaticCapture();
+        //CameraServer.startAutomaticCapture();
 
         logger.exiting(Telemetry.class.getName(), "init()");
     }

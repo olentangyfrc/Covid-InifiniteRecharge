@@ -34,7 +34,6 @@ import frc.robot.subsystem.SubsystemFactory;
 import frc.robot.subsystem.Auton.InterstellarAccuracyAuton.InterstellarAccuracyAuton;
 import frc.robot.subsystem.Auton.PowerPortAuton.PowerPortDirector;
 import frc.robot.subsystem.balldelivery.commands.StopShooting;
-import frc.robot.subsystem.controlpanel.ControlPanel;
 import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
 import frc.robot.util.OzoneLogger;
 
@@ -48,7 +47,6 @@ import frc.robot.util.OzoneLogger;
 public class Robot extends TimedRobot {
 
   static Logger logger = Logger.getLogger(Robot.class.getName());
-  ControlPanel controlPanel;
   private static SubsystemFactory subsystemFactory;
 
   private static Instant initTime;

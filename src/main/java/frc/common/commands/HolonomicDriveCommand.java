@@ -9,7 +9,7 @@ import frc.robot.OI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import frc.common.drivers.NavX.Axis;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 
 public class HolonomicDriveCommand extends CommandBase {
 

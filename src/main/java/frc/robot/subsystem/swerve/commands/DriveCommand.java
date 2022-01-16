@@ -3,7 +3,7 @@ package frc.robot.subsystem.swerve.commands;
 import frc.robot.OI;
 import frc.robot.subsystem.swerve.DrivetrainSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 
 public class DriveCommand extends CommandBase {
 

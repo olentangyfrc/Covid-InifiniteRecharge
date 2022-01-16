@@ -7,7 +7,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -23,8 +23,6 @@ import frc.robot.subsystem.balldelivery.commands.PutHoodDown;
 import frc.robot.subsystem.balldelivery.commands.ShootZone;
 import frc.robot.subsystem.balldelivery.commands.StopDelivery;
 import frc.robot.subsystem.climber.Climber;
-import frc.robot.subsystem.controlpanel.ControlPanel;
-import frc.robot.subsystem.intake.Intake;
 import frc.robot.subsystem.onewheelshooter.OneWheelShooter;
 import frc.robot.subsystem.pixylinecam.PixyLineCam;
 import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
@@ -32,7 +30,6 @@ import frc.robot.subsystem.swerve.commands.ToggleKeepSquare;
 import frc.robot.subsystem.telemetry.Pigeon;
 import frc.robot.subsystem.telemetry.Telemetry;
 import frc.robot.subsystem.telemetry.commands.ZeroGyro;
-import frc.robot.subsystem.transport.Transport;
 import frc.robot.subsystem.winch.Winch;
 
 public class SubsystemFactory {
@@ -46,7 +43,7 @@ public class SubsystemFactory {
 
     private static DisplayManager displayManager;
 
-    private PowerDistributionPanel pdp;
+    private PowerDistribution pdp;
 
     private Timer timer = new Timer();
 
@@ -54,15 +51,12 @@ public class SubsystemFactory {
      * keep all available subsystem declarations here.
      */
 
-    private Transport transport;
-    private ControlPanel controlPanel;
     private Climber climber;
     private OneWheelShooter oneWheelShooter;
     private Telemetry telemetry;
     private BallDelivery ballDelivery;
     private PixyLineCam pixyLineCam;
     private DrivetrainSubsystem2910 driveTrain;
-    private Intake intake;
     private Winch winch;
     private Pigeon pigeon;
     private NavX navX;
@@ -406,12 +400,10 @@ public class SubsystemFactory {
     }
 
 
-    public PowerDistributionPanel getPDP(){
+    public PowerDistribution getPDP(){
         return pdp;
     }
-    public ControlPanel getControlPanel() {
-        return controlPanel;
-    }
+
     public DrivetrainSubsystem2910 getDriveTrain(){
         return driveTrain;
     }
@@ -419,12 +411,6 @@ public class SubsystemFactory {
         return climber;
     }
 
-    public Transport getTransport() {
-        return transport;
-    }
-    public Intake getIntake(){
-        return intake;
-    }
     public OneWheelShooter getShooter(){
         return oneWheelShooter;
     }
