@@ -133,8 +133,8 @@ public class OI {
     public static final int ToggleWhenPressed   = 4;
     public static final int CancelWhenPressed   = 5;
 
-    private int leftJoyIndex = 0;
-    private int rightJoyIndex   = 1;
+    private int leftJoyIndex = 1;
+    private int rightJoyIndex   = 2;
     private int auxJoyIndex  = 2;
     private int leftButtonBoxIndex  = 3;
     private int rightButtonBoxIndex = 4;
@@ -153,16 +153,15 @@ public class OI {
 
         XBOX_NAMES.add("Controller (Xbox One For Windows)");
         XBOX_NAMES.add("Bluetooth XINPUT compatible input device");
+        XBOX_NAMES.add("Wireless Controller");
 
         JOYSTICK_NAMES.add("Logitech Attack 3");
 
-        DriverStation station = DriverStation.getInstance();
-
-        if(station.isJoystickConnected(leftJoyIndex) && station.isJoystickConnected(rightJoyIndex)) {
+        if(DriverStation.isJoystickConnected(leftJoyIndex) && DriverStation.isJoystickConnected(rightJoyIndex)) {
             if(getJoystickType(leftJoyIndex) == JOYSTICK_TYPE && getJoystickType(rightJoyIndex) == JOYSTICK_TYPE) {
                 inputType = JOYSTICK_TYPE;
-                leftJoy = new Joystick(0);
-                rightJoy = new Joystick(1);
+                leftJoy = new Joystick(1);
+                rightJoy = new Joystick(2);
             } else {
                 inputType = UNKNOWN_TYPE;
                 DriverStation.reportError("Incorrect Joystick format. Check Inputs.", false);

@@ -21,6 +21,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.math.controller.HolonomicDriveController;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import frc.common.control.PidController;
 import frc.robot.subsystem.PortMan;
 import frc.robot.subsystem.balldelivery.commands.AngleHood;
 
@@ -79,6 +82,8 @@ public class BallDelivery extends SubsystemBase{
     };
     
     public void init(final PortMan portMan) throws Exception {
+
+
         logger.info("init");
         shootingMotorLeft = new WPI_TalonFX(portMan.acquirePort(PortMan.can_43_label, "ShootingMotorLeft"));
         shootingMotorRight = new WPI_TalonFX(portMan.acquirePort(PortMan.can_42_label, "ShootingMotorRight"));
@@ -100,35 +105,26 @@ public class BallDelivery extends SubsystemBase{
         fValue = 0;
 
         //default target values
-        targetCarouselVelocity = 100; 
-        targetEatingVelocity = 100;
-        targetShootingVelocity = 100;
+        targetCarouselVelocity = 800; 
+        targetEatingVelocity = 300;
+        targetShootingVelocity = 1;
         targetHoodPosition = 0.0;
         shootingTol = 100;
 
         //motor configurations
-        shootingMotorLeft.setNeutralMode(NeutralMode.Coast);
         shootingMotorLeft.configFactoryDefault();
+        shootingMotorLeft.setNeutralMode(NeutralMode.Coast);
         shootingMotorLeft.configAllowableClosedloopError(0, 5);
         shootingMotorLeft.setSelectedSensorPosition(0, 0, 0);
-        shootingMotorLeft.config_kP(0, 0.3, 0);
-        shootingMotorLeft.config_kI(0, iValue, 0);
-        shootingMotorLeft.config_kD(0, dValue, 0);
-        shootingMotorLeft.config_kF(0, 0.045, 0);
-        shootingMotorLeft.configClosedloopRamp(.9);
 
-        shootingMotorRight.setNeutralMode(NeutralMode.Coast);
         shootingMotorRight.configFactoryDefault();
+        shootingMotorRight.setNeutralMode(NeutralMode.Coast);
         shootingMotorRight.configAllowableClosedloopError(0, 5);
         shootingMotorRight.setSelectedSensorPosition(0, 0, 0);
-        shootingMotorRight.config_kP(0, 0.3, 0);
-        shootingMotorRight.config_kI(0, iValue, 0);
-        shootingMotorRight.config_kD(0, dValue, 0);
-        shootingMotorRight.config_kF(0, 0.045, 0);
-        shootingMotorRight.configClosedloopRamp(.9);
 
-        eatingMotor.setNeutralMode(NeutralMode.Coast);
+
         eatingMotor.configFactoryDefault();
+        eatingMotor.setNeutralMode(NeutralMode.Coast);
         eatingMotor.configAllowableClosedloopError(0, 5);
         eatingMotor.setSelectedSensorPosition(0, 0, 0);
         eatingMotor.config_kP(0, pValue, 0);
@@ -137,8 +133,8 @@ public class BallDelivery extends SubsystemBase{
         eatingMotor.config_kF(0, 0, 0);
         eatingMotor.configClosedloopRamp(.9);
         
-        carouselMotor.setNeutralMode(NeutralMode.Brake);
         carouselMotor.configFactoryDefault();
+        carouselMotor.setNeutralMode(NeutralMode.Brake);
         carouselMotor.configAllowableClosedloopError(0, 5);
         carouselMotor.setSelectedSensorPosition(0, 0, 0);
         carouselMotor.config_kP(0, pValue, 0);
@@ -201,7 +197,7 @@ public class BallDelivery extends SubsystemBase{
      * @return nothing
      */
     public void spinCarousel(){
-        carouselMotor.set(ControlMode.Velocity, 600);
+        carouselMotor.set(ControlMode.Velocity, 1200);
     }
 
     /*
@@ -294,7 +290,7 @@ public class BallDelivery extends SubsystemBase{
      * @return nothing
      */
     public void shootBall(){
-        shootingMotorLeft.set(ControlMode.Velocity, targetShootingVelocity);
+        shootingMotorLeft.set(ControlMode.PercentOutput, 0.3);
     }
 
     /*
@@ -310,6 +306,7 @@ public class BallDelivery extends SubsystemBase{
      * @return nothing
      */
     public void stopShooting(){
+        //shootingMotorLeft.set(ControlMode.PercentOutput, 0);
         shootingMotorLeft.set(ControlMode.PercentOutput, 0);
     }
 

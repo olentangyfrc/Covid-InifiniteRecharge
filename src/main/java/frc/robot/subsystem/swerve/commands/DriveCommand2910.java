@@ -1,13 +1,19 @@
 package frc.robot.subsystem.swerve.commands;
 
+import java.util.Map;
+
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
 import frc.common.math.Vector2;
+import frc.robot.subsystem.swerve.DrivetrainSubsystem2910;
 
 public class DriveCommand2910 extends CommandBase {
     private Vector2 translation;
     private double rotation;
     private boolean fieldOriented;
+
 
     public DriveCommand2910(Vector2 translation, double rotation, boolean fieldOriented) {
         this.translation = translation;
@@ -21,6 +27,7 @@ public class DriveCommand2910 extends CommandBase {
 
     @Override
     public void initialize() {
+
         DrivetrainSubsystem2910.getInstance().holonomicDrive(translation, rotation, fieldOriented);
     }
 

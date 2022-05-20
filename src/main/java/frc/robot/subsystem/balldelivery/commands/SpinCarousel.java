@@ -39,27 +39,20 @@ public class SpinCarousel extends CommandBase {
   @Override
   public void execute() {
     logger.info("spinning carousel");
-    if(isFirstTime == true)
-    {
-      ballDelivery.spinCarousel();
-      isFirstTime = false;
-    }
-    if(Duration.between(startTime, Instant.now()).toMillis() > 500) {
-      stop = ballDelivery.stopCarousel(false);  
-    }
+    ballDelivery.spinCarousel();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    stop = ballDelivery.stopCarousel(true);
+    //stop = ballDelivery.stopCarousel(true);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
 
-    return stop;  
+    return true;  
   }
 }
 

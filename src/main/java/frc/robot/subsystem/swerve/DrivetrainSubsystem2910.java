@@ -1,19 +1,35 @@
 package frc.robot.subsystem.swerve;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.logging.Logger;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.common.commands.HolonomicDriveCommand;
-import frc.common.drivers.Mk2SwerveModule;
-import frc.common.drivers.Mk2SwerveModuleBuilder;
-import frc.common.control.*;
+import frc.common.control.CentripetalAccelerationConstraint;
+import frc.common.control.HolonomicMotionProfiledTrajectoryFollower;
+import frc.common.control.ITrajectoryConstraint;
+import frc.common.control.MaxAccelerationConstraint;
+import frc.common.control.MaxVelocityConstraint;
+import frc.common.control.PidConstants;
+import frc.common.control.PidController;
+import frc.common.control.Trajectory;
 import frc.common.drivers.Gyroscope;
+import frc.common.drivers.Mk2SwerveModuleBuilder;
 import frc.common.drivers.SwerveModule;
-import frc.common.drivers.NavX.Axis;
 import frc.common.math.RigidTransform2;
 import frc.common.math.Rotation2;
 import frc.common.math.Vector2;
@@ -21,24 +37,9 @@ import frc.common.subsystems.SwerveDrivetrain;
 import frc.common.util.DrivetrainFeedforwardConstants;
 import frc.common.util.HolonomicDriveSignal;
 import frc.common.util.HolonomicFeedforward;
-import frc.robot.subsystem.SubsystemFactory;
-import frc.robot.subsystem.telemetry.Pigeon;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import frc.robot.OzoneException;
 import frc.robot.subsystem.PortMan;
+import frc.robot.subsystem.SubsystemFactory;
 
 public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
 
@@ -125,10 +126,14 @@ public class DrivetrainSubsystem2910 extends SwerveDrivetrain {
         }
     }
 
+    private NetworkTableEntry speedSlider = Shuffleboard.getTab("Drive").add("Drive percent", 1.0).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 1)).getEntry();
+
+
     @Override
     public void holonomicDrive(Vector2 translation, double rotation, boolean fieldOriented) {
+        double ratio = speedSlider.getDouble(1.0);
         synchronized (lock) {
-            this.signal = new HolonomicDriveSignal(translation, rotation, fieldOriented);
+            this.signal = new HolonomicDriveSignal(new Vector2(translation.x * ratio, translation.y * ratio), rotation * ratio, fieldOriented);
         }
     }
     public void holonomicDrive(HolonomicDriveSignal sig) {

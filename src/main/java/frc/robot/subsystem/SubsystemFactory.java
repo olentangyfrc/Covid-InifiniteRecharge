@@ -10,7 +10,8 @@ import java.util.logging.Logger;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
-
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.common.drivers.Gyroscope;
 import frc.common.drivers.NavX;
 
@@ -19,9 +20,13 @@ import frc.robot.OI;
 import frc.robot.subsystem.FootballPlayground.FootballPlayground;
 import frc.robot.subsystem.balldelivery.BallDelivery;
 import frc.robot.subsystem.balldelivery.commands.DeliverBall;
+import frc.robot.subsystem.balldelivery.commands.EatBalls;
 import frc.robot.subsystem.balldelivery.commands.PutHoodDown;
 import frc.robot.subsystem.balldelivery.commands.ShootZone;
+import frc.robot.subsystem.balldelivery.commands.SpinCarousel;
+import frc.robot.subsystem.balldelivery.commands.StopCarousel;
 import frc.robot.subsystem.balldelivery.commands.StopDelivery;
+import frc.robot.subsystem.balldelivery.commands.StopEating;
 import frc.robot.subsystem.climber.Climber;
 import frc.robot.subsystem.onewheelshooter.OneWheelShooter;
 import frc.robot.subsystem.pixylinecam.PixyLineCam;
@@ -166,10 +171,10 @@ public class SubsystemFactory {
         canAssignments.put("BR.Swerve.angle", PortMan.can_31_label);
         canAssignments.put("BR.Swerve.drive", PortMan.can_30_label);
 
-        double flOff = -Math.toRadians(57.7);
-        double frOff = -Math.toRadians(142.7);
+        double flOff = -Math.toRadians(18.4);
+        double frOff = -Math.toRadians(143.3);
         double blOff = -Math.toRadians(319);
-        double brOff = -Math.toRadians(73);
+        double brOff = -Math.toRadians(156.5);
 
         driveTrain = DrivetrainSubsystem2910.getInstance();
         driveTrain.init(portMan, canAssignments, flOff, blOff, frOff, brOff);
@@ -179,9 +184,7 @@ public class SubsystemFactory {
         displayManager.addBallDelivery(ballDelivery);
 
         
-        OI.getInstance().bind(new ToggleKeepSquare(driveTrain), OI.XboxA, OI.WhenPressed);
         OI.getInstance().bind(new ZeroGyro(navX), OI.XboxY, OI.WhenPressed);
-        OI.getInstance().bind(new PutHoodDown(ballDelivery), OI.XboxB, OI.WhenPressed);
         
 
         //joystick buttons
@@ -216,29 +219,24 @@ public class SubsystemFactory {
         OI.getInstance().bind(cct, OI.RightJoyButton5, OI.WhenPressed);
         */
 
-        DeliverBall ccr = new DeliverBall(ballDelivery);
-        OI.getInstance().bind(ccr, OI.LeftJoyButton6, OI.WhenPressed);
+        // OI.getInstance().bind(new ParallelCommandGroup(new EatBalls(ballDelivery), new SpinCarousel(ballDelivery)), OI.XboxRB, OI.WhenPressed);
         
-        StopDelivery ccs = new StopDelivery(ballDelivery);
-        OI.getInstance().bind(ccs, OI.LeftJoyButton7, OI.WhenPressed);
+        // OI.getInstance().bind(new ParallelCommandGroup(new StopEating(ballDelivery), new StopCarousel(ballDelivery)), OI.XboxRB, OI.WhenReleased);
+        SequentialCommandGroup shoot = new SequentialCommandGroup(
+            new SpinCarousel(ballDelivery),
+            new EatBalls(ballDelivery),
+            new DeliverBall(ballDelivery)
+        );
 
-        PutHoodDown ccu = new PutHoodDown(ballDelivery);
-        OI.getInstance().bind(ccu, OI.LeftJoyButton11, OI.WhenPressed);
-
-        //different ranges
-        ShootZone ccv = new ShootZone(ballDelivery, BallDelivery.ShootingZone.Green);
-        OI.getInstance().bind(ccv, OI.RightJoyButton6, OI.WhenPressed);
-
-        ShootZone ccw = new ShootZone(ballDelivery, BallDelivery.ShootingZone.Yellow);
-        OI.getInstance().bind(ccw, OI.RightJoyButton7, OI.WhenPressed);
-
-        ShootZone ccx = new ShootZone(ballDelivery, BallDelivery.ShootingZone.Blue);
-        OI.getInstance().bind(ccx, OI.RightJoyButton11, OI.WhenPressed);
-
-        ShootZone ccy = new ShootZone(ballDelivery, BallDelivery.ShootingZone.Red);
-        OI.getInstance().bind(ccy, OI.RightJoyButton10, OI.WhenPressed);
+        SequentialCommandGroup stopShoot = new SequentialCommandGroup(
+            new StopCarousel(ballDelivery),
+            new StopEating(ballDelivery),
+            new StopDelivery(ballDelivery)
+        );
         
 
+        OI.getInstance().bind(shoot, OI.XboxRB, OI.WhenPressed);
+        OI.getInstance().bind(stopShoot, OI.XboxRB, OI.WhenReleased);
     }
 
     private void initRIO2(PortMan portMan) throws Exception {
